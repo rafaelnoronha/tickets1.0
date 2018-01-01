@@ -13,16 +13,22 @@ class PoliticaPrivacidade(Base):
     Modelo que vai gerenciar as políticas de privacidade.
     """
 
-    tipo_titular = models.CharField(
-        verbose_name='Tipo de Titular',
-        max_length=1,
-        choices=TIPO_TITULAR_CHOISES,
-        help_text='Para qual tipo de titular a polítiva será requerida',
+    titulo_politica = models.CharField(
+        verbose_name='Título da Política de Privacidade',
+        max_length=150,
+        help_text='Título da política de privacidade',
     )
 
     politica = models.TextField(
         verbose_name='Política de Privacidade',
         help_text='O conteúdo da política de privacidade',
+    )
+
+    tipo_titular = models.CharField(
+        verbose_name='Tipo de Titular',
+        max_length=1,
+        choices=TIPO_TITULAR_CHOISES,
+        help_text='Para qual tipo de titular a polítiva será requerida',
     )
 
     data_validade = models.DateField(
@@ -37,7 +43,7 @@ class PoliticaPrivacidade(Base):
         verbose_name_plural = 'Políticas de Privacidade'
 
     def __str__(self):
-        return f'{self.id} - {self.data_validade}'
+        return f'{self.id} - {self.titulo_politica}'
 
 
 class ConsentimentoPoliticaPrivacidade(Base):

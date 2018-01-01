@@ -1,4 +1,5 @@
 from django.db import models
+from core.models import TABELAS_BANCO_CHOISES
 from usuario.models import Usuario
 import uuid
 
@@ -30,6 +31,13 @@ class Auditoria(models.Model):
         verbose_name='Hora da Operação',
         auto_now_add=True,
         help_text='Hora da execução da operação',
+    )
+
+    tabela_operacao = models.CharField(
+        verbose_name='Tabela da Operação',
+        choices=TABELAS_BANCO_CHOISES,
+        max_length=100,
+        help_text='Tabela onde ocorreu a operação',
     )
 
     tipo_operacao = models.CharField(
@@ -66,4 +74,4 @@ class Auditoria(models.Model):
         verbose_name_plural = 'Auditoria'
 
     def __str__(self):
-        return f'{self.id} - {self.tipo_operacao} [{self.usuario_operacao}]'
+        return f'{self.id} - {self.tipo_operacao} em {self.tabela_operacao} por {self.usuario_operacao}'

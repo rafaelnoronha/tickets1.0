@@ -1,8 +1,34 @@
 from rest_framework import serializers
 from .models import Auditoria
+from usuario.serializer import UsuarioSerializer
 
 
 class AuditoriaSerializer(serializers.ModelSerializer):
+    usuario_operacao = serializers.SlugRelatedField(read_only=True, slug_field='username')
+
     class Meta:
         model = Auditoria
-        fields = '__all__'
+        read_only_fields = [
+            'uuid',
+            'data_operacao',
+            'hora_operacao',
+            'tabela_operacao',
+            'tipo_operacao',
+            'usuario_operacao',
+            'estado_anterior',
+            'estado_atual',
+        ]
+        fields = [
+            'uuid',
+            'data_operacao',
+            'hora_operacao',
+            'tabela_operacao',
+            'tipo_operacao',
+            'usuario_operacao',
+            'estado_anterior',
+            'estado_atual',
+        ]
+
+
+class AuditoriaSerializerRetrieve(AuditoriaSerializer):
+    usuario_operacao = UsuarioSerializer(read_only=True)

@@ -1,13 +1,23 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
-from .serializer import PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer
+from .serializer import PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer, \
+                        ConsentimentoPoliticaPrivacidadeSerializerRetrieve, \
+                        ConsentimentoPoliticaPrivacidadeSerializerCreate
 
 
-class PoliticaPrivacidadeViewSet(viewsets.ModelViewSet):
+class PoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
+                                 mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = PoliticaPrivacidade.objects.all()
     serializer_class = PoliticaPrivacidadeSerializer
 
 
-class ConsentimentoPoliticaPrivacidadeViewSet(viewsets.ModelViewSet):
+class ConsentimentoPoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin,
+                                              viewsets.GenericViewSet):
     queryset = ConsentimentoPoliticaPrivacidade.objects.all()
-    serializer_class = ConsentimentoPoliticaPrivacidadeSerializer
+    serializer_classes = {
+        'retrieve': ConsentimentoPoliticaPrivacidadeSerializerRetrieve,
+        'create': ConsentimentoPoliticaPrivacidadeSerializerCreate,
+    }
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, ConsentimentoPoliticaPrivacidadeSerializer)

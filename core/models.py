@@ -232,6 +232,22 @@ PAISES_CHOISES = [
     ('Zimbábue', 'Zimbábue'),
 ]
 
+TABELAS_BANCO_CHOISES = [
+    ('auditoria', 'auditoria'),
+    ('auth_group', 'auth_group'),
+    ('auth_group_permissions', 'auth_group_permissions'),
+    ('auth_permission', 'auth_permission'),
+    ('consentimento_politica_privacidade', 'consentimento_politica_privacidade'),
+    ('empresa', 'empresa'),
+    ('log_autenticacao', 'log_autenticacao'),
+    ('mensagem_ticket', 'mensagem_ticket'),
+    ('politica_privacidade', 'politica_privacidade'),
+    ('ticket', 'ticket'),
+    ('usuario', 'usuario'),
+    ('usuario_groups', 'usuario_groups'),
+    ('usuario_user_permissions', 'usuario_user_permissions'),
+]
+
 
 class Base(models.Model):
     """
@@ -241,21 +257,25 @@ class Base(models.Model):
     uuid = models.UUIDField(
         verbose_name='UUID',
         default=uuid.uuid4(),
+        help_text='UUID Código único não sequencial',
     )
 
     ativo = models.BooleanField(
         verbose_name='Ativo',
         default=True,
+        help_text='Se o registro está ativo ou não',
     )
 
     data_cadastro = models.DateField(
         verbose_name='Data do cadastro',
         auto_now_add=True,
+        help_text='Data da criação do registro',
     )
 
     hora_cadastro = models.TimeField(
         verbose_name='Hora do cadastro',
         auto_now_add=True,
+        help_text='Hora da criação do registro',
     )
 
     class Meta:

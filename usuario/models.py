@@ -1,15 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from empresa.models import Empresa
-from core.models import Base
 import uuid
 
 
-class Usuario(AbstractUser, Base):
+class Usuario(AbstractUser):
     """
     Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
     dos usuários que vão soluciuonar os tickets, eles não vão ter nenhuma empresa vinculada a eles.
     """
+
+    uuid = models.UUIDField(
+        verbose_name='UUID',
+        default=uuid.uuid4(),
+        help_text='UUID Código único não sequencial',
+    )
 
     telefone = models.CharField(
         verbose_name='Telefone',
@@ -64,6 +69,18 @@ class Usuario(AbstractUser, Base):
         verbose_name='Código de verificação da segunda etapa',
         max_length=4,
         help_text='O código que valida a verificação da segunda etapa, como a senha ao fazer o login',
+    )
+
+    data_cadastro = models.DateField(
+        verbose_name='Data do cadastro',
+        auto_now_add=True,
+        help_text='Data do cadastro do usuário',
+    )
+
+    hora_cadastro = models.TimeField(
+        verbose_name='Hora do cadastro',
+        auto_now_add=True,
+        help_text='Hora do cadastro do usuário',
     )
 
     class Meta:
