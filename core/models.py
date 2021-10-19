@@ -21,7 +21,7 @@ class Base(models.Model):
     usuario_cadastro = models.ForeignKey(
         Usuario,
         verbose_name='Usuário que efetuou o cadastro',
-        on_delete=models.PROTECT(),
+        on_delete=models.PROTECT,
         related_name='usuario_cadastro_data',
     )
 
