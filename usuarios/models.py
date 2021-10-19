@@ -8,7 +8,12 @@ class Usuario(AbstractUser):
         default=0,
     )
 
-    verificacao_duas_etapas = models.BooleanField(
+    verificacao_em_duas_etapas = models.BooleanField(
         verbose_name='Verificação em duas etapas',
         default=False,
+    )
+
+    codigo_verificacao_segunda_etapa = models.CharField(
+        verbose_name='Código de verificação da segunda etapa',
+        max_length=4,
     )
