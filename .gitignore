@@ -20,3 +20,6 @@ media
 
 ### PyCharm ###
 .idea/
+
+### MAC ###
+.DS_Store

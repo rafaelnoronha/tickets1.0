@@ -1,8 +1,14 @@
 from django.db import models
 from usuarios.models import Usuario
+import uuid
 
 
 class Base(models.Model):
+    uuid = models.UUIDField(
+        verbose_name='UUID',
+        default=uuid.uuid4(),
+    )
+
     ativo = models.BooleanField(
         verbose_name='Ativo',
         default=True,
