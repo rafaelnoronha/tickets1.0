@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2021-10-23T22:48:39.494Z" agent="5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36" etag="HaRbNkc17N9TZ3eMTBq7" version="15.5.8" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-23T23:37:00.808Z" agent="5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36" etag="z-n1jRdVfv1CTIfBrXd4" version="15.5.8" type="github">
   <diagram id="0d7OKPAjTyPM8aZS2B-U" name="Page-1">
     <mxGraphModel dx="872" dy="391" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="76l48-x1cLfrYMwSWjdl-1" value="usuario" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="40" width="340" height="390" as="geometry" />
+          <mxGeometry x="40" y="40" width="340" height="442" as="geometry" />
         </mxCell>
         <mxCell id="76l48-x1cLfrYMwSWjdl-2" value="+ id: bigint NOT_NULL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="76l48-x1cLfrYMwSWjdl-1">
           <mxGeometry y="26" width="340" height="26" as="geometry" />
@@ -48,6 +48,12 @@
         </mxCell>
         <mxCell id="76l48-x1cLfrYMwSWjdl-15" value="+ codigo_verificacao_segunda_etapa: varchar(4) NOT_NULL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="76l48-x1cLfrYMwSWjdl-1">
           <mxGeometry y="364" width="340" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="76l48-x1cLfrYMwSWjdl-16" value="+ telefone: varchar(10)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="76l48-x1cLfrYMwSWjdl-1">
+          <mxGeometry y="390" width="340" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="76l48-x1cLfrYMwSWjdl-17" value="+ celular: varchar(11)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="76l48-x1cLfrYMwSWjdl-1">
+          <mxGeometry y="416" width="340" height="26" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
