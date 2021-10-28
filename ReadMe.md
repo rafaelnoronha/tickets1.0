@@ -3,7 +3,6 @@
 O **tickets** será uma ferramenta para auxiliar no suporte técnico de softwares (SaaS) ou outros serviços.
 
 ## Algumas coisas importantes
-___
 
 ### Sobre a instalação
 Depois de fazer o download do projeto e instalar as dependências que estão no arquivo `requirements.txt`, você vai

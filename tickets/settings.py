@@ -45,7 +45,10 @@ INSTALLED_APPS = [
 
     # Meus apps
     'core',
-    'usuarios'
+    'usuarios',
+    'empresas',
+    'politica_privacidade',
+    'auditoria',
 ]
 
 MIDDLEWARE = [
