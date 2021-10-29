@@ -1,38 +1,8 @@
 from django.db import models
-from core.models import Base
+from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
 class Empresa(Base):
-    UF_CHOICES = [
-        ('RO', 'RO'),
-        ('AC', 'AC'),
-        ('AM', 'AM'),
-        ('RR', 'RR'),
-        ('PA', 'PA'),
-        ('AP', 'AP'),
-        ('TO', 'TO'),
-        ('MA', 'MA'),
-        ('PI', 'PI'),
-        ('CE', 'CE'),
-        ('RN', 'RN'),
-        ('PB', 'PB'),
-        ('PE', 'PE'),
-        ('AL', 'AL'),
-        ('SE', 'SE'),
-        ('BA', 'BA'),
-        ('MG', 'MG'),
-        ('ES', 'ES'),
-        ('RJ', 'RJ'),
-        ('SP', 'SP'),
-        ('PR', 'PR'),
-        ('SC', 'SC'),
-        ('RS', 'RS'),
-        ('MS', 'MS'),
-        ('MT', 'MT'),
-        ('GO', 'GO'),
-        ('DF', 'DF'),
-    ]
-
     cpf_cnpj = models.CharField(
         verbose_name='CPF/CNPJ',
         max_length=14,
@@ -99,6 +69,7 @@ class Empresa(Base):
     pais = models.CharField(
         verbose_name='País',
         max_length=60,
+        choices=PAISES_CHOISES,
         help_text='Nome do pais',
     )
 
@@ -123,9 +94,10 @@ class Empresa(Base):
     )
 
     class Meta:
+        ordering = ['-id']
         db_table = 'empresa'
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
 
     def __str__(self):
-        return f'{self.id} - {self.razao_social} [{self.cpf_cnpj}]'
+        return f'{self.id} - {self.razao_social} - {self.cpf_cnpj} [{self.ativo}]'
