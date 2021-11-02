@@ -87,12 +87,6 @@ class Empresa(Base):
         help_text='Média das avaliações dos chamados',
     )
 
-    prestadora = models.BooleanField(
-        verbose_name='Prestadora',
-        default=False,
-        help_text='Se o cadastro da empresa será o cadastro da empresa que prestará os serviços',
-    )
-
     class Meta:
         ordering = ['-id']
         db_table = 'empresa'
