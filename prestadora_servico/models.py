@@ -2,7 +2,7 @@ from django.db import models
 from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
-class Empresa(Base):
+class PrestadoraServico(Base):
     cpf_cnpj = models.CharField(
         verbose_name='CPF/CNPJ',
         max_length=14,
@@ -79,19 +79,11 @@ class Empresa(Base):
         help_text='Número do telefone de contato(apenas números)',
     )
 
-    media_avaliacoes = models.DecimalField(
-        verbose_name='Média das avaliações',
-        max_digits=2,
-        decimal_places=1,
-        default=0,
-        help_text='Média das avaliações dos chamados',
-    )
-
     class Meta:
         ordering = ['-id']
-        db_table = 'empresa'
-        verbose_name = 'Empresa'
-        verbose_name_plural = 'Empresas'
+        db_table = 'prestadora_servico'
+        verbose_name = 'Prestadora de Serviço'
+        verbose_name_plural = 'Prestadora de Serviço'
 
     def __str__(self):
-        return f'{self.id} - {self.razao_social} - {self.cpf_cnpj} [{self.ativo}]'
+        return f'{self.id} - {self.razao_social} [{self.ativo}]'
