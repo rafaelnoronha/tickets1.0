@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from empresas.models import Empresa
+from empresa.models import Empresa
 import uuid
 
 

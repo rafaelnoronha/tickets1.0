@@ -1,6 +1,7 @@
 from django.db import models
-from usuarios.models import Usuario
+from usuario.models import Usuario
 import uuid
+
 
 UF_CHOICES = [
     ('RO', 'RO'),
@@ -231,6 +232,7 @@ PAISES_CHOISES = [
     ('Zâmbia', 'Zâmbia'),
     ('Zimbábue', 'Zimbábue')
 ]
+
 
 class Base(models.Model):
     uuid = models.UUIDField(

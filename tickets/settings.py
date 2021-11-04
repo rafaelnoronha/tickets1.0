@@ -45,10 +45,11 @@ INSTALLED_APPS = [
 
     # Meus apps
     'core',
-    'usuarios',
-    'empresas',
+    'usuario',
+    'empresa',
     'politica_privacidade',
     'auditoria',
+    'prestadora_servico',
 ]
 
 MIDDLEWARE = [
@@ -140,7 +141,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'usuarios.Usuario'
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

@@ -10,3 +10,12 @@ class Empresa(PrestadoraServico):
         default=0,
         help_text='Média das avaliações dos chamados',
     )
+
+    class Meta:
+        ordering = ['-id']
+        db_table = 'empresa'
+        verbose_name = 'Empresa'
+        verbose_name_plural = 'Empresas'
+
+    def __str__(self):
+        return f'{self.id} - {self.razao_social} - {self.cpf_cnpj} [{self.ativo}]'

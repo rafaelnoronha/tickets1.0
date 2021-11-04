@@ -1,14 +1,15 @@
 from django.db import models
 from core.models import Base
-from usuarios.models import Usuario
+from usuario.models import Usuario
+
+
+TIPO_TITULAR_CHOISES = [
+    ('U', 'USUÁRIO'),
+    ('E', 'EMPRESA'),
+]
 
 
 class PoliticaPrivacidade(Base):
-    TIPO_TITULAR_CHOISES = [
-        ('U', 'USUÁRIO'),
-        ('E', 'EMPRESA'),
-    ]
-
     tipo_titular = models.CharField(
         verbose_name='Tipo de Titular',
         max_length=1,
