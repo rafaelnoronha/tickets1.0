@@ -9,7 +9,7 @@ Depois de fazer o download do projeto e instalar as dependências que estão no 
 precisar migrar o app `usuarios`, se não fizer isso você terá um erro
 como o descrito abaixo... 
 
-> django.db.utils.ProgrammingError: relation "usuarios_usuario" does not exist
+> django.db.utils.ProgrammingError: relation "usuario_usuario" does not exist
 
 Para escapar desse erro, apenas crie a migração do app `usuario` antes de tudo, olhe o exemplo abaixo...
 
