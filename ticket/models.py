@@ -104,8 +104,9 @@ class MensagemTicket(Base):
     )
 
     mensagem_relacionada = models.ManyToManyField(
-        MensagemTicket,
+        'self',
         related_name='mensagem_relacionada',
+        symmetrical=False,
         on_delete=models.CASCADE,
         null=True,
         help_text='Mensagem a qual a mensagem atual estará vinculada como resposta',
