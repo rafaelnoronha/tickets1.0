@@ -31,7 +31,7 @@ class PoliticaPrivacidade(Base):
         ordering = ['-id']
         db_table = 'politica_privacidade'
         verbose_name = 'Política de Privacidade'
-        verbose_name_plural = 'Políticas de Privacidades'
+        verbose_name_plural = 'Políticas de Privacidade'
 
     def __str__(self):
         return f'{self.id} - {self.data_validade}'
@@ -59,3 +59,12 @@ class ConsentimentoPoliticaPrivacidade(Base):
         default=False,
         help_text='Consentimento ou não do usuário, onde o consentimento = True e o não consentimento = False',
     )
+
+    class Meta:
+        ordering = ['-id']
+        db_table = 'consentimento_politica_privacidade'
+        verbose_name = 'Consentimento da Política de Privacidade'
+        verbose_name_plural = 'Consentimentos das Políticas de Privacidade'
+
+    def __str__(self):
+        return f'{self.id} - {self.titular} - {self.politica_privacidade} [{self.consentimento}]'

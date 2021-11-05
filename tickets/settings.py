@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'politica_privacidade',
     'auditoria',
     'prestadora_servico',
+    'ticket',
 ]
 
 MIDDLEWARE = [

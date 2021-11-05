@@ -20,7 +20,8 @@ class Usuario(AbstractUser):
     celular = models.CharField(
         verbose_name='Celular',
         max_length=11,
-        default='Telefone celular ex: 31900000000',
+        default='',
+        help_text='Telefone celular ex: 31900000000',
     )
 
     media_avaliacoes = models.DecimalField(
@@ -41,6 +42,7 @@ class Usuario(AbstractUser):
 
     observacoes = models.TextField(
         verbose_name='Observações',
+        default='',
         help_text='Observações referênte ao usuário',
     )
 
@@ -63,6 +65,7 @@ class Usuario(AbstractUser):
     )
 
     class Meta:
+        ordering = ['-id']
         db_table = 'usuario'
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
@@ -110,6 +113,7 @@ class log_autenticacao(models.model):
     )
 
     class Meta:
+        ordering = ['-id']
         db_table = 'log_autenticacao'
         verbose_name = 'Log de autenticação'
         verbose_name_plural = 'Logs de autenticação'
