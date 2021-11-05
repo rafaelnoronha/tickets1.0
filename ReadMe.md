@@ -11,8 +11,8 @@ como o descrito abaixo...
 
 > django.db.utils.ProgrammingError: relation "usuarios_usuario" does not exist
 
-Para escapar desse erro, apenas crie a migração do app `usuarios` antes de tudo, olhe o exemplo abaixo...
+Para escapar desse erro, apenas crie a migração do app `usuario` antes de tudo, olhe o exemplo abaixo...
 
-`python manage.py makemigrations usuarios`\
+`python manage.py makemigrations usuario`\
 `python manage.py makemigrations`\
 `python manage.py migrate`
