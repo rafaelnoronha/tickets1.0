@@ -22,6 +22,10 @@ AVALIACAO_CHOISES = [
 
 
 class Ticket(Base):
+    """
+    Modelo dos tickets, em específico do cabeçalho dos tickets, sem as mensagens/acompanhamentos.
+    """
+
     status = models.CharField(
         verbose_name='Status',
         choices=STATUS_CHOISES,
@@ -33,7 +37,7 @@ class Ticket(Base):
     solicitante = models.ForeignKey(
         Usuario,
         verbose_name='Solicitante',
-        related_name='solicitante',
+        related_name='solicitante_usuario_ticket',
         on_delete=models.PROTECT,
         help_text='Solicitante/Cliente responsável pelo ticket'
     )
@@ -41,7 +45,7 @@ class Ticket(Base):
     atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
-        related_name='atendente',
+        related_name='atendente_usuario_ticket',
         on_delete=models.PROTECT,
         help_text='Atendente/Técnico responsável pelo ticket'
     )
@@ -82,10 +86,14 @@ class Ticket(Base):
 
 
 class MensagemTicket(Base):
+    """
+    Modelo das mensagens/acompanhemento dos tickets.
+    """
+
     usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
-        related_name='usuario',
+        related_name='usuario_usuario_mensagem_ticket',
         on_delete=models.PROTECT,
         help_text='Usuário autor(remetente) da mensagem',
     )
@@ -93,7 +101,7 @@ class MensagemTicket(Base):
     ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
-        related_name='ticket',
+        related_name='ticket_ticket_mensagem_ticket',
         on_delete=models.CASCADE,
         help_text='Ticket que receberá a mensagem',
     )
@@ -103,10 +111,9 @@ class MensagemTicket(Base):
         help_text='Conteúdo da mensagem',
     )
 
-    mensagem_relacionada = models.ManyToManyField(
+    mensagem_relacionada = models.ForeignKey(
         'self',
-        related_name='mensagem_relacionada',
-        symmetrical=False,
+        related_name='mensagem_relacionada_mensagem_ticket_mensagem_ticket',
         on_delete=models.CASCADE,
         null=True,
         help_text='Mensagem a qual a mensagem atual estará vinculada como resposta',

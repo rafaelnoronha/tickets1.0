@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import PoliticaPrivacidade
+from .serializer import PoliticaPrivacidadeSerializer
 
-# Create your views here.
+
+class PoliticaPrivacidadeViewSet(viewsets.ModelViewSet):
+    queryset = PoliticaPrivacidade.objects.all()
+    serializer_class = PoliticaPrivacidadeSerializer

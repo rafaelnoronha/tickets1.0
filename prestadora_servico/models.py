@@ -3,6 +3,10 @@ from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
 class PrestadoraServico(Base):
+    """
+    Modelo responsável pelos dados da prestadora de serviço.
+    """
+
     cpf_cnpj = models.CharField(
         verbose_name='CPF/CNPJ',
         max_length=14,

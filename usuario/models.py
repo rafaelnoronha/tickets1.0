@@ -5,6 +5,11 @@ import uuid
 
 
 class Usuario(AbstractUser):
+    """
+    Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
+    dos usuários que vão soluciuonar os tickets, eles não vão ter nenhuma empresa vinculada a eles.
+    """
+
     uuid = models.UUIDField(
         verbose_name='UUID',
         default=uuid.uuid4(),
@@ -35,8 +40,9 @@ class Usuario(AbstractUser):
     empresa = models.ForeignKey(
         Empresa,
         verbose_name='Empresa',
-        related_name='empresa',
+        related_name='empresa_empresa_usuario',
         on_delete=models.PROTECT,
+        null=True,
         help_text='Empresa a qual o usuário pertence',
     )
 
@@ -74,14 +80,18 @@ class Usuario(AbstractUser):
         return f'{self.id} - {self.first_name} {self.last_name} [{self.username}]'
 
 
-class log_autenticacao(models.model):
+class log_autenticacao(models.Model):
+    """
+    Modelo que vai guardar as tentativas de login, tanto as que tiveram sucesso quanto as que falharem.
+    """
+
     uuid = models.UUIDField(
         verbose_name='UUID',
         default=uuid.uuid4(),
         help_text='UUID Código único não sequencial',
     )
 
-    ip = models.IPAddressField(
+    ip = models.GenericIPAddressField(
         verbose_name='IP',
         help_text='Endereço IP do cliente/dispositivo',
     )
@@ -89,7 +99,7 @@ class log_autenticacao(models.model):
     usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
-        related_name='usuario',
+        related_name='usuario_usuario_log_autenticacao',
         on_delete=models.PROTECT,
         help_text='Usuário da tentativa de autenticação',
     )

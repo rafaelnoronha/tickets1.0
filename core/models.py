@@ -1,5 +1,4 @@
 from django.db import models
-from usuario.models import Usuario
 import uuid
 
 
@@ -230,11 +229,15 @@ PAISES_CHOISES = [
     ('Venezuela', 'Venezuela'),
     ('Vietname', 'Vietname'),
     ('Zâmbia', 'Zâmbia'),
-    ('Zimbábue', 'Zimbábue')
+    ('Zimbábue', 'Zimbábue'),
 ]
 
 
 class Base(models.Model):
+    """
+    Modelo padrão do sistema, herdado em quase todas as tabelas.
+    """
+
     uuid = models.UUIDField(
         verbose_name='UUID',
         default=uuid.uuid4(),
@@ -253,13 +256,6 @@ class Base(models.Model):
     hora_cadastro = models.TimeField(
         verbose_name='Hora do cadastro',
         auto_now_add=True,
-    )
-
-    usuario_cadastro = models.ForeignKey(
-        Usuario,
-        verbose_name='Usuário que efetuou o cadastro',
-        on_delete=models.PROTECT,
-        related_name='usuario',
     )
 
     class Meta:

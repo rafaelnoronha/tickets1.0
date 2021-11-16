@@ -11,6 +11,10 @@ TIPO_OPERACAO_CHOISES = [
 
 
 class Auditoria(models.Model):
+    """
+    Modelo responsável por gravar as operações realizadas no sistema.
+    """
+
     uuid = models.UUIDField(
         verbose_name='UUID',
         default=uuid.uuid4(),
@@ -32,6 +36,7 @@ class Auditoria(models.Model):
     tipo_operacao = models.CharField(
         verbose_name='Tipo de Operação',
         choices=TIPO_OPERACAO_CHOISES,
+        max_length=6,
         help_text='Tipo de operação realizada',
     )
 
@@ -39,7 +44,7 @@ class Auditoria(models.Model):
         Usuario,
         verbose_name='Usuário da Operação',
         on_delete=models.PROTECT,
-        related_name='usuario_operacao',
+        related_name='usuario_operacao_usuario_auditoria',
         help_text='Usuário responsável pela operação realizada',
     )
 

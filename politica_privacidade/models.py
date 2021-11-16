@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import Base
 from usuario.models import Usuario
+from core.validators import NOT_NULL
 
 
 TIPO_TITULAR_CHOISES = [
@@ -10,6 +11,10 @@ TIPO_TITULAR_CHOISES = [
 
 
 class PoliticaPrivacidade(Base):
+    """
+    Modelo que vai gerenciar as políticas de privacidade.
+    """
+
     tipo_titular = models.CharField(
         verbose_name='Tipo de Titular',
         max_length=1,
@@ -17,9 +22,10 @@ class PoliticaPrivacidade(Base):
         help_text='Para qual tipo de titular a polítiva será requerida',
     )
 
-    politica_privacidade = models.TextField(
+    politica = models.TextField(
         verbose_name='Política de Privacidade',
         help_text='O conteúdo da política de privacidade',
+        validators=[NOT_NULL],
     )
 
     data_validade = models.DateField(
@@ -38,10 +44,14 @@ class PoliticaPrivacidade(Base):
 
 
 class ConsentimentoPoliticaPrivacidade(Base):
+    """
+    Modelo que vai gravar os consentimentos e os não consentimentos das políticas de privacidades.
+    """
+
     titular = models.ForeignKey(
         Usuario,
         verbose_name='Consentimento da Política de Privacidade',
-        related_name='usuario',
+        related_name='titular_usuario_consentimento_politica_privacidade',
         on_delete=models.PROTECT,
         help_text='Usuário que concentiu ou não com a política de privacidade',
     )
@@ -49,7 +59,7 @@ class ConsentimentoPoliticaPrivacidade(Base):
     politica_privacidade = models.ForeignKey(
         PoliticaPrivacidade,
         verbose_name='Política de Privacidade',
-        related_name='politica_privacidade',
+        related_name='politica_privacidade_politica_privacidade_consentimento_politica_privacidade',
         on_delete=models.PROTECT,
         help_text='Política de privacidade que o usuário consentiu ou não'
     )

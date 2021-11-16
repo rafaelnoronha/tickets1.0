@@ -3,6 +3,10 @@ from prestadora_servico.models import PrestadoraServico
 
 
 class Empresa(PrestadoraServico):
+    """
+    Modelo responsável por armazenar as informações dos clientes da prestadora de serviço.
+    """
+
     media_avaliacoes = models.DecimalField(
         verbose_name='Média das avaliações',
         max_digits=2,
