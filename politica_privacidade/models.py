@@ -1,8 +1,6 @@
 from django.db import models
 from core.models import Base
 from usuario.models import Usuario
-from core.validators import NOT_NULL
-
 
 TIPO_TITULAR_CHOISES = [
     ('U', 'USUÁRIO'),
@@ -25,7 +23,6 @@ class PoliticaPrivacidade(Base):
     politica = models.TextField(
         verbose_name='Política de Privacidade',
         help_text='O conteúdo da política de privacidade',
-        validators=[NOT_NULL],
     )
 
     data_validade = models.DateField(

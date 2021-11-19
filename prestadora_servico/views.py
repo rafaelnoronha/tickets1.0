@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import PrestadoraServico
+from .serializer import PrestadoraServicoSerializer
 
-# Create your views here.
+
+class PrestadoraServicoViewSet(viewsets.ModelViewSet):
+    queryset = PrestadoraServico.objects.all()
+    serializer_class = PrestadoraServicoSerializer

@@ -2,7 +2,6 @@ from django.db import models
 from usuario.models import Usuario
 import uuid
 
-
 TIPO_OPERACAO_CHOISES = [
     ('CREATE', 'CREATE'),
     ('UPDATE', 'UPDATE'),

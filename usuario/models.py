@@ -80,7 +80,7 @@ class Usuario(AbstractUser):
         return f'{self.id} - {self.first_name} {self.last_name} [{self.username}]'
 
 
-class log_autenticacao(models.Model):
+class LogAutenticacao(models.Model):
     """
     Modelo que vai guardar as tentativas de login, tanto as que tiveram sucesso quanto as que falharem.
     """

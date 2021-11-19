@@ -2,7 +2,6 @@ from django.db import models
 from core.models import Base
 from usuario.models import Usuario
 
-
 STATUS_CHOISES = [
     ('0', 'Aberto'),
     ('1', 'Processando'),
@@ -10,7 +9,6 @@ STATUS_CHOISES = [
     ('3', 'Finalizado'),
     ('4', 'Cancelado'),
 ]
-
 
 AVALIACAO_CHOISES = [
     ('1', 'Péssimo'),
