@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'empresa',
     'politica_privacidade',
     'auditoria',
-    'prestadora_servico',
     'ticket',
 ]
 

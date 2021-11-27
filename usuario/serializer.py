@@ -1,39 +1,31 @@
 from rest_framework import serializers
 from .models import Usuario, LogAutenticacao
 from empresa.models import Empresa
+from empresa.serializer import EmpresaSerializer
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
-    empresa = serializers.HyperlinkedRelatedField(
-        many=False,
-        allow_null=True,
-        view_name='empresa-detail',
-        queryset=Empresa.objects.all()
-    )
+    empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
 
     class Meta:
         model = Usuario
         read_only_fields = [
             'uuid',
             'last_login',
-            'date_joined',
             'media_avaliacoes',
-            'numero_tentativas_login',
-            'verificacao_duas_etapas',
         ]
         extra_kwargs = {
             'password': {'write_only': True},
             'codigo_verificacao_segunda_etapa': {'write_only': True},
-            'empresa': {'write_only': True},
             'first_name': {'allow_null': False, 'allow_blank': False},
             'last_name': {'allow_null': False, 'allow_blank': False},
             'email': {'allow_null': False, 'allow_blank': False},
         }
         fields = [
             'uuid',
-            'date_joined',
             'username',
             'password',
+            'codigo_verificacao_segunda_etapa',
             'first_name',
             'last_name',
             'email',
@@ -43,15 +35,20 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'media_avaliacoes',
             'empresa',
             'last_login',
-            'numero_tentativas_login',
-            'verificacao_duas_etapas',
-            'codigo_verificacao_segunda_etapa',
             'is_superuser',
             'is_staff',
             'is_active',
             'groups',
             'user_permissions',
         ]
+
+
+class UsuarioSerializerCreate(UsuarioSerializer):
+    empresa = serializers.PrimaryKeyRelatedField(queryset=Empresa.objects.all())
+
+
+class UsuarioSerializerRetrieve(UsuarioSerializer):
+    empresa = EmpresaSerializer(read_only=True)
 
 
 class LogAutenticacaoSerializer(serializers.ModelSerializer):

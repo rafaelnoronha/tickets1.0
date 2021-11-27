@@ -16,7 +16,6 @@ Including another URLconf
 
 from django.urls import path, include
 from usuario.urls import router_usuario, router_log_autenticacao
-from prestadora_servico.urls import router_prestadora_servico
 from empresa.urls import router_empresa
 from politica_privacidade.urls import router_politica_privacidade, router_consentimento_politica_privacidade
 from ticket.urls import router_ticket, router_mensagem_ticket
@@ -27,7 +26,6 @@ base_url_v1 = 'api/v1/'
 urlpatterns = [
     path(f'{base_url_v1}usuario/', include(router_usuario.urls)),
     path(f'{base_url_v1}log_autenticacao/', include(router_log_autenticacao.urls)),
-    path(f'{base_url_v1}prestadora_servico/', include(router_prestadora_servico.urls)),
     path(f'{base_url_v1}empresa/', include(router_empresa.urls)),
     path(f'{base_url_v1}politica_privacidade/', include(router_politica_privacidade.urls)),
     path(f'{base_url_v1}consentimento_politica_privacidade/', include(router_consentimento_politica_privacidade.urls)),

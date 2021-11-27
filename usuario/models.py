@@ -5,17 +5,11 @@ from core.models import Base
 import uuid
 
 
-class Usuario(AbstractUser):
+class Usuario(AbstractUser, Base):
     """
     Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
     dos usuários que vão soluciuonar os tickets, eles não vão ter nenhuma empresa vinculada a eles.
     """
-
-    uuid = models.UUIDField(
-        verbose_name='UUID',
-        default=uuid.uuid4(),
-        help_text='UUID Código único não sequencial',
-    )
 
     telefone = models.CharField(
         verbose_name='Telefone',
@@ -44,7 +38,6 @@ class Usuario(AbstractUser):
         verbose_name='Empresa',
         related_name='empresa_empresa_usuario',
         on_delete=models.PROTECT,
-        null=True,
         help_text='Empresa a qual o usuário pertence',
     )
 
