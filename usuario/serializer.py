@@ -52,6 +52,8 @@ class UsuarioSerializerRetrieve(UsuarioSerializer):
 
 
 class LogAutenticacaoSerializer(serializers.ModelSerializer):
+    usuario = serializers.SlugRelatedField(read_only=True, slug_field='username')
+
     class Meta:
         model = LogAutenticacao
         read_only_fields = ['uuid']
@@ -63,3 +65,7 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
             'hora_autenticacao',
             'usuario',
         ]
+
+
+class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
+    usuario = UsuarioSerializer(read_only=True)

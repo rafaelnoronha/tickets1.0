@@ -11,11 +11,11 @@ STATUS_CHOISES = [
 ]
 
 AVALIACAO_CHOISES = [
-    ('1', 'Péssimo'),
-    ('2', 'Ruim'),
-    ('3', 'Bom'),
-    ('4', 'Muito Bom'),
-    ('5', 'Ótimo')
+    (1, 'Péssimo'),
+    (2, 'Ruim'),
+    (3, 'Bom'),
+    (4, 'Muito Bom'),
+    (5, 'Ótimo')
 ]
 
 
@@ -59,17 +59,19 @@ class Ticket(Base):
         help_text='Descrição do ticket',
     )
 
-    avaliacao_solicitante = models.CharField(
+    avaliacao_solicitante = models.SmallIntegerField(
         verbose_name='Avaliação do Solicitante',
         choices=AVALIACAO_CHOISES,
         max_length=1,
+        null=True,
         help_text='Avaliação do solicitante referente ao chamado',
     )
 
-    avaliacao_atendente = models.CharField(
+    avaliacao_atendente = models.SmallIntegerField(
         verbose_name='Avaliação do Atendente',
         choices=AVALIACAO_CHOISES,
         max_length=1,
+        null=True,
         help_text='Avaliação do atendente referente ao chamado',
     )
 
