@@ -256,7 +256,8 @@ class Base(models.Model):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4(),
+        default=uuid.uuid4,
+        unique=True,
         help_text='UUID Código único não sequencial',
     )
 

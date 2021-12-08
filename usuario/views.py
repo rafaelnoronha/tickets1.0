@@ -6,6 +6,7 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
+    lookup_field = 'uuid'
 
     serializer_classes = {
         'create': UsuarioSerializerCreate,
@@ -20,6 +21,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
                              viewsets.GenericViewSet):
     queryset = LogAutenticacao.objects.all()
+    lookup_field = 'uuid'
+
     serializer_classes = {
         'retrieve': LogAutenticacaoSerializerRetrieve
     }

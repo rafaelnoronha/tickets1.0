@@ -10,6 +10,7 @@ class Empresa(Base):
     cpf_cnpj = models.CharField(
         verbose_name='CPF/CNPJ',
         max_length=14,
+        unique=True,
         help_text='CPF ou CNPJ da empresa(apenas números)',
     )
 
@@ -93,7 +94,6 @@ class Empresa(Base):
     prestadora_servico = models.BooleanField(
         verbose_name='Prestadora Serviço',
         default=False,
-        unique=True,
         help_text='Se a empresa é a prestadora dos serviços ou não',
     )
 

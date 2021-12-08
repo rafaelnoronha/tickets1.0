@@ -5,4 +5,5 @@ from .serializer import EmpresaSerializer
 
 class EmpresaViewSet(viewsets.ModelViewSet):
     queryset = Empresa.objects.all()
+    lookup_field = 'uuid'
     serializer_class = EmpresaSerializer

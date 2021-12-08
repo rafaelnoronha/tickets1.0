@@ -5,6 +5,8 @@ from .serializer import AuditoriaSerializer, AuditoriaSerializerRetrieve
 
 class AuditoriaViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Auditoria.objects.all()
+    lookup_field = 'uuid'
+
     serializer_classes = {
         'retrieve': AuditoriaSerializerRetrieve,
     }

@@ -6,6 +6,8 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
+    lookup_field = 'uuid'
+
     serializer_classes = {
         'retrieve': TicketSerializerRetrieve,
         'create': TicketSerializerCreate,
@@ -19,6 +21,8 @@ class TicketViewSet(viewsets.ModelViewSet):
 
 class MensagemTicketViewSet(viewsets.ModelViewSet):
     queryset = MensagemTicket.objects.all()
+    lookup_field = 'uuid'
+
     serializer_classes = {
         'create': MensagemTicketSerializerCreate,
         'retrieve': MensagemTicketSerializerRetrieve,

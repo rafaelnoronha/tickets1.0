@@ -62,7 +62,6 @@ class Ticket(Base):
     avaliacao_solicitante = models.SmallIntegerField(
         verbose_name='Avaliação do Solicitante',
         choices=AVALIACAO_CHOISES,
-        max_length=1,
         null=True,
         help_text='Avaliação do solicitante referente ao chamado',
     )
@@ -70,7 +69,6 @@ class Ticket(Base):
     avaliacao_atendente = models.SmallIntegerField(
         verbose_name='Avaliação do Atendente',
         choices=AVALIACAO_CHOISES,
-        max_length=1,
         null=True,
         help_text='Avaliação do atendente referente ao chamado',
     )

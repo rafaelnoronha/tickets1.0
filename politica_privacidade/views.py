@@ -8,12 +8,15 @@ from .serializer import PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPriv
 class PoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
                                  mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = PoliticaPrivacidade.objects.all()
+    lookup_field = 'uuid'
     serializer_class = PoliticaPrivacidadeSerializer
 
 
 class ConsentimentoPoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin,
                                               viewsets.GenericViewSet):
     queryset = ConsentimentoPoliticaPrivacidade.objects.all()
+    lookup_field = 'uuid'
+
     serializer_classes = {
         'retrieve': ConsentimentoPoliticaPrivacidadeSerializerRetrieve,
         'create': ConsentimentoPoliticaPrivacidadeSerializerCreate,

@@ -83,7 +83,7 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 class MensagemTicketSerializerCreate(MensagemTicketSerializer):
     usuario = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
     ticket = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all())
-    mensagem_relacionada = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all())
+    mensagem_relacionada = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all(), allow_null=True)
 
 
 class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):

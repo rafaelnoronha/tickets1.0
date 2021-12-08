@@ -5,11 +5,17 @@ from .models import Empresa
 class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empresa
+
+        extra_kwargs = {
+            'complemento': {'allow_blank': True},
+        }
+
         read_only_fields = [
             'uuid',
             'prestadora_servico',
             'media_avaliacoes',
         ]
+
         fields = [
             'uuid',
             'cpf_cnpj',
