@@ -33,7 +33,7 @@ class TicketSerializerRetrieve(TicketSerializer):
 
 class TicketSerializerCreate(TicketSerializer):
     solicitante = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
-    atendente = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
+    atendente = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all(), allow_null=True)
 
     class Meta:
         model = Ticket
@@ -83,7 +83,7 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 class MensagemTicketSerializerCreate(MensagemTicketSerializer):
     usuario = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
     ticket = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all())
-    mensagem_relacionada = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all(), allow_null=True)
+    mensagem_relacionada = serializers.PrimaryKeyRelatedField(queryset=MensagemTicket.objects.all(), allow_null=True)
 
 
 class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):

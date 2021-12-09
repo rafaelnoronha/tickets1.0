@@ -44,6 +44,7 @@ class Ticket(Base):
         Usuario,
         verbose_name='Atendente',
         related_name='atendente_usuario_ticket',
+        null=True,
         on_delete=models.PROTECT,
         help_text='Atendente/Técnico responsável pelo ticket'
     )
