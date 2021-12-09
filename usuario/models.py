@@ -12,7 +12,7 @@ class Usuario(AbstractUser):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4(),
+        default=uuid.uuid4,
         help_text='UUID Código único não sequencial',
     )
 
@@ -100,7 +100,7 @@ class LogAutenticacao(models.Model):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4(),
+        default=uuid.uuid4,
         help_text='UUID Código único não sequencial',
     )
 

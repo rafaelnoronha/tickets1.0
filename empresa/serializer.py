@@ -12,7 +12,6 @@ class EmpresaSerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             'uuid',
-            'prestadora_servico',
             'media_avaliacoes',
         ]
 
