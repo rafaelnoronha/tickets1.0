@@ -39,16 +39,40 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'is_staff',
             'is_active',
             'groups',
-            'user_permissions',
         ]
 
 
 class UsuarioSerializerCreate(UsuarioSerializer):
-    empresa = serializers.PrimaryKeyRelatedField(queryset=Empresa.objects.all())
+    empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
 
 
 class UsuarioSerializerRetrieve(UsuarioSerializer):
     empresa = EmpresaSerializer(read_only=True)
+
+
+class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
+    empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
+
+    class Meta(UsuarioSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'last_login',
+            'media_avaliacoes',
+            'username',
+        ]
+
+
+class UsuarioSerializerSimples(UsuarioSerializer):
+    empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+
+    class Meta(UsuarioSerializer.Meta):
+        fields = [
+            'uuid',
+            'username',
+            'email',
+            'empresa',
+            'groups',
+        ]
 
 
 class LogAutenticacaoSerializer(serializers.ModelSerializer):
@@ -68,4 +92,4 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
 
 
 class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
-    usuario = UsuarioSerializer(read_only=True)
+    usuario = UsuarioSerializerSimples(read_only=True)

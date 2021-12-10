@@ -1,7 +1,8 @@
 from rest_framework import viewsets, mixins
 from .models import Usuario, LogAutenticacao
-from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve,\
-                        LogAutenticacaoSerializer, LogAutenticacaoSerializerRetrieve
+from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
+                        UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
+                        LogAutenticacaoSerializerRetrieve
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
@@ -11,6 +12,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_classes = {
         'create': UsuarioSerializerCreate,
         'retrieve': UsuarioSerializerRetrieve,
+        'update': UsuarioSerializerUpdatePartialUpdate,
+        'partial_update': UsuarioSerializerUpdatePartialUpdate,
     }
 
     def get_serializer_class(self):

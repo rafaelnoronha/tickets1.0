@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Auditoria
-from usuario.serializer import UsuarioSerializer
+from usuario.serializer import UsuarioSerializerSimples
 
 
 class AuditoriaSerializer(serializers.ModelSerializer):
@@ -31,4 +31,4 @@ class AuditoriaSerializer(serializers.ModelSerializer):
 
 
 class AuditoriaSerializerRetrieve(AuditoriaSerializer):
-    usuario_operacao = UsuarioSerializer(read_only=True)
+    usuario_operacao = UsuarioSerializerSimples(read_only=True)
