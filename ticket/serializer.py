@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Ticket, MensagemTicket
-from usuario.serializer import UsuarioSerializer
+from usuario.serializer import UsuarioSerializerSimples
 from usuario.models import Usuario
 
 
@@ -27,8 +27,8 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class TicketSerializerRetrieve(TicketSerializer):
-    solicitante = UsuarioSerializer(read_only=True)
-    atendente = UsuarioSerializer(read_only=True)
+    solicitante = UsuarioSerializerSimples(read_only=True)
+    atendente = UsuarioSerializerSimples(read_only=True)
 
 
 class TicketSerializerCreate(TicketSerializer):
@@ -87,6 +87,6 @@ class MensagemTicketSerializerCreate(MensagemTicketSerializer):
 
 
 class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):
-    usuario = UsuarioSerializer(read_only=True)
+    usuario = UsuarioSerializerSimples(read_only=True)
     ticket = TicketSerializer(read_only=True)
     mensagem_relacionada = MensagemTicketSerializer(read_only=True)

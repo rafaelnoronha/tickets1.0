@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
 from usuario.models import Usuario
-from usuario.serializer import UsuarioSerializer
+from usuario.serializer import UsuarioSerializerSimples
 
 
 class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
@@ -38,10 +38,10 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
 
 class ConsentimentoPoliticaPrivacidadeSerializerRetrieve(ConsentimentoPoliticaPrivacidadeSerializer):
-    titular = UsuarioSerializer(read_only=True)
+    titular = UsuarioSerializerSimples(read_only=True)
     politica_privacidade = PoliticaPrivacidadeSerializer(read_only=True)
 
 
 class ConsentimentoPoliticaPrivacidadeSerializerCreate(ConsentimentoPoliticaPrivacidadeSerializer):
-    titular = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
-    politica_privacidade = serializers.PrimaryKeyRelatedField(queryset=PoliticaPrivacidade.objects.all())
+    titular = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+    politica_privacidade = serializers.SlugRelatedField(queryset=PoliticaPrivacidade.objects.all(), slug_field='uuid')

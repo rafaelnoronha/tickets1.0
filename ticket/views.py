@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from .models import Ticket, MensagemTicket
 from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, TicketSerializerPutPatch, \
                         MensagemTicketSerializer, MensagemTicketSerializerCreate, MensagemTicketSerializerRetrieve
@@ -19,7 +19,8 @@ class TicketViewSet(viewsets.ModelViewSet):
         return self.serializer_classes.get(self.action, TicketSerializer)
 
 
-class MensagemTicketViewSet(viewsets.ModelViewSet):
+class MensagemTicketViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin,
+                            viewsets.GenericViewSet):
     queryset = MensagemTicket.objects.all()
     lookup_field = 'uuid'
 
