@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import RegexValidator
+from core.validators import RegexCep, RegexTelefone
 from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
@@ -68,6 +70,9 @@ class Empresa(Base):
         verbose_name='CEP',
         max_length=8,
         help_text='CEP(apenas números)',
+        validators=[
+            RegexValidator(regex=RegexCep.get_regex(), message=RegexCep.get_mensagem()),
+        ]
     )
 
     pais = models.CharField(
@@ -81,6 +86,9 @@ class Empresa(Base):
         verbose_name='Telefone',
         max_length=10,
         help_text='Número do telefone de contato(apenas números)',
+        validators=[
+            RegexValidator(regex=RegexTelefone.get_regex(), message=RegexTelefone.get_mensagem()),
+        ]
     )
 
     media_avaliacoes = models.DecimalField(

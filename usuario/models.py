@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
+from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
 import uuid
 
@@ -20,6 +22,9 @@ class Usuario(AbstractUser):
         verbose_name='Telefone',
         max_length=10,
         help_text='Telefone fixo ex: 3100000000',
+        validators=[
+            RegexValidator(regex=RegexTelefone.get_regex(), message=RegexTelefone.get_mensagem()),
+        ]
     )
 
     celular = models.CharField(
@@ -28,6 +33,9 @@ class Usuario(AbstractUser):
         default='',
         blank=True,
         help_text='Telefone celular ex: 31900000000',
+        validators=[
+            RegexValidator(regex=RegexCelular.get_regex(), message=RegexCelular.get_mensagem()),
+        ]
     )
 
     media_avaliacoes = models.DecimalField(
@@ -69,6 +77,10 @@ class Usuario(AbstractUser):
         verbose_name='Código de verificação da segunda etapa',
         max_length=4,
         help_text='O código que valida a verificação da segunda etapa, como a senha ao fazer o login',
+        validators=[
+            RegexValidator(regex=RegexCodigoVerificacaoSegundaEtapa.get_regex(),
+                           message=RegexCodigoVerificacaoSegundaEtapa.get_mensagem()),
+        ]
     )
 
     data_cadastro = models.DateField(
