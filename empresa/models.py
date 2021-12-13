@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from core.validators import RegexCep, RegexTelefone
+from core.validators import RegexCep, RegexTelefone, ValidaCpfCnpj
 from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
@@ -14,6 +14,9 @@ class Empresa(Base):
         max_length=14,
         unique=True,
         help_text='CPF ou CNPJ da empresa(apenas números)',
+        validators=[
+            ValidaCpfCnpj.valida_cpf
+        ]
     )
 
     razao_social = models.CharField(
