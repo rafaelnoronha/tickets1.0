@@ -45,7 +45,7 @@ class RegexCep:
 
 class ValidaCpfCnpj:
     @staticmethod
-    def _calcular_digito_verificador(self, array_cpf):
+    def _calcular_digito_verificador(array_cpf):
         resultado_operacao = functools.reduce(
             lambda acumulador, digito_cpf:
                 acumulador + ((digito_cpf[0] + 2) * digito_cpf[1])
@@ -54,23 +54,27 @@ class ValidaCpfCnpj:
         return 11 - resultado_operacao if resultado_operacao >= 2 else 0
 
     @staticmethod
-    def valida_cpf(self, cpf_informado):
+    def valida_cpf(cpf_informado):
         cpf = list(map(lambda item_lista: int(item_lista), re.sub(r'\D', '', cpf_informado)))
+        cpf
 
         if len(cpf) != 11:
             raise ValidationError('Certifique-se de que o cpf tenha 11 números.')
 
+        if re.findall(r'0{11}|1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}', functools.reduce(
+                        lambda acumulador, digito_cpf: acumulador + str(digito_cpf), cpf, '')):
+            raise ValidationError('O CPF informado é inválido.')
+
         cpf_validado = cpf[0:9].copy()
         cpf_validado.reverse()
 
-        primeiro_digito_verificador = self._calcular_digito_verificador(cpf_validado)
-
+        primeiro_digito_verificador = ValidaCpfCnpj._calcular_digito_verificador(cpf_validado)
         cpf_validado.insert(0, primeiro_digito_verificador)
 
-        segundo_digito_verificador = self._calcular_digito_verificador(cpf_validado)
-
+        segundo_digito_verificador = ValidaCpfCnpj._calcular_digito_verificador(cpf_validado)
         cpf_validado.insert(0, segundo_digito_verificador)
+
         cpf_validado.reverse()
 
-        print(primeiro_digito_verificador)
-        print(segundo_digito_verificador)
+        if cpf != cpf_validado:
+            raise ValidationError('O CPF informado é inválido.')
