@@ -52,7 +52,9 @@ class ValidaCpfCnpj:
             , enumerate(array_validador_cpf_cnpj), 0
         ) % 11
 
-        return 11 - resultado_operacao if resultado_operacao in range(2, 9) else 0
+        print(f'O módulo é {resultado_operacao}')
+
+        return 11 - resultado_operacao if resultado_operacao in range(2, 11) else 0
 
     @staticmethod
     def valida_cpf(cpf_informado):
