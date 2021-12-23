@@ -1,5 +1,6 @@
 from rest_framework import viewsets, mixins
 from .models import Usuario, LogAutenticacao
+from .filters import UsuarioFilter
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve
@@ -8,6 +9,7 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     lookup_field = 'uuid'
+    filterset_class = UsuarioFilter
 
     serializer_classes = {
         'create': UsuarioSerializerCreate,
