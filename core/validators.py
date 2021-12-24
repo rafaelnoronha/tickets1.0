@@ -26,21 +26,21 @@ class RegexCelular:
 class RegexCodigoVerificacaoSegundaEtapa:
     @staticmethod
     def get_regex():
-        return fr'\d{4}'
+        return r'\d{4}'
 
     @staticmethod
     def get_mensagem():
-        return f'Certifique-se de que o campo tenha 4 caracteres numéricos.'
+        return 'Certifique-se de que o campo tenha 4 caracteres numéricos.'
 
 
 class RegexCep:
     @staticmethod
     def get_regex():
-        return fr'\d{8}'
+        return r'\d{8}'
 
     @staticmethod
     def get_mensagem():
-        return f'Certifique-se de que o campo tenha 8 caracteres numéricos.'
+        return 'Certifique-se de que o campo tenha 8 caracteres numéricos.'
 
 
 class ValidaCpfCnpj:

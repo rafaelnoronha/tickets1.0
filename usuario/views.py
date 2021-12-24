@@ -1,6 +1,6 @@
 from rest_framework import viewsets, mixins
 from .models import Usuario, LogAutenticacao
-from .filters import UsuarioFilter
+from .filters import UsuarioFilter, LogAutenticacaoFilter
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve
@@ -27,6 +27,7 @@ class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
                              viewsets.GenericViewSet):
     queryset = LogAutenticacao.objects.all()
     lookup_field = 'uuid'
+    filterset_class = LogAutenticacaoFilter
 
     serializer_classes = {
         'retrieve': LogAutenticacaoSerializerRetrieve

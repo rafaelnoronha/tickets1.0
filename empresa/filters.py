@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 from .models import Empresa
 
-lookup_types = {
+lookup_types_empresa = {
     'cpf_cnpj': ['exact', 'iexact', 'icontains', 'in', ],
     'razao_social': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
     'nome_fantasia': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
@@ -24,19 +24,19 @@ class EmpresaFilter(filters.FilterSet):
     class Meta:
         model = Empresa
         fields = {
-            'cpf_cnpj': lookup_types['cpf_cnpj'],
-            'razao_social': lookup_types['razao_social'],
-            'nome_fantasia': lookup_types['nome_fantasia'],
-            'logradouro': lookup_types['logradouro'],
-            'numero': lookup_types['numero'],
-            'complemento': lookup_types['complemento'],
-            'bairro': lookup_types['bairro'],
-            'municipio': lookup_types['municipio'],
-            'uf': lookup_types['uf'],
-            'cep': lookup_types['cep'],
-            'pais': lookup_types['pais'],
-            'telefone': lookup_types['telefone'],
-            'media_avaliacoes': lookup_types['media_avaliacoes'],
-            'prestadora_servico': lookup_types['prestadora_servico'],
-            'ativo': lookup_types['ativo'],
+            'cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
+            'razao_social': lookup_types_empresa['razao_social'],
+            'nome_fantasia': lookup_types_empresa['nome_fantasia'],
+            'logradouro': lookup_types_empresa['logradouro'],
+            'numero': lookup_types_empresa['numero'],
+            'complemento': lookup_types_empresa['complemento'],
+            'bairro': lookup_types_empresa['bairro'],
+            'municipio': lookup_types_empresa['municipio'],
+            'uf': lookup_types_empresa['uf'],
+            'cep': lookup_types_empresa['cep'],
+            'pais': lookup_types_empresa['pais'],
+            'telefone': lookup_types_empresa['telefone'],
+            'media_avaliacoes': lookup_types_empresa['media_avaliacoes'],
+            'prestadora_servico': lookup_types_empresa['prestadora_servico'],
+            'ativo': lookup_types_empresa['ativo'],
         }
