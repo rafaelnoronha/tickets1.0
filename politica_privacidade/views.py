@@ -1,5 +1,6 @@
 from rest_framework import viewsets, mixins
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
+from .filters import PoliticaPrivacidadeFilter, ConsentimentoPoliticaPrivacidadeFilter
 from .serializer import PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer, \
                         ConsentimentoPoliticaPrivacidadeSerializerRetrieve, \
                         ConsentimentoPoliticaPrivacidadeSerializerCreate
@@ -9,6 +10,7 @@ class PoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMi
                                  mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = PoliticaPrivacidade.objects.all()
     lookup_field = 'uuid'
+    filterset_class = PoliticaPrivacidadeFilter
     serializer_class = PoliticaPrivacidadeSerializer
 
 
@@ -16,6 +18,7 @@ class ConsentimentoPoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.Re
                                               viewsets.GenericViewSet):
     queryset = ConsentimentoPoliticaPrivacidade.objects.all()
     lookup_field = 'uuid'
+    filterset_class = ConsentimentoPoliticaPrivacidadeFilter
 
     serializer_classes = {
         'retrieve': ConsentimentoPoliticaPrivacidadeSerializerRetrieve,
