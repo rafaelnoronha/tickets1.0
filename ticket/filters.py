@@ -50,7 +50,11 @@ lookup_types_ticket = {
 }
 
 lookup_types_mensagem_ticket = {
-
+    'usuario': ['exact', ],
+    'ticket': ['exact', ],
+    'mensagem': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'mensagem_relacionada': ['exact', ],
+    'solucao': [],
 }
 
 
