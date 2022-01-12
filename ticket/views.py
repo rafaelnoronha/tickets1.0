@@ -1,5 +1,6 @@
 from rest_framework import viewsets, mixins
 from .models import Ticket, MensagemTicket
+from .filters import TicketFilter, MensagemTicketFilter
 from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, TicketSerializerPutPatch, \
                         MensagemTicketSerializer, MensagemTicketSerializerCreate, MensagemTicketSerializerRetrieve
 
@@ -7,6 +8,7 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     lookup_field = 'uuid'
+    filterset_class = TicketFilter
 
     serializer_classes = {
         'retrieve': TicketSerializerRetrieve,
