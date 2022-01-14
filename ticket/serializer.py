@@ -22,7 +22,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'descricao',
             'avaliacao_solicitante',
             'avaliacao_atendente',
-            'data_cadastro'
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 
@@ -69,6 +70,8 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
         model = MensagemTicket
         read_only_fields = [
             'uuid',
+            'data_cadastro',
+            'hora_cadastro',
         ]
         fields = [
             'uuid',
@@ -77,6 +80,8 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
             'mensagem',
             'mensagem_relacionada',
             'solucao',
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 
