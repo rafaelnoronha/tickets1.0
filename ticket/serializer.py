@@ -30,6 +30,7 @@ class TicketSerializer(serializers.ModelSerializer):
 class TicketSerializerRetrieve(TicketSerializer):
     solicitante = UsuarioSerializerSimples(read_only=True)
     atendente = UsuarioSerializerSimples(read_only=True)
+    #mensagens =
 
 
 class TicketSerializerCreate(TicketSerializer):

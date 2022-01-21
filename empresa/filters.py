@@ -2,20 +2,20 @@ from django_filters import rest_framework as filters
 from .models import Empresa
 
 lookup_types_empresa = {
-    'cpf_cnpj': ['exact', 'iexact', 'icontains', 'in', ],
-    'razao_social': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'nome_fantasia': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'logradouro': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'numero': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'complemento': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'bairro': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'municipio': ['exact', 'icontains', 'istartswith', 'iendswith', 'in'],
-    'uf': ['exact', 'iexact', 'icontains', 'in', ],
-    'cep': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'pais': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'telefone': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'cpf_cnpj': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'razao_social': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'nome_fantasia': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'logradouro': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'numero': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'complemento': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'bairro': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'municipio': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'uf': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'cep': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'pais': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'telefone': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
-    'prestadora_servico': ['exact', 'in', ],
+    'prestadora_servico': ['exact', ],
     'ativo': ['iexact', ],
 }
 

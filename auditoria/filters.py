@@ -28,11 +28,11 @@ lookup_types_auditoria = {
         'lt',
         'in',
     ],
-    'tabela_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'tipo_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'tabela_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'tipo_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'usuario_operacao': ['exact', ],
-    'estado_anterior': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'estado_atual': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'estado_anterior': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'estado_atual': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
 }
 
 

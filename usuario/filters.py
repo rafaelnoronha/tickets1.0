@@ -3,13 +3,13 @@ from .models import Usuario, LogAutenticacao
 from empresa.filters import lookup_types_empresa
 
 lookup_types_usuario = {
-    'username': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'first_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'last_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'email': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'telefone': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'celular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'observacoes': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'username': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'first_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'last_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'email': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'telefone': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'celular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'observacoes': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
     'empresa': ['exact', ],
     'last_login': ['exact', ],
@@ -20,7 +20,7 @@ lookup_types_usuario = {
 }
 
 lookup_types_log_autenticacao = {
-    'ip': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'ip': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'autenticado': ['exact', ],
     'data_autenticacao': [
         'exact',

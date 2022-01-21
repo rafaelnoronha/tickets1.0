@@ -4,9 +4,9 @@ from usuario.filters import lookup_types_usuario
 from empresa.filters import lookup_types_empresa
 
 lookup_types_politica_privacidade = {
-    'titulo_politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'tipo_titular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'titulo_politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'tipo_titular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'data_validade': [
         'exact',
         'range',

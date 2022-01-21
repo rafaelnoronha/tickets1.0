@@ -4,11 +4,11 @@ from usuario.filters import lookup_types_usuario
 from empresa.filters import lookup_types_empresa
 
 lookup_types_ticket = {
-    'status': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'status': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'solicitante': ['exact', ],
     'atendente': ['exact', ],
-    'titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
-    'descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'avaliacao_solicitante': [
         'exact',
         'iexact',
@@ -64,7 +64,7 @@ lookup_types_ticket = {
 lookup_types_mensagem_ticket = {
     'usuario': ['exact', ],
     'ticket': ['exact', ],
-    'mensagem': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', ],
+    'mensagem': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'mensagem_relacionada': ['exact', ],
     'solucao': ['iexact', ],
     'data_cadastro': [
@@ -271,7 +271,6 @@ class MensagemTicketFilter(filter.FilterSet):
             'ticket__data_cadastro': lookup_types_ticket['data_cadastro'],
             'ticket__hora_cadastro': lookup_types_ticket['hora_cadastro'],
             'mensagem': lookup_types_mensagem_ticket['mensagem'],
-            'mensagem_relacionada': '',
             'solucao': lookup_types_mensagem_ticket['solucao'],
             'data_cadastro': lookup_types_mensagem_ticket['data_cadastro'],
             'hora_cadastro': lookup_types_mensagem_ticket['hora_cadastro'],
