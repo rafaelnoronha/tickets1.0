@@ -27,12 +27,6 @@ class TicketSerializer(serializers.ModelSerializer):
         ]
 
 
-class TicketSerializerRetrieve(TicketSerializer):
-    solicitante = UsuarioSerializerSimples(read_only=True)
-    atendente = UsuarioSerializerSimples(read_only=True)
-    #mensagens =
-
-
 class TicketSerializerCreate(TicketSerializer):
     solicitante = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
     atendente = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all(), allow_null=True)
@@ -96,3 +90,24 @@ class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):
     usuario = UsuarioSerializerSimples(read_only=True)
     ticket = TicketSerializer(read_only=True)
     mensagem_relacionada = MensagemTicketSerializer(read_only=True)
+
+
+class TicketSerializerRetrieve(TicketSerializer):
+    solicitante = UsuarioSerializerSimples(read_only=True)
+    atendente = UsuarioSerializerSimples(read_only=True)
+    mensagens = MensagemTicketSerializerRetrieve(many=True, source='ticket_ticket_mensagem_ticket')
+
+    class Meta(TicketSerializer.Meta):
+        fields = [
+            'uuid',
+            'status',
+            'solicitante',
+            'atendente',
+            'titulo',
+            'descricao',
+            'avaliacao_solicitante',
+            'avaliacao_atendente',
+            'data_cadastro',
+            'hora_cadastro',
+            'mensagens',
+        ]
