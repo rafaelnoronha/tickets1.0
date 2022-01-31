@@ -92,10 +92,16 @@ class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):
     mensagem_relacionada = MensagemTicketSerializer(read_only=True)
 
 
+class MensagemTicketSerializerRetrieveTicket(MensagemTicketSerializer):
+    usuario = UsuarioSerializerSimples(read_only=True)
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    mensagem_relacionada = MensagemTicketSerializer(read_only=True)
+
+
 class TicketSerializerRetrieve(TicketSerializer):
     solicitante = UsuarioSerializerSimples(read_only=True)
     atendente = UsuarioSerializerSimples(read_only=True)
-    mensagens = MensagemTicketSerializerRetrieve(many=True, source='ticket_ticket_mensagem_ticket')
+    mensagens = MensagemTicketSerializerRetrieveTicket(many=True, source='ticket_ticket_mensagem_ticket', read_only=True)
 
     class Meta(TicketSerializer.Meta):
         fields = [
