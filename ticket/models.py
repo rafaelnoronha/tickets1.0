@@ -67,11 +67,23 @@ class Ticket(Base):
         help_text='Avaliação do solicitante referente ao chamado',
     )
 
+    observacao_avaliacao_solicitante = models.TextField(
+        verbose_name='Observação Avaliação do Solicitante',
+        help_text='Observações referente à avaliação do solicitante',
+        default='',
+    )
+
     avaliacao_atendente = models.SmallIntegerField(
         verbose_name='Avaliação do Atendente',
         choices=AVALIACAO_CHOISES,
         null=True,
         help_text='Avaliação do atendente referente ao chamado',
+    )
+
+    observacao_avaliacao_atendente = models.TextField(
+        verbose_name='Observação Avaliação do Atendente',
+        help_text='Observações referente à avaliação do atendente',
+        default='',
     )
 
     class Meta:

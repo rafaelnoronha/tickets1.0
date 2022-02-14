@@ -4,6 +4,7 @@ from usuario.filters import lookup_types_usuario
 from empresa.filters import lookup_types_empresa
 
 lookup_types_ticket = {
+    'uuid': ['exact', 'in', ],
     'status': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'solicitante': ['exact', ],
     'atendente': ['exact', ],
@@ -62,6 +63,7 @@ lookup_types_ticket = {
 }
 
 lookup_types_mensagem_ticket = {
+    'uuid': ['exact', 'in', ],
     'usuario': ['exact', ],
     'ticket': ['exact', ],
     'mensagem': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -98,8 +100,10 @@ class TicketFilter(filter.FilterSet):
     class Meta:
         model = Ticket
         fields = {
+            'uuid': lookup_types_ticket['uuid'],
             'status': lookup_types_ticket['status'],
             'solicitante': lookup_types_ticket['solicitante'],
+            'solicitante__uuid': lookup_types_usuario['uuid'],
             'solicitante__username': lookup_types_usuario['username'],
             'solicitante__first_name': lookup_types_usuario['first_name'],
             'solicitante__last_name': lookup_types_usuario['last_name'],
@@ -109,6 +113,7 @@ class TicketFilter(filter.FilterSet):
             'solicitante__observacoes': lookup_types_usuario['observacoes'],
             'solicitante__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'solicitante__empresa': lookup_types_usuario['empresa'],
+            'solicitante__empresa__uuid': lookup_types_empresa['uuid'],
             'solicitante__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'solicitante__empresa__razao_social': lookup_types_empresa['razao_social'],
             'solicitante__empresa__nome_fantasia': lookup_types_empresa['nome_fantasia'],
@@ -130,6 +135,7 @@ class TicketFilter(filter.FilterSet):
             'solicitante__is_active': lookup_types_usuario['is_active'],
             'solicitante__groups': lookup_types_usuario['groups'],
             'atendente': lookup_types_ticket['atendente'],
+            'atendente__uuid': lookup_types_usuario['uuid'],
             'atendente__username': lookup_types_usuario['username'],
             'atendente__first_name': lookup_types_usuario['first_name'],
             'atendente__last_name': lookup_types_usuario['last_name'],
@@ -139,6 +145,7 @@ class TicketFilter(filter.FilterSet):
             'atendente__observacoes': lookup_types_usuario['observacoes'],
             'atendente__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'atendente__empresa': lookup_types_usuario['empresa'],
+            'atendente__empresa__uuid': lookup_types_empresa['uuid'],
             'atendente__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'atendente__empresa__razao_social': lookup_types_empresa['razao_social'],
             'atendente__empresa__nome_fantasia': lookup_types_empresa['nome_fantasia'],
@@ -172,7 +179,9 @@ class MensagemTicketFilter(filter.FilterSet):
     class Meta:
         model = MensagemTicket
         fields = {
+            'uuid': lookup_types_mensagem_ticket['uuid'],
             'usuario': lookup_types_mensagem_ticket['usuario'],
+            'usuario__uuid': lookup_types_usuario['uuid'],
             'usuario__username': lookup_types_usuario['username'],
             'usuario__first_name': lookup_types_usuario['first_name'],
             'usuario__last_name': lookup_types_usuario['last_name'],
@@ -182,6 +191,7 @@ class MensagemTicketFilter(filter.FilterSet):
             'usuario__observacoes': lookup_types_usuario['observacoes'],
             'usuario__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'usuario__empresa': lookup_types_usuario['empresa'],
+            'usuario__empresa__uuid': lookup_types_empresa['uuid'],
             'usuario__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'usuario__empresa__razao_social': lookup_types_empresa['razao_social'],
             'usuario__empresa__nome_fantasia': lookup_types_empresa['nome_fantasia'],
@@ -203,8 +213,10 @@ class MensagemTicketFilter(filter.FilterSet):
             'usuario__is_active': lookup_types_usuario['is_active'],
             'usuario__groups': lookup_types_usuario['groups'],
             'ticket': lookup_types_mensagem_ticket['ticket'],
+            'ticket__uuid': lookup_types_ticket['uuid'],
             'ticket__status': lookup_types_ticket['status'],
             'ticket__solicitante': lookup_types_ticket['solicitante'],
+            'ticket__solicitante__uuid': lookup_types_usuario['uuid'],
             'ticket__solicitante__username': lookup_types_usuario['username'],
             'ticket__solicitante__first_name': lookup_types_usuario['first_name'],
             'ticket__solicitante__last_name': lookup_types_usuario['last_name'],
@@ -214,6 +226,7 @@ class MensagemTicketFilter(filter.FilterSet):
             'ticket__solicitante__observacoes': lookup_types_usuario['observacoes'],
             'ticket__solicitante__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'ticket__solicitante__empresa': lookup_types_usuario['empresa'],
+            'ticket__solicitante__empresa__uuid': lookup_types_empresa['uuid'],
             'ticket__solicitante__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'ticket__solicitante__empresa__razao_social': lookup_types_empresa['razao_social'],
             'ticket__solicitante__empresa__nome_fantasia': lookup_types_empresa['nome_fantasia'],
@@ -235,6 +248,7 @@ class MensagemTicketFilter(filter.FilterSet):
             'ticket__solicitante__is_active': lookup_types_usuario['is_active'],
             'ticket__solicitante__groups': lookup_types_usuario['groups'],
             'ticket__atendente': lookup_types_ticket['atendente'],
+            'ticket__atendente__uuid': lookup_types_usuario['uuid'],
             'ticket__atendente__username': lookup_types_usuario['username'],
             'ticket__atendente__first_name': lookup_types_usuario['first_name'],
             'ticket__atendente__last_name': lookup_types_usuario['last_name'],
@@ -244,6 +258,7 @@ class MensagemTicketFilter(filter.FilterSet):
             'ticket__atendente__observacoes': lookup_types_usuario['observacoes'],
             'ticket__atendente__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'ticket__atendente__empresa': lookup_types_usuario['empresa'],
+            'ticket__atendente__empresa__uuid': lookup_types_empresa['uuid'],
             'ticket__atendente__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'ticket__atendente__empresa__razao_social': lookup_types_empresa['razao_social'],
             'ticket__atendente__empresa__nome_fantasia': lookup_types_empresa['nome_fantasia'],

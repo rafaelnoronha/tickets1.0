@@ -3,6 +3,7 @@ from .models import Usuario, LogAutenticacao
 from empresa.filters import lookup_types_empresa
 
 lookup_types_usuario = {
+    'uuid': ['exact', 'in', ],
     'username': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'first_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'last_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -54,6 +55,7 @@ class UsuarioFilter(filter.FilterSet):
     class Meta:
         model = Usuario
         fields = {
+            'uuid': lookup_types_usuario['uuid'],
             'username': lookup_types_usuario['username'],
             'first_name': lookup_types_usuario['first_name'],
             'last_name': lookup_types_usuario['last_name'],

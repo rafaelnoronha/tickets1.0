@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from .models import Empresa
 
 lookup_types_empresa = {
+    'uuid': ['exact', 'in', ],
     'cpf_cnpj': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'razao_social': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'nome_fantasia': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -24,6 +25,7 @@ class EmpresaFilter(filters.FilterSet):
     class Meta:
         model = Empresa
         fields = {
+            'uuid': lookup_types_empresa['uuid'],
             'cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'razao_social': lookup_types_empresa['razao_social'],
             'nome_fantasia': lookup_types_empresa['nome_fantasia'],

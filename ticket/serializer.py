@@ -21,15 +21,17 @@ class TicketSerializer(serializers.ModelSerializer):
             'titulo',
             'descricao',
             'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
+            'observacao_avaliacao_atendente',
             'data_cadastro',
             'hora_cadastro',
         ]
 
 
 class TicketSerializerCreate(TicketSerializer):
-    solicitante = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
-    atendente = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all(), allow_null=True)
+    solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True)
 
     class Meta:
         model = Ticket
@@ -45,6 +47,8 @@ class TicketSerializerCreate(TicketSerializer):
 
 
 class TicketSerializerPutPatch(TicketSerializer):
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+
     class Meta:
         model = Ticket
         read_only_fields = [
@@ -52,7 +56,10 @@ class TicketSerializerPutPatch(TicketSerializer):
         ]
         fields = [
             'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
+            'observacao_avaliacao_atendente',
+            'atendente',
         ]
 
 
@@ -81,8 +88,8 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 
 
 class MensagemTicketSerializerCreate(MensagemTicketSerializer):
-    usuario = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
-    ticket = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all())
+    usuario = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+    ticket = serializers.SlugRelatedField(queryset=Ticket.objects.all(), slug_field='uuid')
     mensagem_relacionada = serializers.PrimaryKeyRelatedField(queryset=MensagemTicket.objects.all(), allow_null=True)
 
 
@@ -112,7 +119,9 @@ class TicketSerializerRetrieve(TicketSerializer):
             'titulo',
             'descricao',
             'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
+            'observacao_avaliacao_atendente',
             'data_cadastro',
             'hora_cadastro',
             'mensagens',
