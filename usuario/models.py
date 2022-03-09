@@ -51,6 +51,7 @@ class Usuario(AbstractUser):
         verbose_name='Empresa',
         related_name='empresa_empresa_usuario',
         on_delete=models.PROTECT,
+        null=True,
         help_text='Empresa a qual o usuário pertence',
     )
 

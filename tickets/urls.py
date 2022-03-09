@@ -15,6 +15,7 @@ Including another URLconf
 """
 
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from usuario.urls import router_usuario, router_log_autenticacao
 from empresa.urls import router_empresa
 from politica_privacidade.urls import router_politica_privacidade, router_consentimento_politica_privacidade
@@ -25,6 +26,8 @@ from agrupamento.urls import router_grupo, router_subgrupo
 base_url_v1 = 'api/v1/'
 
 urlpatterns = [
+    path(f'{base_url_v1}token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path(f'{base_url_v1}token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(f'{base_url_v1}usuario/', include(router_usuario.urls)),
     path(f'{base_url_v1}log_autenticacao/', include(router_log_autenticacao.urls)),
     path(f'{base_url_v1}empresa/', include(router_empresa.urls)),
