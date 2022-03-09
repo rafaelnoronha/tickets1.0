@@ -16,11 +16,11 @@ class RegexTelefone:
 class RegexCelular:
     @staticmethod
     def get_regex():
-        return r'\d{2}9\{8}'
+        return r'\d{2}9\d{8}'
 
     @staticmethod
     def get_mensagem():
-        return 'Informe um número de celular válido. Ex: 3190000000.'
+        return 'Informe um número de celular válido. Ex: 31900000000.'
 
 
 class RegexCodigoVerificacaoSegundaEtapa:

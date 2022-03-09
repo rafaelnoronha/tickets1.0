@@ -10,8 +10,10 @@ class GrupoSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'uuid',
+            'codigo',
             'nome',
             'peso',
+            'tipo',
         ]
 
 
@@ -23,6 +25,8 @@ class SubgrupoSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'uuid',
+            'codigo',
             'nome',
             'peso',
+            'tipo',
         ]

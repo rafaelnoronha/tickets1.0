@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import Base
 from usuario.models import Usuario
+from agrupamento.models import Grupo, Subgrupo
 
 STATUS_CHOISES = [
     ('0', 'Aberto'),
@@ -58,6 +59,24 @@ class Ticket(Base):
     descricao = models.TextField(
         verbose_name='Descrição',
         help_text='Descrição do ticket',
+    )
+
+    grupo = models.ForeignKey(
+        Grupo,
+        verbose_name='Grupo',
+        related_name='grupo_agrupamento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Grupo de classificação do ticket',
+    )
+
+    subgrupo = models.ForeignKey(
+        Subgrupo,
+        verbose_name='Subgrupo',
+        related_name='subgrupo_agrupamento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Subgrupo de classificação do ticket',
     )
 
     avaliacao_solicitante = models.SmallIntegerField(
