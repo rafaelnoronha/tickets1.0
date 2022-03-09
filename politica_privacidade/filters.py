@@ -5,7 +5,7 @@ from empresa.filters import lookup_types_empresa
 
 lookup_types_politica_privacidade = {
     'uuid': ['exact', 'in', ],
-    'titulo_politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'tipo_titular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'data_validade': [
@@ -36,7 +36,7 @@ class PoliticaPrivacidadeFilter(filter.FilterSet):
         model = PoliticaPrivacidade
         fields = {
             'uuid': lookup_types_politica_privacidade['uuid'],
-            'titulo_politica': lookup_types_politica_privacidade['titulo_politica'],
+            'titulo': lookup_types_politica_privacidade['titulo'],
             'politica': lookup_types_politica_privacidade['politica'],
             'tipo_titular': lookup_types_politica_privacidade['tipo_titular'],
             'data_validade': lookup_types_politica_privacidade['data_validade'],
@@ -82,7 +82,7 @@ class ConsentimentoPoliticaPrivacidadeFilter(filter.FilterSet):
             'titular__is_active': lookup_types_usuario['is_active'],
             'titular__groups': lookup_types_usuario['groups'],
             'politica_privacidade': lookup_types_consentimento_politica_privacidade['politica_privacidade'],
-            'politica_privacidade__titulo_politica': lookup_types_politica_privacidade['titulo_politica'],
+            'politica_privacidade__titulo': lookup_types_politica_privacidade['titulo'],
             'politica_privacidade__politica': lookup_types_politica_privacidade['politica'],
             'politica_privacidade__tipo_titular': lookup_types_politica_privacidade['tipo_titular'],
             'politica_privacidade__data_validade': lookup_types_politica_privacidade['data_validade'],

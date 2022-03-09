@@ -8,6 +8,10 @@ class GrupoSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'uuid',
         ]
+        extra_kwargs = {
+            'codigo': {'allow_blank': True, },
+            'peso': {'allow_null': True, },
+        }
         fields = [
             'uuid',
             'codigo',
@@ -23,6 +27,10 @@ class SubgrupoSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'uuid',
         ]
+        extra_kwargs = {
+            'codigo': {'allow_blank': True, },
+            'peso': {'allow_null': True, },
+        }
         fields = [
             'uuid',
             'codigo',

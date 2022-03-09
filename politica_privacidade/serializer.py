@@ -12,7 +12,7 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'uuid',
-            'titulo_politica',
+            'titulo',
             'politica',
             'tipo_titular',
             'data_validade',

@@ -13,7 +13,7 @@ class PoliticaPrivacidade(Base):
     Modelo que vai gerenciar as políticas de privacidade.
     """
 
-    titulo_politica = models.CharField(
+    titulo = models.CharField(
         verbose_name='Título da Política de Privacidade',
         max_length=150,
         help_text='Título da política de privacidade',
@@ -43,7 +43,7 @@ class PoliticaPrivacidade(Base):
         verbose_name_plural = 'Políticas de Privacidade'
 
     def __str__(self):
-        return f'{self.id} - {self.titulo_politica}'
+        return f'{self.id} - {self.titulo}'
 
 
 class ConsentimentoPoliticaPrivacidade(Base):

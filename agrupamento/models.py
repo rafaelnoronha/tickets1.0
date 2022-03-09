@@ -15,6 +15,7 @@ class Grupo(Base):
     codigo = models.CharField(
         verbose_name='Código',
         max_length=20,
+        default='',
         help_text='Código do Grupo',
     )
 
@@ -55,6 +56,7 @@ class Subgrupo(Base):
     codigo = models.CharField(
         verbose_name='Código',
         max_length=20,
+        default='',
         help_text='Código do Subgrupo',
     )
 
