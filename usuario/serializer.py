@@ -93,3 +93,4 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
 
 class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
     usuario = UsuarioSerializerSimples(read_only=True)
+
