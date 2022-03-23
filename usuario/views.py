@@ -1,15 +1,18 @@
 from rest_framework import viewsets, mixins
 from .models import Usuario, LogAutenticacao
 from .filters import UsuarioFilter, LogAutenticacaoFilter
+from core.permissions import BasePemission
+from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
-                        LogAutenticacaoSerializerRetrieve
+                        LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, PermissaoUsuarioSerializer
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     lookup_field = 'uuid'
     filterset_class = UsuarioFilter
+    permission_classes = (BasePemission, )
 
     serializer_classes = {
         'create': UsuarioSerializerCreate,
@@ -28,6 +31,7 @@ class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
     queryset = LogAutenticacao.objects.all()
     lookup_field = 'uuid'
     filterset_class = LogAutenticacaoFilter
+    permission_classes = (BasePemission, )
 
     serializer_classes = {
         'retrieve': LogAutenticacaoSerializerRetrieve
@@ -35,3 +39,15 @@ class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, LogAutenticacaoSerializer)
+
+
+class GrupoPermissoesUsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GrupoPermissoesUsuarioSerializer
+    permission_classes = (BasePemission, )
+
+
+class PermissaoUsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Permission.objects.all()
+    serializer_class = PermissaoUsuarioSerializer
+    permission_classes = (BasePemission, )

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Usuario, LogAutenticacao
+from django.contrib.auth.models import Group, Permission
 from empresa.models import Empresa
 from empresa.serializer import EmpresaSerializer
 
@@ -94,3 +95,22 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
 class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
     usuario = UsuarioSerializerSimples(read_only=True)
 
+
+class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = [
+            'name',
+            'permissions',
+        ]
+
+
+class PermissaoUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = [
+            'id',
+            'name',
+            'content_type',
+            'codename',
+        ]

@@ -16,7 +16,8 @@ Including another URLconf
 
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from usuario.urls import router_usuario, router_log_autenticacao
+from usuario.urls import router_usuario, router_log_autenticacao, router_grupo_permissoes_usuario, \
+    router_permissao_usuario
 from empresa.urls import router_empresa
 from politica_privacidade.urls import router_politica_privacidade, router_consentimento_politica_privacidade
 from ticket.urls import router_ticket, router_mensagem_ticket
@@ -30,6 +31,8 @@ urlpatterns = [
     path(f'{base_url_v1}token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(f'{base_url_v1}usuario/', include(router_usuario.urls)),
     path(f'{base_url_v1}log_autenticacao/', include(router_log_autenticacao.urls)),
+    path(f'{base_url_v1}grupo_permissoes_usuario/', include(router_grupo_permissoes_usuario.urls)),
+    path(f'{base_url_v1}permissao_usuario/', include(router_permissao_usuario.urls)),
     path(f'{base_url_v1}empresa/', include(router_empresa.urls)),
     path(f'{base_url_v1}politica_privacidade/', include(router_politica_privacidade.urls)),
     path(f'{base_url_v1}consentimento_politica_privacidade/', include(router_consentimento_politica_privacidade.urls)),
