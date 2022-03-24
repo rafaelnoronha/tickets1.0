@@ -23,11 +23,13 @@ from politica_privacidade.urls import router_politica_privacidade, router_consen
 from ticket.urls import router_ticket, router_mensagem_ticket
 from auditoria.urls import router_auditoria
 from agrupamento.urls import router_grupo, router_subgrupo
+from usuario.views import MyTokenObtainPairView
 
 base_url_v1 = 'api/v1/'
 
 urlpatterns = [
-    path(f'{base_url_v1}token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path(f'{base_url_v1}token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    #path(f'{base_url_v1}token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path(f'{base_url_v1}token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(f'{base_url_v1}usuario/', include(router_usuario.urls)),
     path(f'{base_url_v1}log_autenticacao/', include(router_log_autenticacao.urls)),

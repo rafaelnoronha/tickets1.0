@@ -7,6 +7,7 @@ from empresa.serializer import EmpresaSerializer
 
 class UsuarioSerializer(serializers.ModelSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
+    groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
 
     class Meta:
         model = Usuario
@@ -14,6 +15,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'uuid',
             'last_login',
             'media_avaliacoes',
+            'is_superuser',
         ]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -45,14 +47,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class UsuarioSerializerCreate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
-
-
-class UsuarioSerializerRetrieve(UsuarioSerializer):
-    empresa = EmpresaSerializer(read_only=True)
+    groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
 
 
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
+    groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
@@ -60,11 +60,13 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
             'last_login',
             'media_avaliacoes',
             'username',
+            'is_superuser',
         ]
 
 
 class UsuarioSerializerSimples(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
 
     class Meta(UsuarioSerializer.Meta):
         fields = [
@@ -96,15 +98,6 @@ class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
     usuario = UsuarioSerializerSimples(read_only=True)
 
 
-class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = [
-            'name',
-            'permissions',
-        ]
-
-
 class PermissaoUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
@@ -114,3 +107,41 @@ class PermissaoUsuarioSerializer(serializers.ModelSerializer):
             'content_type',
             'codename',
         ]
+
+
+class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
+    permissions = PermissaoUsuarioSerializer(many=True)
+
+    class Meta:
+        model = Group
+        fields = [
+            'id',
+            'name',
+            'permissions',
+        ]
+
+
+class GrupoPermissoesUsuarioSerializerSimples(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate(serializers.ModelSerializer):
+    permissions = serializers.SlugRelatedField(queryset=Permission.objects.all(), slug_field='id', many=True)
+
+    class Meta:
+        model = Group
+        fields = [
+            'id',
+            'name',
+            'permissions',
+        ]
+
+
+class UsuarioSerializerRetrieve(UsuarioSerializer):
+    empresa = EmpresaSerializer(read_only=True)
+    groups = GrupoPermissoesUsuarioSerializerSimples(read_only=True, many=True)

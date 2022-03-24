@@ -5,7 +5,10 @@ from core.permissions import BasePemission
 from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
-                        LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, PermissaoUsuarioSerializer
+                        LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
+                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
@@ -22,7 +25,6 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     }
 
     def get_serializer_class(self):
-        print(self.action)
         return self.serializer_classes.get(self.action, UsuarioSerializer)
 
 
@@ -46,8 +48,54 @@ class GrupoPermissoesUsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = GrupoPermissoesUsuarioSerializer
     permission_classes = (BasePemission, )
 
+    serializer_classes = {
+        'create': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
+        'update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
+        'partial_update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
+    }
 
-class PermissaoUsuarioViewSet(viewsets.ModelViewSet):
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, GrupoPermissoesUsuarioSerializer)
+
+
+class PermissaoUsuarioViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Permission.objects.all()
     serializer_class = PermissaoUsuarioSerializer
     permission_classes = (BasePemission, )
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        #token['name'] = user.name
+        # ...
+
+        return token
+
+    def validate(self, attrs):
+        try:
+            super().validate(attrs)
+            print('-> Autenticado')
+            print('=' * 50)
+            print(attrs)
+            print('=' * 50)
+        except:
+            print('-> Não Autenticado')
+            print('=' * 50)
+            print(attrs)
+            print('=' * 50)
+
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        return data
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
