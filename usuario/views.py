@@ -76,17 +76,15 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
+        print(attrs)
+        print(type(attrs))
+        usuario_login = Usuario.objects.get(username='root')
+
         try:
             super().validate(attrs)
-            print('-> Autenticado')
-            print('=' * 50)
-            print(attrs)
-            print('=' * 50)
+            usuario_login.numero_tentativas_login = 0
         except:
-            print('-> Não Autenticado')
-            print('=' * 50)
-            print(attrs)
-            print('=' * 50)
+            usuario_login.numero_tentativas_login += 1
 
         data = super().validate(attrs)
         refresh = self.get_token(self.user)
