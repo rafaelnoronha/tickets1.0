@@ -7,8 +7,6 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
                         PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
@@ -62,38 +60,3 @@ class PermissaoUsuarioViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, 
     queryset = Permission.objects.all()
     serializer_class = PermissaoUsuarioSerializer
     permission_classes = (BasePemission, )
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        #token['name'] = user.name
-        # ...
-
-        return token
-
-    def validate(self, attrs):
-        print(attrs)
-        print(type(attrs))
-        usuario_login = Usuario.objects.get(username='root')
-
-        try:
-            super().validate(attrs)
-            usuario_login.numero_tentativas_login = 0
-        except:
-            usuario_login.numero_tentativas_login += 1
-
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
-
-        data['refresh'] = str(refresh)
-        data['access'] = str(refresh.access_token)
-
-        return data
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer

@@ -1,10 +1,8 @@
 from django.db import models
-
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.auth.models import AbstractUser
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
-from core.models import Base
 import uuid
 
 
@@ -105,7 +103,11 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
 
     def __str__(self):
-        return f'{self.id} - {self.first_name} {self.last_name} [{self.username}]'
+        return f'{self.uuid};{self.username};{self.first_name};{self.last_name};{self.email};{self.last_login};' \
+               f'{self.is_superuser};{self.is_staff};{self.is_active};{self.date_joined};{self.is_staff};' \
+               f'{self.telefone};{self.celular};{self.media_avaliacoes};{self.empresa};' \
+               f'{self.observacoes};{self.numero_tentativas_login};{self.verificacao_duas_etapas};' \
+               f'{self.codigo_verificacao_segunda_etapa};{self.data_cadastro};{self.hora_cadastro}'
 
 
 class LogAutenticacao(models.Model):
