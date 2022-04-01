@@ -7,14 +7,29 @@ from rest_framework import status
 
 class ModelViewSetComAuditoria(viewsets.ModelViewSet):
     nome_tabela_para_auditoria = None
+    serializer_para_autitoria = None
 
     def update(self, request, *args, **kwargs):
         usuario_antes_da_alteracao = Usuario.objects.get(id=self.get_object().id)
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        se = self.serializer_para_autitoria(usuario_antes_da_alteracao)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+
+        print('=' * 100)
+        print('ESTADO ANTERIOR')
+        print('=' * 100)
+        print(se.data)
+        print('=' * 100)
+
+        print('')
+
+        print('=' * 100)
+        print('ESTADO ATUAL')
+        print('='*100)
+        print(serializer.data)
 
         Auditoria.objects.create(tabela_operacao=self.nome_tabela_para_auditoria, tipo_operacao='UPDATE',
                                  usuario_operacao=request.user, estado_anterior=usuario_antes_da_alteracao,
@@ -33,8 +48,7 @@ class ModelViewSetComAuditoria(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         print('=' * 100)
-        print(args)
-        print(kwargs)
+        print(serializer.data)
         print('=' * 100)
 
         #Auditoria.objects.create(tabela_operacao=self.nome_tabela_para_auditoria, tipo_operacao='CREATE',

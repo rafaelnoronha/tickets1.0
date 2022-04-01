@@ -7,7 +7,8 @@ from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
-                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate
+                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate, \
+                        UsuarioSerializerAuditoria
 
 
 class UsuarioViewSet(ModelViewSetComAuditoria):
@@ -16,6 +17,7 @@ class UsuarioViewSet(ModelViewSetComAuditoria):
     filterset_class = UsuarioFilter
     permission_classes = (BasePemission, )
     nome_tabela_para_auditoria = 'usuario'
+    serializer_para_autitoria = UsuarioSerializerAuditoria
 
     serializer_classes = {
         'create': UsuarioSerializerCreate,

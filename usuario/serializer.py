@@ -5,6 +5,15 @@ from empresa.models import Empresa
 from empresa.serializer import EmpresaSerializer
 
 
+class UsuarioSerializerAuditoria(serializers.ModelSerializer):
+    empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
+    #groups = serializers.SlugRelatedField(read_only=True, slug_field='uuid', many=True)
+
+    class Meta:
+        model = Usuario
+        fields = '__all__'
+
+
 class UsuarioSerializer(serializers.ModelSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
