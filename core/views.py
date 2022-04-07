@@ -1,39 +1,43 @@
-from rest_framework import viewsets, mixins
 from auditoria.models import Auditoria
-from usuario.models import Usuario
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, mixins
+from rest_framework.viewsets import GenericViewSet
 
 
-class ModelViewSetComAuditoria(viewsets.ModelViewSet):
-    nome_tabela_para_auditoria = None
-    serializer_para_autitoria = None
+class CreateModelMixinAuditoria(mixins.CreateModelMixin):
+    auditoria = None
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        dado_criado = self.auditoria['serializer'](
+            self.auditoria['modelo'].objects.get(uuid=serializer.data['uuid']))
+
+        Auditoria.objects.create(tabela_operacao=self.auditoria['nome_tabela'], tipo_operacao='CREATE',
+                                 usuario_operacao=request.user, estado_anterior='', estado_atual=dado_criado.data)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class UpdateModelMixinAuditoria(mixins.UpdateModelMixin):
+    auditoria = None
 
     def update(self, request, *args, **kwargs):
-        usuario_antes_da_alteracao = Usuario.objects.get(id=self.get_object().id)
+        dado_antes_alteracao = self.auditoria['serializer'](
+            self.auditoria['modelo'].objects.get(id=self.get_object().id))
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        se = self.serializer_para_autitoria(usuario_antes_da_alteracao)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+        dado_depois_alteracao = self.auditoria['serializer'](
+            self.auditoria['modelo'].objects.get(id=self.get_object().id))
 
-        print('=' * 100)
-        print('ESTADO ANTERIOR')
-        print('=' * 100)
-        print(se.data)
-        print('=' * 100)
-
-        print('')
-
-        print('=' * 100)
-        print('ESTADO ATUAL')
-        print('='*100)
-        print(serializer.data)
-
-        Auditoria.objects.create(tabela_operacao=self.nome_tabela_para_auditoria, tipo_operacao='UPDATE',
-                                 usuario_operacao=request.user, estado_anterior=usuario_antes_da_alteracao,
-                                 estado_atual=self.get_object())
+        Auditoria.objects.create(tabela_operacao=self.auditoria['nome_tabela'], tipo_operacao='UPDATE',
+                                 usuario_operacao=request.user, estado_anterior=dado_antes_alteracao.data,
+                                 estado_atual=dado_depois_alteracao.data)
 
         if getattr(instance, '_prefetched_objects_cache', None):
             # If 'prefetch_related' has been applied to a queryset, we need to
@@ -42,16 +46,21 @@ class ModelViewSetComAuditoria(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        print('=' * 100)
-        print(serializer.data)
-        print('=' * 100)
 
-        #Auditoria.objects.create(tabela_operacao=self.nome_tabela_para_auditoria, tipo_operacao='CREATE',
-        #                         usuario_operacao=request.user, estado_anterior='', estado_atual=self.get_object())
+class DestroyModelMixinAuditoria(mixins.DestroyModelMixin):
+    auditoria = None
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+
+        Auditoria.objects.create(tabela_operacao=self.auditoria['nome_tabela'], tipo_operacao='DELETE',
+                                 usuario_operacao=request.user, estado_anterior=self.auditoria['serializer'](instance).data,
+                                 estado_atual='')
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ModelViewSetComAuditoria(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, UpdateModelMixinAuditoria,
+                               DestroyModelMixinAuditoria, mixins.ListModelMixin, GenericViewSet):
+    pass

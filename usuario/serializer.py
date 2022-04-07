@@ -6,11 +6,22 @@ from empresa.serializer import EmpresaSerializer
 
 
 class UsuarioSerializerAuditoria(serializers.ModelSerializer):
-    empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
-    #groups = serializers.SlugRelatedField(read_only=True, slug_field='uuid', many=True)
+    empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
 
     class Meta:
         model = Usuario
+        fields = '__all__'
+
+
+class PermissaoUsuarioSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = '__all__'
+
+
+class GrupoPermissoesUsuarioSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = Group
         fields = '__all__'
 
 

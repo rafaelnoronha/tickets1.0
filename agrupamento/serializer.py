@@ -2,6 +2,18 @@ from rest_framework import serializers
 from .models import Grupo, Subgrupo
 
 
+class GrupoSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = Grupo
+        fields = '__all__'
+
+
+class SubgrupoSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = Grupo
+        fields = '__all__'
+
+
 class GrupoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grupo

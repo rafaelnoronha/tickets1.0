@@ -4,6 +4,21 @@ from usuario.models import Usuario
 from usuario.serializer import UsuarioSerializerSimples
 
 
+class PoliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = PoliticaPrivacidade
+        fields = '__all__'
+
+
+class ConsentimentoPliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
+    titular = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+
+    class Meta:
+        model = ConsentimentoPoliticaPrivacidade
+        fields = '__all__'
+
+
 class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PoliticaPrivacidade

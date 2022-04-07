@@ -1,27 +1,39 @@
 from rest_framework import viewsets, mixins
+from core.views import CreateModelMixinAuditoria, UpdateModelMixinAuditoria, DestroyModelMixinAuditoria
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
 from .filters import PoliticaPrivacidadeFilter, ConsentimentoPoliticaPrivacidadeFilter
 from core.permissions import BasePemission
 from .serializer import PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer, \
                         ConsentimentoPoliticaPrivacidadeSerializerRetrieve, \
-                        ConsentimentoPoliticaPrivacidadeSerializerCreate
+                        ConsentimentoPoliticaPrivacidadeSerializerCreate, PoliticaPrivacidadeSerializerAuditoria, \
+                        ConsentimentoPliticaPrivacidadeSerializerAuditoria
 
 
-class PoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
+class PoliticaPrivacidadeViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, DestroyModelMixinAuditoria,
                                  mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = PoliticaPrivacidade.objects.all()
     lookup_field = 'uuid'
     filterset_class = PoliticaPrivacidadeFilter
     permission_classes = (BasePemission, )
     serializer_class = PoliticaPrivacidadeSerializer
+    auditoria = {
+        'modelo': PoliticaPrivacidade,
+        'nome_tabela': 'politica_privacidade',
+        'serializer': PoliticaPrivacidadeSerializerAuditoria,
+    }
 
 
-class ConsentimentoPoliticaPrivacidadeViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin,
-                                              viewsets.GenericViewSet):
+class ConsentimentoPoliticaPrivacidadeViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin,
+                                              mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = ConsentimentoPoliticaPrivacidade.objects.all()
     lookup_field = 'uuid'
     filterset_class = ConsentimentoPoliticaPrivacidadeFilter
     permission_classes = (BasePemission, )
+    auditoria = {
+        'modelo': ConsentimentoPoliticaPrivacidade,
+        'nome_tabela': 'consentimento_politica_privacidade',
+        'serializer': ConsentimentoPliticaPrivacidadeSerializerAuditoria,
+    }
 
     serializer_classes = {
         'retrieve': ConsentimentoPoliticaPrivacidadeSerializerRetrieve,

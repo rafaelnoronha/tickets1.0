@@ -8,7 +8,8 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
                         PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate, \
-                        UsuarioSerializerAuditoria
+                        UsuarioSerializerAuditoria, GrupoPermissoesUsuarioSerializerAuditoria, \
+                        PermissaoUsuarioSerializerAuditoria
 
 
 class UsuarioViewSet(ModelViewSetComAuditoria):
@@ -16,8 +17,11 @@ class UsuarioViewSet(ModelViewSetComAuditoria):
     lookup_field = 'uuid'
     filterset_class = UsuarioFilter
     permission_classes = (BasePemission, )
-    nome_tabela_para_auditoria = 'usuario'
-    serializer_para_autitoria = UsuarioSerializerAuditoria
+    auditoria = {
+        'modelo': Usuario,
+        'nome_tabela': 'usuario',
+        'serializer': UsuarioSerializerAuditoria,
+    }
 
     serializer_classes = {
         'create': UsuarioSerializerCreate,
@@ -38,17 +42,22 @@ class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
     permission_classes = (BasePemission, )
 
     serializer_classes = {
-        'retrieve': LogAutenticacaoSerializerRetrieve
+        'retrieve': LogAutenticacaoSerializerRetrieve,
     }
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, LogAutenticacaoSerializer)
 
 
-class GrupoPermissoesUsuarioViewSet(viewsets.ModelViewSet):
+class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     queryset = Group.objects.all()
     serializer_class = GrupoPermissoesUsuarioSerializer
     permission_classes = (BasePemission, )
+    auditoria = {
+        'modelo': Group,
+        'nome_tabela': 'usuario',
+        'serializer': GrupoPermissoesUsuarioSerializerAuditoria,
+    }
 
     serializer_classes = {
         'create': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
@@ -64,3 +73,8 @@ class PermissaoUsuarioViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, 
     queryset = Permission.objects.all()
     serializer_class = PermissaoUsuarioSerializer
     permission_classes = (BasePemission, )
+    auditoria = {
+        'modelo': Permission,
+        'nome_tabela': 'usuario',
+        'serializer': PermissaoUsuarioSerializerAuditoria,
+    }

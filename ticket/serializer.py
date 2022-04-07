@@ -6,6 +6,27 @@ from agrupamento.models import Grupo, Subgrupo
 from agrupamento.serializer import GrupoSerializer, SubgrupoSerializer
 
 
+class TicketSerializerAuditoria(serializers.ModelSerializer):
+    solicitante = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    grupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
+
+class MensagemTicketSerializerAuditoria(serializers.ModelSerializer):
+    usuario = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+
+    class Meta:
+        model = MensagemTicket
+        fields = '__all__'
+
+
 class TicketSerializer(serializers.ModelSerializer):
     solicitante = serializers.SlugRelatedField(read_only=True, slug_field='username')
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
