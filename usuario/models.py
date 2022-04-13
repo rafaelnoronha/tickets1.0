@@ -1,9 +1,40 @@
 from django.db import models
+from django.apps import apps
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
 import uuid
+
+
+class GerenciadorUsuario(UserManager):
+    def _create_user(self, username, email, password, **extra_fields):
+        """
+        Create and save a user with the given username, email, and password.
+        """
+        if not username:
+            raise ValueError('The given username must be set')
+        email = self.normalize_email(email)
+        # Lookup the real model class from the global app registry so this
+        # manager method can be used in migrations. This is fine because
+        # managers are by definition working on the real model.
+        GlobalUserModel = apps.get_model(self.model._meta.app_label, self.model._meta.object_name)
+        username = GlobalUserModel.normalize_username(username)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.password = password
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(username, email, password, **extra_fields)
 
 
 class Usuario(AbstractUser):
@@ -96,6 +127,8 @@ class Usuario(AbstractUser):
         help_text='Hora do cadastro do usuário',
     )
 
+    objects = GerenciadorUsuario()
+
     class Meta:
         ordering = ['-id']
         db_table = 'usuario'
@@ -103,7 +136,6 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
 
     def __str__(self):
-        print(self.empresa)
         return f'{self.uuid};{self.username};{self.first_name};{self.last_name};{self.email};{self.last_login};' \
                f'{self.is_superuser};{self.is_staff};{self.is_active};{self.date_joined};{self.is_staff};' \
                f'{self.telefone};{self.celular};{self.media_avaliacoes};{self.empresa.uuid if self.empresa else ""};' \

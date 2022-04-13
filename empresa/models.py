@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from core.validators import RegexCep, RegexTelefone, ValidaCpfCnpj
+from .validators import EmpresaValidator
 from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
@@ -16,7 +17,7 @@ class Empresa(Base):
         help_text='CPF ou CNPJ da empresa(apenas números)',
         validators=[
             ValidaCpfCnpj.valida_cpf_cnpj
-        ]
+        ],
     )
 
     razao_social = models.CharField(
@@ -75,7 +76,7 @@ class Empresa(Base):
         help_text='CEP(apenas números)',
         validators=[
             RegexValidator(regex=RegexCep.get_regex(), message=RegexCep.get_mensagem()),
-        ]
+        ],
     )
 
     pais = models.CharField(
@@ -91,7 +92,7 @@ class Empresa(Base):
         help_text='Número do telefone de contato(apenas números)',
         validators=[
             RegexValidator(regex=RegexTelefone.get_regex(), message=RegexTelefone.get_mensagem()),
-        ]
+        ],
     )
 
     media_avaliacoes = models.DecimalField(
@@ -106,6 +107,9 @@ class Empresa(Base):
         verbose_name='Prestadora Serviço',
         default=False,
         help_text='Se a empresa é a prestadora dos serviços ou não',
+        validators=[
+            EmpresaValidator.valida_prestadora_servico
+        ],
     )
 
     class Meta:
