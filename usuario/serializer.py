@@ -3,6 +3,7 @@ from .models import Usuario, LogAutenticacao
 from django.contrib.auth.models import Group, Permission
 from empresa.models import Empresa
 from empresa.serializer import EmpresaSerializer
+from django.core.exceptions import ValidationError
 
 
 class UsuarioSerializerAuditoria(serializers.ModelSerializer):
@@ -73,6 +74,18 @@ class UsuarioSerializerCreate(UsuarioSerializer):
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
+
+    def validate(self, attrs):
+        print('='*50)
+        print(self.instance.observacoes)
+        print(attrs)
+        print('=' * 50)
+
+        if True:
+            print(dir(serializers.ValidationError))
+            raise serializers.ValidationError('Teste de erro de validação')
+
+        return attrs
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
