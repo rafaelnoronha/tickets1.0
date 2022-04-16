@@ -20,9 +20,9 @@ Tudo instalado e migrado agora é só cadastrar a empresa prestadora dos serviç
 e depois cadastrar o super usuário
 
 ### Regras de Negócio
-[v] Toda operação de CREATE/UPDATE/DELETE
-[] A cada tentativa de login falha, é preciso incrementar +1 no número de tentativas falhas de login no modelo de usuário
-  [] Caso tenha 3 tentativas falhas de login, é necessário bloquear o usuário
-  [] Caso o login seja efetuado, é necessário limpar o número de tentativas falhas
-[v] Não deve haver mais de uma empresa `ativa=True` e `prestadora_servico=True`
-[] Toda vez que o ticket for atribuido para um atendente, deve ser preenchido o campo `data_atribuicao`. Caso o tiket seja criado já com o atendente o campo `data_atribuicao` deve vir com a data da criação do ticket
+- [x] Toda operação de **CREATE/UPDATE/DELETE**
+- [ ] A cada tentativa de login falha, é preciso incrementar +1 no número de tentativas falhas de login no modelo de usuário
+  - [ ] Caso tenha 3 tentativas falhas de login, é necessário bloquear o usuário
+  - [ ] Caso o login seja efetuado, é necessário limpar o número de tentativas falhas
+- [x] Não deve haver mais de uma empresa `ativa=True` e `prestadora_servico=True`
+- [ ] Toda vez que o ticket for atribuido para um atendente, deve ser preenchido o campo `data_atribuicao`. Caso o tiket seja criado já com o atendente o campo `data_atribuicao` deve vir com a data da criação do ticket
