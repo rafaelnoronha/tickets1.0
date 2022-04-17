@@ -37,12 +37,16 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         read_only_fields = [
             'uuid',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
         ]
         fields = [
             'uuid',
             'status',
             'solicitante',
             'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
             'titulo',
             'descricao',
             'grupo',
@@ -66,14 +70,19 @@ class TicketSerializerCreate(TicketSerializer):
         model = Ticket
         read_only_fields = [
             'uuid',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
         ]
         extra_kwargs = {
-            'grupo': {'allow_null': False, 'allow_blank': False},
-            'subgrupo': {'allow_null': False, 'allow_blank': False},
+            'grupo': {'allow_null': True, 'allow_blank': True},
+            'subgrupo': {'allow_null': True, 'allow_blank': True},
         }
         fields = [
+            'uuid',
             'solicitante',
             'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
             'titulo',
             'descricao',
             'grupo',
@@ -90,13 +99,20 @@ class TicketSerializerPutPatch(TicketSerializer):
         model = Ticket
         read_only_fields = [
             'uuid',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
         ]
         fields = [
+            'solicitante',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
+            'atendente',
             'avaliacao_atendente',
             'observacao_avaliacao_atendente',
-            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
             'grupo',
             'subgrupo',
         ]
@@ -157,6 +173,8 @@ class TicketSerializerRetrieve(TicketSerializer):
             'status',
             'solicitante',
             'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
             'titulo',
             'descricao',
             'grupo',

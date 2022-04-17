@@ -50,6 +50,18 @@ class Ticket(Base):
         help_text='Atendente/Técnico responsável pelo ticket'
     )
 
+    data_atribuicao_atendente = models.DateField(
+        verbose_name='Data de atribuição do atendente',
+        null=True,
+        help_text='Data em que foi atribuído o atendente ao ticket',
+    )
+
+    hora_atribuicao_atendente = models.TimeField(
+        verbose_name='Hora de atribuição do atendente',
+        null=True,
+        help_text='Hora em que foi atribuído o atendente ao ticket',
+    )
+
     titulo = models.CharField(
         verbose_name='Título',
         max_length=255,

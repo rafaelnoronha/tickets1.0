@@ -37,6 +37,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'last_login',
             'media_avaliacoes',
             'is_superuser',
+            'is_staff',
+            'empresa',
         ]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -70,22 +72,40 @@ class UsuarioSerializerCreate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
 
+    class Meta(UsuarioSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'last_login',
+            'media_avaliacoes',
+        ]
+        extra_kwargs = {
+            'codigo_verificacao_segunda_etapa': {'write_only': True},
+            'is_staff': {'allow_null': False},
+        }
+
+    def validate(self, attrs):
+        empresa = attrs['empresa']
+
+        if attrs.__contains__('is_staff') and attrs['is_staff']:
+            if not empresa.prestadora_servico:
+                raise ValidationError("Não é possível cadastrar um usuário 'is_staff=True' se a empresa "
+                                      "vinculada não estiver como 'prestadora_servico=False'")
+
+        if attrs.__contains__('is_staff') and not attrs['is_staff']:
+            if empresa.prestadora_servico:
+                raise ValidationError("Não é possível cadastrar um usuário 'is_staff=False' se a empresa "
+                                      "vinculada estiver como 'prestadora_servico=True'")
+
+        if empresa.prestadora_servico:
+            raise ValidationError("Não é possível cadastrar um usuário 'is_staff=False' se a empresa "
+                                  "vinculada estiver como 'prestadora_servico=True'")
+
+        return attrs
+
 
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-
-    def validate(self, attrs):
-        print('='*50)
-        print(self.instance.observacoes)
-        print(attrs)
-        print('=' * 50)
-
-        if True:
-            print(dir(serializers.ValidationError))
-            raise serializers.ValidationError('Teste de erro de validação')
-
-        return attrs
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
@@ -94,6 +114,8 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
             'media_avaliacoes',
             'username',
             'is_superuser',
+            'is_staff',
+            'empresa',
         ]
 
 
