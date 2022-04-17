@@ -27,3 +27,5 @@ e depois cadastrar o super usuário
 - [x] Não deve haver mais de uma empresa `ativa=True` e `prestadora_servico=True`
 - [ ] Toda vez que o ticket for atribuido para um atendente, deve ser preenchido o campo `data_atribuicao`. Caso o tiket seja criado já com o atendente o campo `data_atribuicao` deve vir com a data da criação do ticket
 - [x] Não permitir cadastrar um usuário `is_staff=true` com uma empresa `prestadora_servico=false` e vice e versa
+- [ ] Não permitir vincular um usuário que não possua `is_staff=True` como `atendente` há um ticket e não permitir o contrário no campo `solicitante`
+- [ ] Calcular prioridade do ticket com base no `grupo` e `subgrupo`
