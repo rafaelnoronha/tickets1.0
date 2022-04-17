@@ -20,7 +20,7 @@ Tudo instalado e migrado agora é só cadastrar a empresa prestadora dos serviç
 e depois cadastrar o super usuário
 
 ### Regras de Negócio
-- [x] Toda operação de **CREATE/UPDATE/DELETE**
+- [x] Toda operação de **CREATE/UPDATE/DELETE** deve gerar um log, um registro no modelo auditoria
 - [ ] A cada tentativa de login falha, é preciso incrementar +1 no número de tentativas falhas de login no modelo de usuário
   - [ ] Caso tenha 3 tentativas falhas de login, é necessário bloquear o usuário
   - [ ] Caso o login seja efetuado, é necessário limpar o número de tentativas falhas
