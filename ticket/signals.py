@@ -6,7 +6,7 @@ from datetime import datetime
 
 @receiver(pre_save, sender=Ticket)
 def antes_de_salvar_ticket(sender, instance, **kwargs):
-    if not instance.id:
+    """if not instance.id:
         if instance.atendente:
             instance.data_atribuicao_atendente = datetime.today().strftime('%Y-%m-%d')
             instance.hora_atribuicao_atendente = datetime.today().strftime('%H:%M:%S')
@@ -18,10 +18,8 @@ def antes_de_salvar_ticket(sender, instance, **kwargs):
 
         if instance.atendente != ticket.atendente:
             instance.data_atribuicao_atendente = datetime.today().strftime('%Y-%m-%d')
-            instance.hora_atribuicao_atendente = datetime.today().strftime('%H:%M:%S')
+            instance.hora_atribuicao_atendente = datetime.today().strftime('%H:%M:%S')"""
 
-
-
-    #if instance.__getattribute__('uuid'):
-    #    print(Ticket.objects.get(uuid=instance.uuid).atendente)
-    #print(instance.atendente)
+    if instance.atendente:
+        instance.data_atribuicao_atendente = datetime.today().strftime('%Y-%m-%d')
+        instance.hora_atribuicao_atendente = datetime.today().strftime('%H:%M:%S')

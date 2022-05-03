@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.core.exceptions import ValidationError
 from .models import Ticket, MensagemTicket
 from usuario.serializer import UsuarioSerializerSimples
 from usuario.models import Usuario
@@ -59,6 +60,17 @@ class TicketSerializer(serializers.ModelSerializer):
             'hora_cadastro',
         ]
 
+    def validate(self, attrs):
+        if attrs.__contains__('solicitante') and attrs['solicitante']:
+            if attrs['solicitante'].is_staff:
+                raise ValidationError("Não é possível atribuir um usuário 'is_staff=true' para o campo 'solicitante'")
+
+        if attrs.__contains__('atendente') and attrs['atendente']:
+            if not attrs['atendente'].is_staff:
+                raise ValidationError("Não é possível atribuir um usuário 'is_staff=false' para o campo 'atendente'")
+
+        return attrs
+
 
 class TicketSerializerCreate(TicketSerializer):
     solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
@@ -101,16 +113,19 @@ class TicketSerializerPutPatch(TicketSerializer):
             'uuid',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
+            'solicitante',
+            'titulo',
+            'descricao',
         ]
         fields = [
             'solicitante',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'atendente',
-            'avaliacao_atendente',
-            'observacao_avaliacao_atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
+            'avaliacao_atendente',
+            'observacao_avaliacao_atendente',
             'titulo',
             'descricao',
             'grupo',
