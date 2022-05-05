@@ -3,7 +3,6 @@ from .models import Usuario, LogAutenticacao
 from django.contrib.auth.models import Group, Permission
 from empresa.models import Empresa
 from empresa.serializer import EmpresaSerializer
-from django.core.exceptions import ValidationError
 
 
 class UsuarioSerializerAuditoria(serializers.ModelSerializer):
@@ -29,6 +28,17 @@ class GrupoPermissoesUsuarioSerializerAuditoria(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
+
+    def validate_is_staff(self, is_staff):
+        print(' Validando o campo is_staff '.center(100, '='))
+        raise serializers.ValidationError('Você é um gênio indomável CRIADO')
+        print('=' * 100)
+
+        return is_staff
+
+    def validate_username(self, username):
+        raise serializers.ValidationError('Nome de usuário inválido')
+        return username
 
     class Meta:
         model = Usuario
@@ -67,7 +77,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'groups',
         ]
 
-    def validate(self, attrs):
+    """def validate(self, attrs):
         empresa = attrs['empresa']
 
         if attrs.__contains__('is_staff') and attrs['is_staff']:
@@ -84,7 +94,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
                                   "vinculada estiver como 'prestadora_servico=true'")
 
-        return attrs
+        return attrs"""
 
 
 class UsuarioSerializerCreate(UsuarioSerializer):
