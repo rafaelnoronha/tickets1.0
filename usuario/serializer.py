@@ -30,15 +30,19 @@ class UsuarioSerializer(serializers.ModelSerializer):
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
 
     def validate_is_staff(self, is_staff):
-        print(' Validando o campo is_staff '.center(100, '='))
-        raise serializers.ValidationError('Você é um gênio indomável CRIADO')
-        print('=' * 100)
+        empresa = Empresa.objects.get(uuid=self.initial_data['empresa'])
+
+        if is_staff:
+            if not empresa.prestadora_servico:
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa "
+                                      "vinculada não estiver como 'prestadora_servico=false'")
+
+        if not is_staff:
+            if empresa.prestadora_servico:
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
+                                      "vinculada estiver como 'prestadora_servico=true'")
 
         return is_staff
-
-    def validate_username(self, username):
-        raise serializers.ValidationError('Nome de usuário inválido')
-        return username
 
     class Meta:
         model = Usuario
