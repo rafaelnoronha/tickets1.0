@@ -44,6 +44,22 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
         return is_staff
 
+    def validate_empresa(self, empresa):
+        usuario = self.initial_data
+        is_staff = usuario['is_staff'] if 'is_staff' in usuario else False
+
+        if empresa.prestadora_servico:
+            if not is_staff:
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
+                                                  "vinculada não estiver como 'prestadora_servico=true'")
+
+        if not empresa.prestadora_servico:
+            if is_staff:
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa "
+                                                  "vinculada estiver como 'prestadora_servico=false'")
+
+        return empresa
+
     class Meta:
         model = Usuario
         read_only_fields = [
