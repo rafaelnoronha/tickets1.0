@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from core.validators import RegexCep, RegexTelefone, ValidaCpfCnpj
-from .validators import EmpresaValidator
 from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
@@ -107,9 +106,6 @@ class Empresa(Base):
         verbose_name='Prestadora Serviço',
         default=False,
         help_text='Se a empresa é a prestadora dos serviços ou não',
-        validators=[
-            EmpresaValidator.valida_prestadora_servico
-        ],
     )
 
     class Meta:

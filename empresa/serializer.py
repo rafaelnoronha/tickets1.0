@@ -9,6 +9,10 @@ class EmpresaSerializerAuditoria(serializers.ModelSerializer):
 
 
 class EmpresaSerializer(serializers.ModelSerializer):
+
+    def validate_prestadora_servico(self, prestadora_servico):
+        pass
+
     class Meta:
         model = Empresa
 
