@@ -66,6 +66,7 @@ class Subgrupo(Base):
         help_text='Nome do Subgrupo',
     )
 
+
     peso = models.PositiveSmallIntegerField(
         verbose_name='Peso',
         default=0,

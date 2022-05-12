@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
 from usuario.models import Usuario
 from usuario.serializer import UsuarioSerializerSimples
+from datetime import date
 
 
 class PoliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
@@ -20,6 +21,12 @@ class ConsentimentoPliticaPrivacidadeSerializerAuditoria(serializers.ModelSerial
 
 
 class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
+    def validate_data_validade(self, data_validade):
+        if data_validade < date.today():
+            raise serializers.ValidationError('A data de validade não pode ser maior que a data atual')
+
+        return data_validade
+
     class Meta:
         model = PoliticaPrivacidade
         read_only_fields = [

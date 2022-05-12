@@ -97,25 +97,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'groups',
         ]
 
-    """def validate(self, attrs):
-        empresa = attrs['empresa']
-
-        if attrs.__contains__('is_staff') and attrs['is_staff']:
-            if not empresa.prestadora_servico:
-                raise ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa "
-                                      "vinculada não estiver como 'prestadora_servico=false'")
-
-        if attrs.__contains__('is_staff') and not attrs['is_staff']:
-            if empresa.prestadora_servico:
-                raise ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
-                                      "vinculada estiver como 'prestadora_servico=true'")
-
-        if empresa.prestadora_servico:
-            raise ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
-                                  "vinculada estiver como 'prestadora_servico=true'")
-
-        return attrs"""
-
 
 class UsuarioSerializerCreate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')

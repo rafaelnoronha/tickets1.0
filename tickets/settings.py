@@ -66,6 +66,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'tickets.urls'
+APPEND_SLASH = False
 
 TEMPLATES = [
     {
@@ -157,6 +158,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 15,
+    'DATE_FORMAT': "%d-%m-%Y",
+    'DATE_INPUT_FORMATS': ["%d-%m-%Y"],
 }
 
 SIMPLE_JWT = {
