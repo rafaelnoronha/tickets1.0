@@ -44,7 +44,13 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
 class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
     titular = serializers.SlugRelatedField(read_only=True, slug_field='username')
-    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='titulo_politica')
+    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='titulo')
+
+    def validate_politica_privacidade(self, politica_privacidade):
+        if politica_privacidade.data_validade < date.today():
+            raise serializers.ValidationError('Não é possível consentir com uma política de privacidade vencida')
+
+        return politica_privacidade
 
     class Meta:
         model = ConsentimentoPoliticaPrivacidade
