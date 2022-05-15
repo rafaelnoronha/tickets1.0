@@ -117,6 +117,48 @@ class Ticket(Base):
         default='',
     )
 
+    solucao = models.ForeignKey(
+        MensagemTicket,
+        verbose_name='Solução',
+        related_name='solucao_ticket_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Mensagem de solução do ticket',
+    )
+
+    data_solucao = models.DateField(
+        verbose_name='Data da Solução do Ticket',
+        null=True,
+        help_text='Data que o ticket foi solucionado',
+    )
+
+    hora_solucao = models.TimeField(
+        verbose_name='Hora da Solução do Ticket',
+        null=True,
+        help_text='Hora que o ticket foi solucionado',
+    )
+
+    finalizado = models.ForeignKey(
+        Usuario,
+        verbose_name='Finalizado',
+        related_name='finalizado_ticket_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Usuário que finalizou o ticket',
+    )
+
+    data_finalizacao = models.DateField(
+        verbose_name='Data da Finalização do Ticket',
+        null=True,
+        help_text='Data que o ticket foi finalizado',
+    )
+
+    hora_finalizacao = models.TimeField(
+        verbose_name='Hora da Finalização do Ticket',
+        null=True,
+        help_text='Hora que o ticket foi finalizado',
+    )
+
     class Meta:
         ordering = ['-id']
         db_table = 'ticket'

@@ -12,6 +12,8 @@ class TicketSerializerAuditoria(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    solucao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
 
     class Meta:
         model = Ticket
@@ -33,6 +35,8 @@ class TicketSerializer(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
+    solucao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     class Meta:
         model = Ticket
@@ -40,6 +44,10 @@ class TicketSerializer(serializers.ModelSerializer):
             'uuid',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
+            'data_solucao',
+            'hora_solucao',
+            'data_finalizacao',
+            'hora_finalizacao',
         ]
         fields = [
             'uuid',
@@ -52,6 +60,12 @@ class TicketSerializer(serializers.ModelSerializer):
             'descricao',
             'grupo',
             'subgrupo',
+            'solucao',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
@@ -116,6 +130,10 @@ class TicketSerializerPutPatch(TicketSerializer):
             'solicitante',
             'titulo',
             'descricao',
+            'data_solucao',
+            'hora_solucao',
+            'data_finalizacao',
+            'hora_finalizacao',
         ]
         fields = [
             'solicitante',
@@ -124,12 +142,24 @@ class TicketSerializerPutPatch(TicketSerializer):
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
+            'solucao',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
             'avaliacao_atendente',
             'observacao_avaliacao_atendente',
             'titulo',
             'descricao',
             'grupo',
             'subgrupo',
+            'solucao',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
         ]
 
 
@@ -181,6 +211,8 @@ class TicketSerializerRetrieve(TicketSerializer):
     mensagens = MensagemTicketSerializerRetrieveTicket(many=True, source='ticket_ticket_mensagem_ticket', read_only=True)
     grupo = GrupoSerializer(read_only=True)
     subgrupo = SubgrupoSerializer(read_only=True)
+    solucao = MensagemTicketSerializerRetrieveTicket(many=False, source='ticket_ticket_mensagem_ticket', read_only=True)
+    finalizado = UsuarioSerializerSimples(read_only=True)
 
     class Meta(TicketSerializer.Meta):
         fields = [
@@ -198,6 +230,12 @@ class TicketSerializerRetrieve(TicketSerializer):
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
             'observacao_avaliacao_atendente',
+            'solucao',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
             'data_cadastro',
             'hora_cadastro',
             'mensagens',
