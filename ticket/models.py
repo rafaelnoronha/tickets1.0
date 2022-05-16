@@ -117,10 +117,10 @@ class Ticket(Base):
         default='',
     )
 
-    solucao = models.ForeignKey(
-        MensagemTicket,
-        verbose_name='Solução',
-        related_name='solucao_ticket_ticket',
+    solucionado = models.ForeignKey(
+        'MensagemTicket',
+        verbose_name='Solucionado',
+        related_name='solucionado_ticket_ticket',
         null=True,
         on_delete=models.PROTECT,
         help_text='Mensagem de solução do ticket',
