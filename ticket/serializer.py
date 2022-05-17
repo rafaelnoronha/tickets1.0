@@ -35,8 +35,50 @@ class TicketSerializer(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
-    solucao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
+
+    def validate_solicitante(self, solicitante):
+        if not solicitante.is_active:
+            raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante 'is_active=false'")
+
+        if solicitante.is_staff:
+            raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante 'is_staff=true'")
+
+        return solicitante
+
+    def validate_atendente(self, atendente):
+        if not atendente.is_active:
+            raise serializers.ValidationError("Não é possível salvar um ticket com um atendente 'is_active=false'")
+
+        if not atendente.is_staff:
+            raise serializers.ValidationError("Não é possível salvar um ticket com um atendente 'is_staff=false'")
+
+        return atendente
+
+    def validate_grupo(self, grupo):
+        if not grupo.ativo:
+            raise serializers.ValidationError("Não é possível salvar um ticket com um grupo 'ativo=true'")
+
+        return grupo
+
+    def validate_subgrupo(self, subgrupo):
+        if not subgrupo.ativo:
+            raise serializers.ValidationError("Não é possível salvar um ticket com um subgrupo 'ativo=false'")
+
+        return subgrupo
+
+    def validate_solucionado(self, solucionado):
+        if not solucionado.ativo:
+            raise serializers.ValidationError("Não é possível salvar um ticket com o solucionado 'ativo=false'")
+
+        return solucionado
+
+    def validate_finalizado(self, finalizado):
+        if not self.finalizado.ativo:
+            raise serializers.ValidationError("Não é possível salvar um ticket com o finalizado 'ativo=false'")
+
+        return finalizado
 
     class Meta:
         model = Ticket
