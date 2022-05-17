@@ -39,6 +39,8 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
             'tipo_titular',
             'data_validade',
             'ativo',
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 
@@ -72,6 +74,8 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
             'titular',
             'politica_privacidade',
             'consentimento',
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 

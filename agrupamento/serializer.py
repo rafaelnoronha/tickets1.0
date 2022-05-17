@@ -30,6 +30,9 @@ class GrupoSerializer(serializers.ModelSerializer):
             'nome',
             'peso',
             'tipo',
+            'ativo',
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 
@@ -49,4 +52,7 @@ class SubgrupoSerializer(serializers.ModelSerializer):
             'nome',
             'peso',
             'tipo',
+            'ativo',
+            'data_cadastro',
+            'hora_cadastro',
         ]

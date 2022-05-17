@@ -58,7 +58,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def validate_grupo(self, grupo):
         if not grupo.ativo:
-            raise serializers.ValidationError("Não é possível salvar um ticket com um grupo 'ativo=true'")
+            raise serializers.ValidationError("Não é possível salvar um ticket com um grupo 'ativo=false'")
 
         return grupo
 
@@ -176,6 +176,9 @@ class TicketSerializerPutPatch(TicketSerializer):
             'hora_solucao',
             'data_finalizacao',
             'hora_finalizacao',
+            'data_cadastro',
+            'hora_cadastro',
+
         ]
         fields = [
             'solicitante',
@@ -202,6 +205,8 @@ class TicketSerializerPutPatch(TicketSerializer):
             'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 

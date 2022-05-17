@@ -61,4 +61,6 @@ class EmpresaSerializer(serializers.ModelSerializer):
             'media_avaliacoes',
             'prestadora_servico',
             'ativo',
+            'data_cadastro',
+            'hora_cadastro',
         ]
