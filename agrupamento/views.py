@@ -1,4 +1,3 @@
-from rest_framework import viewsets
 from core.views import ModelViewSetComAuditoria
 from .models import Grupo, Subgrupo
 from .serializer import GrupoSerializer, SubgrupoSerializer, GrupoSerializerAuditoria, SubgrupoSerializerAuditoria
@@ -26,7 +25,7 @@ class SubgrupoViewSet(ModelViewSetComAuditoria):
     serializer_class = SubgrupoSerializer
     permission_classes = (BasePemission, )
     auditoria = {
-        'modelo': SubgrupoSerializerAuditoria,
+        'modelo': Subgrupo,
         'nome_tabela': 'subgrupo',
         'serializer': SubgrupoSerializerAuditoria,
     }

@@ -10,7 +10,7 @@ class GrupoSerializerAuditoria(serializers.ModelSerializer):
 
 class SubgrupoSerializerAuditoria(serializers.ModelSerializer):
     class Meta:
-        model = Grupo
+        model = Subgrupo
         fields = '__all__'
 
 
