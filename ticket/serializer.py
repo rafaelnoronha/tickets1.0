@@ -12,7 +12,7 @@ class TicketSerializerAuditoria(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    solucao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
 
     class Meta:
@@ -102,7 +102,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'descricao',
             'grupo',
             'subgrupo',
-            'solucao',
+            'solucionado',
             'data_solucao',
             'hora_solucao',
             'finalizado',
@@ -115,17 +115,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'data_cadastro',
             'hora_cadastro',
         ]
-
-    def validate(self, attrs):
-        if attrs.__contains__('solicitante') and attrs['solicitante']:
-            if attrs['solicitante'].is_staff:
-                raise ValidationError("Não é possível atribuir um usuário 'is_staff=true' para o campo 'solicitante'")
-
-        if attrs.__contains__('atendente') and attrs['atendente']:
-            if not attrs['atendente'].is_staff:
-                raise ValidationError("Não é possível atribuir um usuário 'is_staff=false' para o campo 'atendente'")
-
-        return attrs
 
 
 class TicketSerializerCreate(TicketSerializer):
