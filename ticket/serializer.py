@@ -151,6 +151,7 @@ class TicketSerializerPutPatch(TicketSerializer):
     atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
     grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True)
     subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True)
+    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid', allow_null=True)
 
     class Meta:
         model = Ticket
@@ -188,7 +189,7 @@ class TicketSerializerPutPatch(TicketSerializer):
             'descricao',
             'grupo',
             'subgrupo',
-            'solucao',
+            'solucionado',
             'data_solucao',
             'hora_solucao',
             'finalizado',
@@ -247,7 +248,7 @@ class TicketSerializerRetrieve(TicketSerializer):
     mensagens = MensagemTicketSerializerRetrieveTicket(many=True, source='ticket_ticket_mensagem_ticket', read_only=True)
     grupo = GrupoSerializer(read_only=True)
     subgrupo = SubgrupoSerializer(read_only=True)
-    solucao = MensagemTicketSerializerRetrieveTicket(many=False, source='ticket_ticket_mensagem_ticket', read_only=True)
+    solucionado = MensagemTicketSerializerRetrieveTicket(source='solucionado_ticket_ticket', read_only=True)
     finalizado = UsuarioSerializerSimples(read_only=True)
 
     class Meta(TicketSerializer.Meta):
@@ -266,7 +267,7 @@ class TicketSerializerRetrieve(TicketSerializer):
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
             'observacao_avaliacao_atendente',
-            'solucao',
+            'solucionado',
             'data_solucao',
             'hora_solucao',
             'finalizado',
