@@ -22,13 +22,12 @@ class GrupoSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             'codigo': {'allow_blank': True, },
-            'peso': {'allow_null': True, },
         }
         fields = [
             'uuid',
             'codigo',
             'nome',
-            'peso',
+            'prioridade',
             'tipo',
             'ativo',
             'data_cadastro',
@@ -44,13 +43,12 @@ class SubgrupoSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             'codigo': {'allow_blank': True, },
-            'peso': {'allow_null': True, },
         }
         fields = [
             'uuid',
             'codigo',
             'nome',
-            'peso',
+            'prioridade',
             'tipo',
             'ativo',
             'data_cadastro',

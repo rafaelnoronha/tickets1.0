@@ -74,4 +74,4 @@ class Auditoria(models.Model):
         verbose_name_plural = 'Auditoria'
 
     def __str__(self):
-        return f'{self.id} - {self.tipo_operacao} em {self.tabela_operacao} por {self.usuario_operacao}'
+        return self.uuid

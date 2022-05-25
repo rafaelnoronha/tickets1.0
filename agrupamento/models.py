@@ -25,10 +25,10 @@ class Grupo(Base):
         help_text='Nome do Grupo',
     )
 
-    peso = models.PositiveSmallIntegerField(
-        verbose_name='Peso',
+    prioridade = models.PositiveSmallIntegerField(
+        verbose_name='Prioridade',
         default=0,
-        help_text='Peso do Grupo',
+        help_text='Prioridade do Grupo',
     )
 
     tipo = models.CharField(
@@ -45,7 +45,7 @@ class Grupo(Base):
         verbose_name_plural = 'Grupos'
 
     def __str__(self):
-        return f'{self.id} - {self.nome}'
+        return self.uuid
 
 
 class Subgrupo(Base):
@@ -66,11 +66,10 @@ class Subgrupo(Base):
         help_text='Nome do Subgrupo',
     )
 
-
-    peso = models.PositiveSmallIntegerField(
-        verbose_name='Peso',
+    prioridade = models.PositiveSmallIntegerField(
+        verbose_name='Prioridade',
         default=0,
-        help_text='Peso do Subgrupo',
+        help_text='Prioridade do Subgrupo',
     )
 
     tipo = models.CharField(
@@ -87,4 +86,4 @@ class Subgrupo(Base):
         verbose_name_plural = 'Subgrupos'
 
     def __str__(self):
-        return f'{self.id} - {self.nome}'
+        return self.uuid

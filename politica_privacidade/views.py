@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins
-from core.views import CreateModelMixinAuditoria, UpdateModelMixinAuditoria, DestroyModelMixinAuditoria
+from core.views import CreateModelMixinAuditoria, DestroyModelMixinAuditoria
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
 from .filters import PoliticaPrivacidadeFilter, ConsentimentoPoliticaPrivacidadeFilter
 from core.permissions import BasePemission

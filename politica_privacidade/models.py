@@ -43,7 +43,7 @@ class PoliticaPrivacidade(Base):
         verbose_name_plural = 'Políticas de Privacidade'
 
     def __str__(self):
-        return f'{self.id} - {self.titulo}'
+        return self.uuid
 
 
 class ConsentimentoPoliticaPrivacidade(Base):
@@ -80,4 +80,4 @@ class ConsentimentoPoliticaPrivacidade(Base):
         verbose_name_plural = 'Consentimentos das Políticas de Privacidade'
 
     def __str__(self):
-        return f'{self.id} - {self.titular} - {self.politica_privacidade} [{self.consentimento}]'
+        return self.uuid

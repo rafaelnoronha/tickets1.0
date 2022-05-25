@@ -5,7 +5,7 @@ lookup_types_grupo = {
     'uuid': ['exact', 'in', ],
     'codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-    'peso': [
+    'prioridade': [
         'exact',
         'iexact',
         'icontains',
@@ -25,7 +25,7 @@ lookup_types_subgrupo = {
     'uuid': ['exact', 'in', ],
     'codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-    'peso': [
+    'prioridade': [
         'exact',
         'iexact',
         'icontains',
@@ -49,8 +49,8 @@ class GrupoFilter(filter.FilterSet):
             'uuid': lookup_types_grupo['uuid'],
             'codigo': lookup_types_grupo['codigo'],
             'nome': lookup_types_grupo['nome'],
-            'peso': lookup_types_grupo['peso'],
-            'tipo': lookup_types_grupo['peso'],
+            'prioridade': lookup_types_grupo['prioridade'],
+            'tipo': lookup_types_grupo['tipo'],
         }
 
 
@@ -61,6 +61,6 @@ class SubgrupoFilter(filter.FilterSet):
             'uuid': lookup_types_subgrupo['uuid'],
             'codigo': lookup_types_grupo['codigo'],
             'nome': lookup_types_subgrupo['nome'],
-            'peso': lookup_types_subgrupo['peso'],
-            'tipo': lookup_types_grupo['peso'],
+            'prioridade': lookup_types_subgrupo['prioridade'],
+            'tipo': lookup_types_grupo['tipo'],
         }

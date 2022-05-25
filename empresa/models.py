@@ -115,4 +115,4 @@ class Empresa(Base):
         verbose_name_plural = 'Empresas'
 
     def __str__(self):
-        return f'{self.id} - {self.razao_social} - {self.cpf_cnpj} [{self.ativo}]'
+        return self.uuid

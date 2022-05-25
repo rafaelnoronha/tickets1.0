@@ -1,4 +1,3 @@
-from rest_framework import viewsets
 from core.views import ModelViewSetComAuditoria
 from .models import Empresa
 from .serializer import EmpresaSerializer, EmpresaSerializerAuditoria

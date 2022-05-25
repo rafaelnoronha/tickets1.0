@@ -189,12 +189,6 @@ class TicketSerializerPutPatch(TicketSerializer):
             'descricao',
             'grupo',
             'subgrupo',
-            'solucionado',
-            'data_solucao',
-            'hora_solucao',
-            'finalizado',
-            'data_finalizacao',
-            'hora_finalizacao',
             'data_cadastro',
             'hora_cadastro',
         ]
@@ -245,10 +239,10 @@ class MensagemTicketSerializerRetrieveTicket(MensagemTicketSerializer):
 class TicketSerializerRetrieve(TicketSerializer):
     solicitante = UsuarioSerializerSimples(read_only=True)
     atendente = UsuarioSerializerSimples(read_only=True)
-    mensagens = MensagemTicketSerializerRetrieveTicket(many=True, source='ticket_ticket_mensagem_ticket', read_only=True)
+    mensagens = MensagemTicketSerializerRetrieveTicket(many=True, read_only=True)
     grupo = GrupoSerializer(read_only=True)
     subgrupo = SubgrupoSerializer(read_only=True)
-    solucionado = MensagemTicketSerializerRetrieveTicket(source='solucionado_ticket_ticket', read_only=True)
+    solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
     finalizado = UsuarioSerializerSimples(read_only=True)
 
     class Meta(TicketSerializer.Meta):
