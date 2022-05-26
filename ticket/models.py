@@ -33,6 +33,12 @@ class Ticket(Base):
         help_text='Status do ticket',
     )
 
+    prioridade = models.PositiveSmallIntegerField(
+        verbose_name='Prioridade',
+        default=0,
+        help_text='Prioridade de atendimento do ticket',
+    )
+
     solicitante = models.ForeignKey(
         Usuario,
         verbose_name='Solicitante',
@@ -166,7 +172,7 @@ class Ticket(Base):
         verbose_name_plural = 'Tickets'
 
     def __str__(self):
-        return f'{self.id} - {self.titulo} [{self.status}]'
+        return self.uuid
 
 
 class MensagemTicket(Base):
@@ -216,4 +222,4 @@ class MensagemTicket(Base):
         verbose_name_plural = 'Mensagens do Ticket'
 
     def __str__(self):
-        return f'{self.id} - {self.ticket} [{self.usuario}]'
+        return self.uuid

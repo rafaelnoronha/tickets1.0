@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.core.exceptions import ValidationError
 from .models import Ticket, MensagemTicket
 from usuario.serializer import UsuarioSerializerSimples
 from usuario.models import Usuario
@@ -84,6 +83,8 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         read_only_fields = [
             'uuid',
+            'status',
+            'prioridade',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
             'data_solucao',
@@ -94,6 +95,7 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = [
             'uuid',
             'status',
+            'prioridade',
             'solicitante',
             'atendente',
             'data_atribuicao_atendente',
@@ -119,78 +121,61 @@ class TicketSerializer(serializers.ModelSerializer):
 
 class TicketSerializerCreate(TicketSerializer):
     solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
-    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True)
-    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True)
-    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True)
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
+                                             required=False)
+    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
+                                         required=False)
+    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
+                                            required=False)
 
-    class Meta:
-        model = Ticket
+    class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'uuid',
+            'status',
+            'prioridade',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
-        ]
-        extra_kwargs = {
-            'grupo': {'allow_null': True, 'allow_blank': True},
-            'subgrupo': {'allow_null': True, 'allow_blank': True},
-        }
-        fields = [
-            'uuid',
-            'solicitante',
-            'atendente',
-            'data_atribuicao_atendente',
-            'hora_atribuicao_atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-        ]
-
-
-class TicketSerializerPutPatch(TicketSerializer):
-    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
-    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True)
-    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True)
-    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid', allow_null=True)
-
-    class Meta:
-        model = Ticket
-        read_only_fields = [
-            'uuid',
-            'data_atribuicao_atendente',
-            'hora_atribuicao_atendente',
-            'solicitante',
-            'titulo',
-            'descricao',
-            'data_solucao',
-            'hora_solucao',
-            'data_finalizacao',
-            'hora_finalizacao',
-            'data_cadastro',
-            'hora_cadastro',
-
-        ]
-        fields = [
-            'solicitante',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'atendente',
-            'data_atribuicao_atendente',
-            'hora_atribuicao_atendente',
-            'solucao',
+            'solucionado',
             'data_solucao',
             'hora_solucao',
             'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
             'observacao_avaliacao_atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
             'data_cadastro',
             'hora_cadastro',
+        ]
+
+
+class TicketSerializerPutPatch(TicketSerializer):
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=False)
+    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
+                                         required=False)
+    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
+                                            required=False)
+    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
+                                               allow_null=True, required=False)
+
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'solucionado'
+            'finalizado',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
+            'avaliacao_atendente',
+            'observacao_avaliacao_atendente',
         ]
 
 
@@ -239,35 +224,12 @@ class MensagemTicketSerializerRetrieveTicket(MensagemTicketSerializer):
 class TicketSerializerRetrieve(TicketSerializer):
     solicitante = UsuarioSerializerSimples(read_only=True)
     atendente = UsuarioSerializerSimples(read_only=True)
-    mensagens = MensagemTicketSerializerRetrieveTicket(many=True, read_only=True)
+    mensagens = MensagemTicketSerializerRetrieveTicket(source='ticket_ticket_mensagem_ticket', many=True,
+                                                       read_only=True)
     grupo = GrupoSerializer(read_only=True)
     subgrupo = SubgrupoSerializer(read_only=True)
     solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
     finalizado = UsuarioSerializerSimples(read_only=True)
 
     class Meta(TicketSerializer.Meta):
-        fields = [
-            'uuid',
-            'status',
-            'solicitante',
-            'atendente',
-            'data_atribuicao_atendente',
-            'hora_atribuicao_atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'avaliacao_atendente',
-            'observacao_avaliacao_atendente',
-            'solucionado',
-            'data_solucao',
-            'hora_solucao',
-            'finalizado',
-            'data_finalizacao',
-            'hora_finalizacao',
-            'data_cadastro',
-            'hora_cadastro',
-            'mensagens',
-        ]
+        TicketSerializer.Meta.fields.append('mensagens')

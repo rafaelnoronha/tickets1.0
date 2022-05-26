@@ -136,11 +136,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
 
     def __str__(self):
-        return f'{self.uuid};{self.username};{self.first_name};{self.last_name};{self.email};{self.last_login};' \
-               f'{self.is_superuser};{self.is_staff};{self.is_active};{self.date_joined};{self.is_staff};' \
-               f'{self.telefone};{self.celular};{self.media_avaliacoes};{self.empresa.uuid if self.empresa else ""};' \
-               f'{self.observacoes};{self.numero_tentativas_login};{self.verificacao_duas_etapas};' \
-               f'{self.codigo_verificacao_segunda_etapa};{self.data_cadastro};{self.hora_cadastro}'
+        return self.uuid
 
 
 class LogAutenticacao(models.Model):
@@ -192,4 +188,4 @@ class LogAutenticacao(models.Model):
         verbose_name_plural = 'Logs de autenticação'
 
     def __str__(self):
-        return f'{self.id} - {self.usuario} [{self.autenticado}]'
+        return self.uuid
