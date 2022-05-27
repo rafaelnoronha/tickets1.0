@@ -15,7 +15,7 @@ class Grupo(Base):
     codigo = models.CharField(
         verbose_name='Código',
         max_length=20,
-        default='',
+        unique=True,
         help_text='Código do Grupo',
     )
 
@@ -34,6 +34,7 @@ class Grupo(Base):
     tipo = models.CharField(
         verbose_name='Tipo do Grupo',
         choices=TIPO_CHOISES,
+        default='A',
         max_length=1,
         help_text='Peso do Grupo',
     )
@@ -56,7 +57,7 @@ class Subgrupo(Base):
     codigo = models.CharField(
         verbose_name='Código',
         max_length=20,
-        default='',
+        unique=True,
         help_text='Código do Subgrupo',
     )
 
@@ -75,6 +76,7 @@ class Subgrupo(Base):
     tipo = models.CharField(
         verbose_name='Tipo do Grupo',
         choices=TIPO_CHOISES,
+        default='A',
         max_length=1,
         help_text='Peso do Subgrupo',
     )

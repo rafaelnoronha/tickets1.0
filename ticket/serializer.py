@@ -232,4 +232,29 @@ class TicketSerializerRetrieve(TicketSerializer):
     finalizado = UsuarioSerializerSimples(read_only=True)
 
     class Meta(TicketSerializer.Meta):
-        TicketSerializer.Meta.fields.append('mensagens')
+        fields = [
+            'uuid',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
+            'avaliacao_atendente',
+            'observacao_avaliacao_atendente',
+            'mensagens',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
