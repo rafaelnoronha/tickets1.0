@@ -150,7 +150,7 @@ class TicketSerializerCreate(TicketSerializer):
         ]
 
 
-class TicketSerializerPutPatch(TicketSerializer):
+class TicketSerializerUpdatePartialUpdate(TicketSerializer):
     atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=False)
     grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
                                          required=False)

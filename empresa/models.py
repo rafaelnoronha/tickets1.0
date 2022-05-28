@@ -80,9 +80,10 @@ class Empresa(Base):
 
     pais = models.CharField(
         verbose_name='País',
-        max_length=60,
+        max_length=4,
         choices=PAISES_CHOISES,
-        help_text='Nome do pais',
+        default="1058",
+        help_text='Código do país de acordo com a SEFAZ',
     )
 
     telefone = models.CharField(

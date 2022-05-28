@@ -3,7 +3,7 @@ from core.views import ModelViewSetComAuditoria, CreateModelMixinAuditoria
 from .models import Ticket, MensagemTicket
 from .filters import TicketFilter, MensagemTicketFilter
 from core.permissions import BasePemission
-from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, TicketSerializerPutPatch, \
+from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, TicketSerializerUpdatePartialUpdate, \
                         MensagemTicketSerializer, MensagemTicketSerializerCreate, MensagemTicketSerializerRetrieve, \
                         TicketSerializerAuditoria, MensagemTicketSerializerAuditoria
 
@@ -22,8 +22,8 @@ class TicketViewSet(ModelViewSetComAuditoria):
     serializer_classes = {
         'retrieve': TicketSerializerRetrieve,
         'create': TicketSerializerCreate,
-        'update': TicketSerializerPutPatch,
-        'partial_update': TicketSerializerPutPatch,
+        'update': TicketSerializerUpdatePartialUpdate,
+        'partial_update': TicketSerializerUpdatePartialUpdate,
     }
 
     def get_serializer_class(self):

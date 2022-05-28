@@ -34,16 +34,15 @@ class EmpresaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Empresa
-
-        extra_kwargs = {
-            'complemento': {'allow_blank': True},
-        }
-
         read_only_fields = [
             'uuid',
             'media_avaliacoes',
+            'data_cadastro',
+            'hora_cadastro',
         ]
-
+        extra_kwargs = {
+            'complemento': {'allow_blank': True},
+        }
         fields = [
             'uuid',
             'cpf_cnpj',
@@ -63,4 +62,16 @@ class EmpresaSerializer(serializers.ModelSerializer):
             'ativo',
             'data_cadastro',
             'hora_cadastro',
+        ]
+
+
+class EmpresaSerializerUpdatePartialUpdate(EmpresaSerializer):
+    class Meta(EmpresaSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'media_avaliacoes',
+            'data_cadastro',
+            'hora_cadastro',
+            'cpf_cnpj',
+            'prestadora_servico',
         ]

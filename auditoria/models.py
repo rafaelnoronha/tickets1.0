@@ -1,5 +1,4 @@
 from django.db import models
-from core.models import TABELAS_BANCO_CHOISES
 from usuario.models import Usuario
 import uuid
 
@@ -35,7 +34,6 @@ class Auditoria(models.Model):
 
     tabela_operacao = models.CharField(
         verbose_name='Tabela da Operação',
-        choices=TABELAS_BANCO_CHOISES,
         max_length=100,
         help_text='Tabela onde ocorreu a operação',
     )
