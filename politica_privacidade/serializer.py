@@ -31,11 +31,14 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
         model = PoliticaPrivacidade
         read_only_fields = [
             'uuid',
+            'data_cadastro',
+            'hora_cadastro',
         ]
         fields = [
             'uuid',
+            'codigo',
             'titulo',
-            'politica',
+            'descricao',
             'tipo_titular',
             'data_validade',
             'ativo',
@@ -68,6 +71,8 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
         model = ConsentimentoPoliticaPrivacidade
         read_only_fields = [
             'uuid',
+            'data_cadastro',
+            'hora_cadastro',
         ]
         fields = [
             'uuid',

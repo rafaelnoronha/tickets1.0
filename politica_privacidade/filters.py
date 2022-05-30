@@ -5,8 +5,9 @@ from empresa.filters import lookup_types_empresa
 
 lookup_types_politica_privacidade = {
     'uuid': ['exact', 'in', ],
+    'codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-    'politica': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'tipo_titular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'data_validade': [
         'exact',
@@ -21,6 +22,30 @@ lookup_types_politica_privacidade = {
         'in',
     ],
     'ativo': ['exact', ],
+    'data_cadastro': [
+        'exact',
+        'range',
+        'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
+        'month', 'month__gte', 'month__gt', 'month__lte', 'month__lt', 'month__range', 'month__in',
+        'day', 'day__gte', 'day__gt', 'day__lte', 'day__lt', 'day__range', 'day__in',
+        'gte',
+        'gt',
+        'lte',
+        'lt',
+        'in',
+    ],
+    'hora_cadastro': [
+        'exact',
+        'range',
+        'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
+        'minute', 'minute__gte', 'minute__gt', 'minute__lte', 'minute__lt', 'minute__range', 'minute__in',
+        'second', 'second__gte', 'second__gt', 'second__lte', 'second__lt', 'second__range', 'second__in',
+        'gte',
+        'gt',
+        'lte',
+        'lt',
+        'in',
+    ],
 }
 
 lookup_types_consentimento_politica_privacidade = {
@@ -28,6 +53,30 @@ lookup_types_consentimento_politica_privacidade = {
     'titular': ['exact', ],
     'politica_privacidade': ['exact', ],
     'consentimento': ['exact', ],
+    'data_cadastro': [
+        'exact',
+        'range',
+        'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
+        'month', 'month__gte', 'month__gt', 'month__lte', 'month__lt', 'month__range', 'month__in',
+        'day', 'day__gte', 'day__gt', 'day__lte', 'day__lt', 'day__range', 'day__in',
+        'gte',
+        'gt',
+        'lte',
+        'lt',
+        'in',
+    ],
+    'hora_cadastro': [
+        'exact',
+        'range',
+        'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
+        'minute', 'minute__gte', 'minute__gt', 'minute__lte', 'minute__lt', 'minute__range', 'minute__in',
+        'second', 'second__gte', 'second__gt', 'second__lte', 'second__lt', 'second__range', 'second__in',
+        'gte',
+        'gt',
+        'lte',
+        'lt',
+        'in',
+    ],
 }
 
 
@@ -36,11 +85,14 @@ class PoliticaPrivacidadeFilter(filter.FilterSet):
         model = PoliticaPrivacidade
         fields = {
             'uuid': lookup_types_politica_privacidade['uuid'],
+            'codigo': lookup_types_politica_privacidade['codigo'],
             'titulo': lookup_types_politica_privacidade['titulo'],
-            'politica': lookup_types_politica_privacidade['politica'],
+            'descricao': lookup_types_politica_privacidade['descricao'],
             'tipo_titular': lookup_types_politica_privacidade['tipo_titular'],
             'data_validade': lookup_types_politica_privacidade['data_validade'],
             'ativo': lookup_types_politica_privacidade['ativo'],
+            'data_cadastro': lookup_types_politica_privacidade['data_cadastro'],
+            'hora_cadastro': lookup_types_politica_privacidade['hora_cadastro'],
         }
 
 
@@ -82,10 +134,15 @@ class ConsentimentoPoliticaPrivacidadeFilter(filter.FilterSet):
             'titular__is_active': lookup_types_usuario['is_active'],
             'titular__groups': lookup_types_usuario['groups'],
             'politica_privacidade': lookup_types_consentimento_politica_privacidade['politica_privacidade'],
+            'politica_privacidade__codigo': lookup_types_politica_privacidade['codigo'],
             'politica_privacidade__titulo': lookup_types_politica_privacidade['titulo'],
-            'politica_privacidade__politica': lookup_types_politica_privacidade['politica'],
+            'politica_privacidade__descricao': lookup_types_politica_privacidade['descricao'],
             'politica_privacidade__tipo_titular': lookup_types_politica_privacidade['tipo_titular'],
             'politica_privacidade__data_validade': lookup_types_politica_privacidade['data_validade'],
             'politica_privacidade__ativo': lookup_types_politica_privacidade['ativo'],
-            'consentimento': lookup_types_consentimento_politica_privacidade['consentimento']
+            'politica_privacidade__data_cadastro': lookup_types_politica_privacidade['data_cadastro'],
+            'politica_privacidade__hora_cadastro': lookup_types_politica_privacidade['hora_cadastro'],
+            'consentimento': lookup_types_consentimento_politica_privacidade['consentimento'],
+            'data_cadastro': lookup_types_consentimento_politica_privacidade['data_cadastro'],
+            'hora_cadastro': lookup_types_consentimento_politica_privacidade['hora_cadastro'],
         }

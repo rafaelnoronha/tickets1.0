@@ -83,6 +83,7 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         read_only_fields = [
             'uuid',
+            'codigo',
             'status',
             'prioridade',
             'data_atribuicao_atendente',
@@ -94,6 +95,7 @@ class TicketSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'uuid',
+            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -131,6 +133,7 @@ class TicketSerializerCreate(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'uuid',
+            'codigo',
             'status',
             'prioridade',
             'data_atribuicao_atendente',
@@ -162,6 +165,7 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'uuid',
+            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -234,6 +238,7 @@ class TicketSerializerRetrieve(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         fields = [
             'uuid',
+            'codigo',
             'status',
             'prioridade',
             'solicitante',

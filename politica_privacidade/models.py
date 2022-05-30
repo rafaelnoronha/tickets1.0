@@ -13,15 +13,22 @@ class PoliticaPrivacidade(Base):
     Modelo que vai gerenciar as políticas de privacidade.
     """
 
+    codigo = models.CharField(
+        verbose_name='Código',
+        max_length=150,
+        unique=True,
+        help_text='Código da política de privacidade',
+    )
+
     titulo = models.CharField(
         verbose_name='Título da Política de Privacidade',
         max_length=150,
         help_text='Título da política de privacidade',
     )
 
-    politica = models.TextField(
-        verbose_name='Política de Privacidade',
-        help_text='O conteúdo da política de privacidade',
+    descricao = models.TextField(
+        verbose_name='Descrição',
+        help_text='A descrição/conteúdo da política de privacidade',
     )
 
     tipo_titular = models.CharField(
@@ -69,7 +76,6 @@ class ConsentimentoPoliticaPrivacidade(Base):
 
     consentimento = models.BooleanField(
         verbose_name='Consentimento',
-        default=False,
         help_text='Consentimento ou não do usuário, onde o consentimento = True e o não consentimento = False',
     )
 

@@ -20,10 +20,27 @@ AVALIACAO_CHOISES = [
 ]
 
 
+def serializador_codigo():
+    ultimo_registro = Ticket.objects.all().last()
+
+    if not ultimo_registro:
+        return 1
+
+    return int(ultimo_registro.codigo) + 1
+
+
 class Ticket(Base):
     """
     Modelo dos tickets, em específico do cabeçalho dos tickets, sem as mensagens/acompanhamentos.
     """
+
+    codigo = models.CharField(
+        verbose_name='Código',
+        max_length=10,
+        default=serializador_codigo,
+        unique=True,
+        help_text='Código do ticket',
+    )
 
     status = models.CharField(
         verbose_name='Status',
