@@ -21,11 +21,12 @@ AVALIACAO_CHOISES = [
 
 
 def serializador_codigo():
-    ultimo_registro = Ticket.objects.all().last()
+    ultimo_registro = Ticket.objects.all().order_by('id').last()
 
     if not ultimo_registro:
         return 1
 
+    print(ultimo_registro.id)
     return int(ultimo_registro.codigo) + 1
 
 

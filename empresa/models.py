@@ -5,7 +5,7 @@ from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
 def serializador_codigo():
-    ultimo_registro = Empresa.objects.all().last()
+    ultimo_registro = Empresa.objects.all().order_by('id').last()
 
     if not ultimo_registro:
         return 1

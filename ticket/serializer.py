@@ -88,6 +88,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'prioridade',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
+            'solucionado',
             'data_solucao',
             'hora_solucao',
             'data_finalizacao',
@@ -154,13 +155,16 @@ class TicketSerializerCreate(TicketSerializer):
 
 
 class TicketSerializerUpdatePartialUpdate(TicketSerializer):
-    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=False)
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=False,
+                                             allow_null=True)
     grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
                                          required=False)
     subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
                                             required=False)
     solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
                                                allow_null=True, required=False)
+    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
+                                              required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -175,7 +179,10 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
             'titulo',
             'descricao',
             'solucionado'
-            'finalizado',
+            'data_solucao',
+            'hora_solucao',
+            'data_finalizacao',
+            'hora_finalizacao',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
