@@ -136,7 +136,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
 
 
 class LogAutenticacao(models.Model):
@@ -188,4 +188,4 @@ class LogAutenticacao(models.Model):
         verbose_name_plural = 'Logs de autenticação'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)

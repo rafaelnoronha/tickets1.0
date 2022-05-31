@@ -46,7 +46,7 @@ class Grupo(Base):
         verbose_name_plural = 'Grupos'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
 
 
 class Subgrupo(Base):
@@ -88,4 +88,4 @@ class Subgrupo(Base):
         verbose_name_plural = 'Subgrupos'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)

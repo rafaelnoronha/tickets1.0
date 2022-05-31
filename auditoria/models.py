@@ -72,4 +72,4 @@ class Auditoria(models.Model):
         verbose_name_plural = 'Auditoria'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)

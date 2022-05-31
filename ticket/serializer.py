@@ -68,16 +68,14 @@ class TicketSerializer(serializers.ModelSerializer):
         return subgrupo
 
     def validate_solucionado(self, solucionado):
-        if not solucionado.ativo:
-            raise serializers.ValidationError("Não é possível salvar um ticket com o solucionado 'ativo=false'")
+        if not solucionado.solucao:
+            raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao 'solucao=false'")
+
+        if not solucionado.usuario.is_staff:
+            raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao em que o usuario esteja"
+                                              "como 'is_staff=false'")
 
         return solucionado
-
-    def validate_finalizado(self, finalizado):
-        if not self.finalizado.ativo:
-            raise serializers.ValidationError("Não é possível salvar um ticket com o finalizado 'ativo=false'")
-
-        return finalizado
 
     class Meta:
         model = Ticket
@@ -193,7 +191,17 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
 class MensagemTicketSerializer(serializers.ModelSerializer):
     usuario = serializers.SlugRelatedField(read_only=True, slug_field='username')
     ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='uuid', allow_null=True,
+                                                        required=False)
+
+    def validate_usuario(self, usuario):
+        mensagem = self.instance
+
+        if mensagem.solucao and not usuario.is_staff:
+            raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket com um usuário "
+                                              "'is_staff=false'")
+
+        return usuario
 
     class Meta:
         model = MensagemTicket
@@ -217,7 +225,8 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 class MensagemTicketSerializerCreate(MensagemTicketSerializer):
     usuario = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
     ticket = serializers.SlugRelatedField(queryset=Ticket.objects.all(), slug_field='uuid')
-    mensagem_relacionada = serializers.PrimaryKeyRelatedField(queryset=MensagemTicket.objects.all(), allow_null=True)
+    mensagem_relacionada = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
+                                                        allow_null=True, required=False)
 
 
 class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):

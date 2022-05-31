@@ -190,7 +190,7 @@ class Ticket(Base):
         verbose_name_plural = 'Tickets'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
 
 
 class MensagemTicket(Base):
@@ -240,4 +240,4 @@ class MensagemTicket(Base):
         verbose_name_plural = 'Mensagens do Ticket'
 
     def __str__(self):
-        return self.uuid
+        return str(self.uuid)
