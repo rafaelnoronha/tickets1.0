@@ -13,6 +13,7 @@ class TicketSerializerAuditoria(serializers.ModelSerializer):
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
 
     class Meta:
         model = Ticket
@@ -36,6 +37,7 @@ class TicketSerializer(serializers.ModelSerializer):
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     def validate_solicitante(self, solicitante):
         if not solicitante.is_active:
@@ -101,6 +103,12 @@ class TicketSerializer(serializers.ModelSerializer):
 
         return observacao_avaliacao_atendente
 
+    def validate_cancelado(self, cancelado):
+        if self.instance.cancelado and not self.instance.motivo_cancelamento:
+            raise serializers.ValidationError("Não é possível cancelar um ticket sem informar o motivo do cancelamento")
+
+        return cancelado
+
     class Meta:
         model = Ticket
         read_only_fields = [
@@ -113,8 +121,13 @@ class TicketSerializer(serializers.ModelSerializer):
             'solucionado',
             'data_solucao',
             'hora_solucao',
+            'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
         ]
         fields = [
             'uuid',
@@ -135,6 +148,10 @@ class TicketSerializer(serializers.ModelSerializer):
             'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
@@ -167,6 +184,10 @@ class TicketSerializerCreate(TicketSerializer):
             'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',
@@ -187,6 +208,8 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
                                                allow_null=True, required=False)
     finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
                                               required=False)
+    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
+                                              required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -204,6 +227,8 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
             'hora_solucao',
             'data_finalizacao',
             'hora_finalizacao',
+            'data_cancelamento',
+            'hora_cancelamento',
         ]
 
 
@@ -269,6 +294,7 @@ class TicketSerializerRetrieve(TicketSerializer):
     subgrupo = SubgrupoSerializer(read_only=True)
     solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
     finalizado = UsuarioSerializerSimples(read_only=True)
+    cancelado = UsuarioSerializerSimples(read_only=True)
 
     class Meta(TicketSerializer.Meta):
         fields = [
@@ -290,6 +316,9 @@ class TicketSerializerRetrieve(TicketSerializer):
             'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
+            'cancelado',
+            'data_cancelamento',
+            'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'avaliacao_atendente',

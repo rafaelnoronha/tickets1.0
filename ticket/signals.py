@@ -21,11 +21,13 @@ def pre_save_ticket(sender, instance, **kwargs):
         if instance.solucionado:
             instance.data_solucao = datetime.today().strftime('%Y-%m-%d')
             instance.hora_solucao = datetime.today().strftime('%H:%M:%S')
-
         elif not instance.solucionado:
             instance.data_solucao = None
             instance.hora_solucao = None
 
+        if not ticket_antigo.cancelado and instance.cancelado:
+            instance.data_cancelamento = datetime.today().strftime('%Y-%m-%d')
+            instance.hora_cancelamento = datetime.today().strftime('%H:%M:%S')
     else:
         if instance.atendente:
             instance.data_atribuicao_atendente = datetime.today().strftime('%Y-%m-%d')

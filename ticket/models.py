@@ -183,6 +183,33 @@ class Ticket(Base):
         help_text='Hora que o ticket foi finalizado',
     )
 
+    cancelado = models.ForeignKey(
+        Usuario,
+        verbose_name='Cancelado',
+        related_name='cancelado_ticket_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Usuário que finalizou o ticket',
+    )
+
+    motivo_cancelamento = models.TextField(
+        verbose_name='Motivo do Cancelamento',
+        help_text='Motivo/Justificativa do cancelamento do ticket',
+        default='',
+    )
+
+    data_cancelamento = models.DateField(
+        verbose_name='Data de Cancelamento',
+        null=True,
+        help_text='Data que o ticket foi cancelado',
+    )
+
+    hora_cancelamento = models.TimeField(
+        verbose_name='Hora do Cancelamento',
+        null=True,
+        help_text='Hora que o ticket foi cancelado',
+    )
+
     class Meta:
         ordering = ['-id']
         db_table = 'ticket'
