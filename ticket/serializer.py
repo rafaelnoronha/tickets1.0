@@ -47,35 +47,59 @@ class TicketSerializer(serializers.ModelSerializer):
         return solicitante
 
     def validate_atendente(self, atendente):
-        if not atendente.is_active:
+        if atendente and not atendente.is_active:
             raise serializers.ValidationError("Não é possível salvar um ticket com um atendente 'is_active=false'")
 
-        if not atendente.is_staff:
+        if atendente and not atendente.is_staff:
             raise serializers.ValidationError("Não é possível salvar um ticket com um atendente 'is_staff=false'")
 
         return atendente
 
     def validate_grupo(self, grupo):
-        if not grupo.ativo:
+        if grupo and not grupo.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket com um grupo 'ativo=false'")
 
         return grupo
 
     def validate_subgrupo(self, subgrupo):
-        if not subgrupo.ativo:
+        if subgrupo and not subgrupo.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket com um subgrupo 'ativo=false'")
 
         return subgrupo
 
     def validate_solucionado(self, solucionado):
-        if not solucionado.solucao:
+        if solucionado and not solucionado.solucao:
             raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao 'solucao=false'")
 
-        if not solucionado.usuario.is_staff:
+        if solucionado and not solucionado.usuario.is_staff:
             raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao em que o usuario esteja"
                                               "como 'is_staff=false'")
 
         return solucionado
+
+    def validate_avaliacao_solicitante(self, avaliacao_solicitante):
+        if self.instance.avaliacao_solicitante is not None:
+            raise serializers.ValidationError("Não é possível avaliar um ticket que já está avaliado")
+
+        return avaliacao_solicitante
+
+    def validate_avaliacao_atendente(self, avaliacao_atendente):
+        if self.instance.avaliacao_atendente is not None:
+            raise serializers.ValidationError("Não é possível avaliar um ticket que já está avaliado")
+
+        return avaliacao_atendente
+
+    def validate_observacao_avaliacao_solicitante(self, observacao_avaliacao_solicitante):
+        if self.instance.observacao_avaliacao_solicitante:
+            raise serializers.ValidationError("Não é possível sobrescrever a observacao de uma avaliação")
+
+        return observacao_avaliacao_solicitante
+
+    def validate_observacao_avaliacao_atendente(self, observacao_avaliacao_atendente):
+        if self.instance.observacao_avaliacao_atendente:
+            raise serializers.ValidationError("Não é possível sobrescrever a observacao de uma avaliação")
+
+        return observacao_avaliacao_atendente
 
     class Meta:
         model = Ticket
@@ -176,15 +200,10 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
             'hora_atribuicao_atendente',
             'titulo',
             'descricao',
-            'solucionado'
             'data_solucao',
             'hora_solucao',
             'data_finalizacao',
             'hora_finalizacao',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'avaliacao_atendente',
-            'observacao_avaliacao_atendente',
         ]
 
 
@@ -195,9 +214,9 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
                                                         required=False)
 
     def validate_usuario(self, usuario):
-        mensagem = self.instance
+        mensagem = self.initial_data
 
-        if mensagem.solucao and not usuario.is_staff:
+        if 'solucao' in mensagem and mensagem['solucao'] and not usuario.is_staff:
             raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket com um usuário "
                                               "'is_staff=false'")
 
