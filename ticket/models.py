@@ -6,7 +6,7 @@ from agrupamento.models import Grupo, Subgrupo
 STATUS_CHOISES = [
     ('0', 'Aberto'),
     ('1', 'Processando'),
-    ('2', 'Concluído'),
+    ('2', 'Solucionado'),
     ('3', 'Finalizado'),
     ('4', 'Cancelado'),
 ]

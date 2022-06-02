@@ -89,6 +89,9 @@ class TicketSerializer(serializers.ModelSerializer):
         if self.instance.avaliacao_atendente is not None:
             raise serializers.ValidationError("Não é possível avaliar um ticket que já está avaliado")
 
+        if not self.instance.atendente:
+            raise serializers.ValidationError("Não é possível avaliar um ticket sem um atendente")
+
         return avaliacao_atendente
 
     def validate_observacao_avaliacao_solicitante(self, observacao_avaliacao_solicitante):
