@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, UserManager
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
-import uuid
+from core.models import get_uuid
 
 
 class GerenciadorUsuario(UserManager):
@@ -45,7 +45,7 @@ class Usuario(AbstractUser):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4,
+        default=get_uuid,
         help_text='UUID Código único não sequencial',
     )
 
@@ -146,7 +146,7 @@ class LogAutenticacao(models.Model):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4,
+        default=get_uuid,
         help_text='UUID Código único não sequencial',
     )
 

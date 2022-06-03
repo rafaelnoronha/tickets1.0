@@ -1,5 +1,5 @@
 from django.db import models
-import uuid
+from django.db import connection
 
 
 UF_CHOICES = [
@@ -293,6 +293,14 @@ PAISES_CHOISES = [
 ]
 
 
+def get_uuid():
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT uuid_generate_v4()")
+        uuid = cursor.fetchone()[0]
+
+    return uuid
+
+
 class Base(models.Model):
     """
     Modelo padrão do sistema, herdado em quase todas as tabelas.
@@ -300,7 +308,7 @@ class Base(models.Model):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4,
+        default=get_uuid,
         unique=True,
         help_text='UUID Código único não sequencial',
     )
