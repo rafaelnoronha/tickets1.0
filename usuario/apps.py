@@ -7,4 +7,6 @@ class UsuarioConfig(AppConfig):
 
     def ready(self):
         # noinspection PyUnresolvedReferences
+        import core.signals
+        # noinspection PyUnresolvedReferences
         import usuario.signals

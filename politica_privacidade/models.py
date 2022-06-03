@@ -2,6 +2,7 @@ from django.db import models
 from core.models import Base
 from usuario.models import Usuario
 
+
 TIPO_TITULAR_CHOISES = [
     ('U', 'USUÁRIO'),
     ('E', 'EMPRESA'),

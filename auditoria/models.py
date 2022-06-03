@@ -1,6 +1,7 @@
 from django.db import models
 from usuario.models import Usuario
-import uuid
+from core.models import get_uuid
+
 
 TIPO_OPERACAO_CHOISES = [
     ('CREATE', 'CREATE'),
@@ -16,7 +17,7 @@ class Auditoria(models.Model):
 
     uuid = models.UUIDField(
         verbose_name='UUID',
-        default=uuid.uuid4,
+        default=get_uuid,
         help_text='UUID Código único não sequencial',
     )
 

@@ -3,6 +3,7 @@ from core.models import Base
 from usuario.models import Usuario
 from agrupamento.models import Grupo, Subgrupo
 
+
 STATUS_CHOISES = [
     ('0', 'Aberto'),
     ('1', 'Processando'),

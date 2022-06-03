@@ -1,5 +1,6 @@
 from django.db import models
-from core.models import Base
+from core.models import Base, get_uuid
+
 
 TIPO_CHOISES = [
     ('A', 'Analítico'),
