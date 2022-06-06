@@ -49,6 +49,10 @@ class PoliticaPrivacidade(Base):
         db_table = 'politica_privacidade'
         verbose_name = 'Política de Privacidade'
         verbose_name_plural = 'Políticas de Privacidade'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_pop'),
+            models.Index(fields=['codigo'], name='idx_codigo_pop'),
+        ]
 
     def __str__(self):
         return str(self.uuid)
@@ -85,6 +89,11 @@ class ConsentimentoPoliticaPrivacidade(Base):
         db_table = 'consentimento_politica_privacidade'
         verbose_name = 'Consentimento da Política de Privacidade'
         verbose_name_plural = 'Consentimentos das Políticas de Privacidade'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_cpop'),
+            models.Index(fields=['politica_privacidade'], name='idx_politica_privacidade_cpop'),
+            models.Index(fields=['consentimento'], name='idx_consentimento_cpop'),
+        ]
 
     def __str__(self):
         return str(self.uuid)

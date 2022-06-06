@@ -134,6 +134,11 @@ class Usuario(AbstractUser):
         db_table = 'usuario'
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_usr'),
+            models.Index(fields=['empresa'], name='idx_empresa_usr'),
+            models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
+        ]
 
     def __str__(self):
         return str(self.uuid)
@@ -186,6 +191,10 @@ class LogAutenticacao(models.Model):
         db_table = 'log_autenticacao'
         verbose_name = 'Log de autenticação'
         verbose_name_plural = 'Logs de autenticação'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_lgaut'),
+            models.Index(fields=['ip'], name='idx_ip_lgaut'),
+        ]
 
     def __str__(self):
         return str(self.uuid)

@@ -216,6 +216,21 @@ class Ticket(Base):
         db_table = 'ticket'
         verbose_name = 'Ticket'
         verbose_name_plural = 'Tickets'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_tik'),
+            models.Index(fields=['codigo'], name='idx_codigo_tik'),
+            models.Index(fields=['status'], name='idx_status_tik'),
+            models.Index(fields=['prioridade'], name='idx_prioridade_tik'),
+            models.Index(fields=['solicitante'], name='idx_solicitante_tik'),
+            models.Index(fields=['atendente'], name='idx_atendente_tik'),
+            models.Index(fields=['avaliacao_atendente'], name='idx_avaliacao_atendente_tik'),
+            models.Index(fields=['avaliacao_solicitante'], name='idx_avaliacao_solicitante_tik'),
+            models.Index(fields=['grupo'], name='idx_grupo_tik'),
+            models.Index(fields=['subgrupo'], name='idx_subgrupo_tik'),
+            models.Index(fields=['solucionado'], name='idx_solucionado_tik'),
+            models.Index(fields=['finalizado'], name='idx_finalizado_tik'),
+            models.Index(fields=['cancelado'], name='idx_cancelado_tik'),
+        ]
 
     def __str__(self):
         return str(self.uuid)
@@ -266,6 +281,12 @@ class MensagemTicket(Base):
         db_table = 'mensagem_ticket'
         verbose_name = 'Mensagem do Ticket'
         verbose_name_plural = 'Mensagens do Ticket'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_mtik'),
+            models.Index(fields=['ticket'], name='idx_codigo_mtik'),
+            models.Index(fields=['usuario'], name='idx_status_mtik'),
+            models.Index(fields=['solucao'], name='idx_prioridade_mtik'),
+        ]
 
     def __str__(self):
         return str(self.uuid)

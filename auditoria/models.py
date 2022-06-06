@@ -71,6 +71,12 @@ class Auditoria(models.Model):
         db_table = 'auditoria'
         verbose_name = 'Auditoria'
         verbose_name_plural = 'Auditoria'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid'),
+            models.Index(fields=['tabela_operacao'], name='idx_tabela_operacao_audt'),
+            models.Index(fields=['tipo_operacao'], name='idx_tipo_operacao_audt'),
+            models.Index(fields=['usuario_operacao'], name='idx_usuario_operacao_audt'),
+        ]
 
     def __str__(self):
         return str(self.uuid)

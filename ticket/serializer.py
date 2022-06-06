@@ -39,6 +39,23 @@ class TicketSerializer(serializers.ModelSerializer):
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
     cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
+    """
+        Campos para executar a validação de impedir a alteração do ticket
+        
+        'grupo',
+        'subgrupo',
+        'solucionado',
+        'finalizado',
+        'cancelado',
+        'motivo_cancelamento',
+        'avaliacao_solicitante',
+        'observacao_avaliacao_solicitante',
+        'avaliacao_atendente',
+        'observacao_avaliacao_atendente',
+        'data_cadastro',
+        'hora_cadastro',
+    """
+
     def validate_solicitante(self, solicitante):
         if not solicitante.is_active:
             raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante 'is_active=false'")
@@ -232,6 +249,8 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
             'hora_finalizacao',
             'data_cancelamento',
             'hora_cancelamento',
+            'data_cadastro',
+            'hora_cadastro',
         ]
 
 
