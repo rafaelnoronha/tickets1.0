@@ -39,10 +39,13 @@ class TicketSerializer(serializers.ModelSerializer):
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
     cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
+    def valida_edicao_ticket(self):
+        if self.instance and (self.instance.finalizado or self.instance.cancelado):
+            raise serializers.ValidationError("Não é possível alterar um ticket finalizado ou cancelado")
+
     """
         Campos para executar a validação de impedir a alteração do ticket
         
-        'grupo',
         'subgrupo',
         'solucionado',
         'finalizado',
@@ -75,12 +78,16 @@ class TicketSerializer(serializers.ModelSerializer):
         return atendente
 
     def validate_grupo(self, grupo):
+        self.valida_edicao_ticket()
+
         if grupo and not grupo.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket com um grupo 'ativo=false'")
 
         return grupo
 
     def validate_subgrupo(self, subgrupo):
+        self.valida_edicao_ticket()
+
         if subgrupo and not subgrupo.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket com um subgrupo 'ativo=false'")
 
