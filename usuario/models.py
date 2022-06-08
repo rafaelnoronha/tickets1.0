@@ -7,6 +7,15 @@ from empresa.models import Empresa
 from core.models import get_uuid
 
 
+def serializador_codigo():
+    ultimo_registro = Usuario.objects.all().order_by('id').last()
+
+    if not ultimo_registro:
+        return 1
+
+    return int(ultimo_registro.codigo) + 1
+
+
 class GerenciadorUsuario(UserManager):
     def _create_user(self, username, email, password, **extra_fields):
         """
@@ -37,15 +46,6 @@ class GerenciadorUsuario(UserManager):
         return self._create_user(username, email, password, **extra_fields)
 
 
-def serializador_codigo():
-    ultimo_registro = Usuario.objects.all().order_by('id').last()
-
-    if not ultimo_registro:
-        return 1
-
-    return int(ultimo_registro.codigo) + 1
-
-
 class Usuario(AbstractUser):
     """
     Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
@@ -58,12 +58,12 @@ class Usuario(AbstractUser):
         help_text='UUID Código único não sequencial',
     )
 
-    codigo = models.PositiveBigIntegerField(
+    """codigo = models.PositiveBigIntegerField(
         verbose_name='Código',
         default=serializador_codigo,
         unique=True,
         help_text='Código do usuário',
-    )
+    )"""
 
     telefone = models.CharField(
         verbose_name='Telefone',
@@ -158,7 +158,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
         indexes = [
             models.Index(fields=['uuid'], name='idx_uuid_usr'),
-            models.Index(fields=['codigo'], name='idx_codigo_usr'),
+            #models.Index(fields=['codigo'], name='idx_codigo_usr'),
             models.Index(fields=['empresa'], name='idx_empresa_usr'),
             models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
         ]

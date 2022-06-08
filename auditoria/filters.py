@@ -48,7 +48,7 @@ class AuditoriaFilter(filter.FilterSet):
             'tipo_operacao': lookup_types_auditoria['tipo_operacao'],
             'usuario_operacao': lookup_types_auditoria['usuario_operacao'],
             'usuario_operacao__uuid': lookup_types_usuario['uuid'],
-            'usuario_operacao__codigo': lookup_types_usuario['codigo'],
+            #'usuario_operacao__codigo': lookup_types_usuario['codigo'],
             'usuario_operacao__username': lookup_types_usuario['username'],
             'usuario_operacao__first_name': lookup_types_usuario['first_name'],
             'usuario_operacao__last_name': lookup_types_usuario['last_name'],

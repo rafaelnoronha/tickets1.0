@@ -68,7 +68,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         read_only_fields = [
             'uuid',
-            'codigo',
+            #'codigo',
             'last_login',
             'media_avaliacoes',
             'is_superuser',
@@ -85,7 +85,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         }
         fields = [
             'uuid',
-            'codigo',
+            #'codigo',
             'username',
             'password',
             'codigo_verificacao_segunda_etapa',
@@ -113,7 +113,7 @@ class UsuarioSerializerCreate(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'uuid',
-            'codigo',
+            #'codigo',
             'last_login',
             'media_avaliacoes',
         ]
@@ -130,7 +130,7 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'uuid',
-            'codigo',
+            #'codigo',
             'last_login',
             'media_avaliacoes',
             'username',
@@ -147,7 +147,7 @@ class UsuarioSerializerSimples(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         fields = [
             'uuid',
-            'codigo',
+            #'codigo',
             'username',
             'email',
             'empresa',

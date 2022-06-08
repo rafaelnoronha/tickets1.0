@@ -29,6 +29,23 @@ class TicketViewSet(ModelViewSetComAuditoria):
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, TicketSerializer)
 
+    def get_queryset(self):
+        usuario = self.request.user
+
+        print(usuario.empresa.id)
+
+        if usuario.is_staff:
+            if not usuario.is_superuser:
+                print('='*100)
+                return Ticket.objects.filter(empresa=usuario.empresa.id)
+
+            return self.queryset
+        else:
+            if usuario.is_manager:
+                return Ticket.objects.filter(empresa=usuario.empresa.id)
+            else:
+                return Ticket.objects.filter(empresa=usuario.empresa.id, solicitante=usuario.id)
+
 
 class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,
                             viewsets.GenericViewSet):

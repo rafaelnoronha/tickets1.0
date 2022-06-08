@@ -43,22 +43,6 @@ class TicketSerializer(serializers.ModelSerializer):
         if self.instance and (self.instance.finalizado or self.instance.cancelado):
             raise serializers.ValidationError("Não é possível alterar um ticket finalizado ou cancelado")
 
-    """
-        Campos para executar a validação de impedir a alteração do ticket
-        
-
-        
-        
-    
-        'motivo_cancelamento',
-        'avaliacao_solicitante',
-        'observacao_avaliacao_solicitante',
-        'avaliacao_atendente',
-        'observacao_avaliacao_atendente',
-        'data_cadastro',
-        'hora_cadastro',
-    """
-
     def validate_solicitante(self, solicitante):
         if not solicitante.is_active:
             raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante 'is_active=false'")
