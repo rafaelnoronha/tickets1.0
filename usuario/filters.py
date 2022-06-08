@@ -4,6 +4,7 @@ from empresa.filters import lookup_types_empresa
 
 lookup_types_usuario = {
     'uuid': ['exact', 'in', ],
+    'codigo': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
     'username': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'first_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'last_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -14,8 +15,9 @@ lookup_types_usuario = {
     'media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
     'empresa': ['exact', ],
     'last_login': ['exact', ],
-    'is_superuser': ['exact', ],
     'is_staff': ['exact', ],
+    'is_manager': ['exact', ],
+    'is_superuser': ['exact', ],
     'is_active': ['exact', ],
     'groups': [],
 }
@@ -56,6 +58,7 @@ class UsuarioFilter(filter.FilterSet):
         model = Usuario
         fields = {
             'uuid': lookup_types_usuario['uuid'],
+            'codigo': lookup_types_usuario['codigo'],
             'username': lookup_types_usuario['username'],
             'first_name': lookup_types_usuario['first_name'],
             'last_name': lookup_types_usuario['last_name'],
@@ -81,8 +84,9 @@ class UsuarioFilter(filter.FilterSet):
             'empresa__prestadora_servico': lookup_types_empresa['prestadora_servico'],
             'empresa__ativo': lookup_types_empresa['ativo'],
             'last_login': lookup_types_usuario['last_login'],
-            'is_superuser': lookup_types_usuario['is_superuser'],
             'is_staff': lookup_types_usuario['is_staff'],
+            'is_manager': lookup_types_usuario['is_manager'],
+            'is_superuser': lookup_types_usuario['is_superuser'],
             'is_active': lookup_types_usuario['is_active'],
             'groups': lookup_types_usuario['groups'],
         }
@@ -97,6 +101,7 @@ class LogAutenticacaoFilter(filter.FilterSet):
             'data_autenticacao': lookup_types_log_autenticacao['data_autenticacao'],
             'hora_autenticacao': lookup_types_log_autenticacao['hora_autenticacao'],
             'usuario': lookup_types_log_autenticacao['usuario'],
+            'usuario__codigo': lookup_types_usuario['codigo'],
             'usuario__username': lookup_types_usuario['username'],
             'usuario__first_name': lookup_types_usuario['first_name'],
             'usuario__last_name': lookup_types_usuario['last_name'],
@@ -122,8 +127,9 @@ class LogAutenticacaoFilter(filter.FilterSet):
             'usuario__empresa__prestadora_servico': lookup_types_empresa['prestadora_servico'],
             'usuario__empresa__ativo': lookup_types_empresa['ativo'],
             'usuario__last_login': lookup_types_usuario['last_login'],
-            'usuario__is_superuser': lookup_types_usuario['is_superuser'],
             'usuario__is_staff': lookup_types_usuario['is_staff'],
+            'usuario__is_manager': lookup_types_usuario['is_manager'],
+            'usuario__is_superuser': lookup_types_usuario['is_superuser'],
             'usuario__is_active': lookup_types_usuario['is_active'],
             'usuario__groups': lookup_types_usuario['groups'],
         }

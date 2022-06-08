@@ -68,10 +68,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         read_only_fields = [
             'uuid',
+            'codigo',
             'last_login',
             'media_avaliacoes',
             'is_superuser',
             'is_staff',
+            'is_manager',
             'empresa',
         ]
         extra_kwargs = {
@@ -83,6 +85,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         }
         fields = [
             'uuid',
+            'codigo',
             'username',
             'password',
             'codigo_verificacao_segunda_etapa',
@@ -95,8 +98,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'media_avaliacoes',
             'empresa',
             'last_login',
-            'is_superuser',
             'is_staff',
+            'is_manager',
+            'is_superuser',
             'is_active',
             'groups',
         ]
@@ -109,6 +113,7 @@ class UsuarioSerializerCreate(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'uuid',
+            'codigo',
             'last_login',
             'media_avaliacoes',
         ]
@@ -125,11 +130,12 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'uuid',
+            'codigo',
             'last_login',
             'media_avaliacoes',
             'username',
-            'is_superuser',
             'is_staff',
+            'is_superuser',
             'empresa',
         ]
 
@@ -141,9 +147,13 @@ class UsuarioSerializerSimples(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         fields = [
             'uuid',
+            'codigo',
             'username',
             'email',
             'empresa',
+            'is_staff',
+            'is_manager',
+            'is_superuser',
             'groups',
         ]
 

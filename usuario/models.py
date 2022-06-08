@@ -37,6 +37,15 @@ class GerenciadorUsuario(UserManager):
         return self._create_user(username, email, password, **extra_fields)
 
 
+def serializador_codigo():
+    ultimo_registro = Usuario.objects.all().order_by('id').last()
+
+    if not ultimo_registro:
+        return 1
+
+    return int(ultimo_registro.codigo) + 1
+
+
 class Usuario(AbstractUser):
     """
     Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
@@ -47,6 +56,13 @@ class Usuario(AbstractUser):
         verbose_name='UUID',
         default=get_uuid,
         help_text='UUID Código único não sequencial',
+    )
+
+    codigo = models.PositiveBigIntegerField(
+        verbose_name='Código',
+        default=serializador_codigo,
+        unique=True,
+        help_text='Código do usuário',
     )
 
     telefone = models.CharField(
@@ -115,6 +131,12 @@ class Usuario(AbstractUser):
         ]
     )
 
+    is_manager = models.BooleanField(
+        verbose_name='Is Manager',
+        default=False,
+        help_text='Este campo informa se o usuáio é gerente ou não',
+    )
+
     data_cadastro = models.DateField(
         verbose_name='Data do cadastro',
         auto_now_add=True,
@@ -136,6 +158,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
         indexes = [
             models.Index(fields=['uuid'], name='idx_uuid_usr'),
+            models.Index(fields=['codigo'], name='idx_codigo_usr'),
             models.Index(fields=['empresa'], name='idx_empresa_usr'),
             models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
         ]

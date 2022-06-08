@@ -18,9 +18,8 @@ class Empresa(Base):
     Modelo responsável por armazenar as informações dos clientes da prestadora de serviço.
     """
 
-    codigo = models.CharField(
+    codigo = models.PositiveBigIntegerField(
         verbose_name='Código',
-        max_length=10,
         default=serializador_codigo,
         unique=True,
         help_text='Código da empresa',

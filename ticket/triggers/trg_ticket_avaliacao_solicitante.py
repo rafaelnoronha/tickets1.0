@@ -3,8 +3,8 @@ def trigger():
         CREATE OR REPLACE FUNCTION trg_ticket_avaliacao_solicitante()
         RETURNS TRIGGER AS $$
             BEGIN
-                IF (OLD.avaliacao_atendente IS NULL AND NEW.avaliacao_atendente IS NOT NULL) THEN
-                    UPDATE usuario SET media_avaliacoes = fnc_media_avaliacao_usuario(NEW.solicitante_id, true) WHERE id = NEW.solicitante_id;
+                IF (OLD.avaliacao_solicitante IS NULL AND NEW.avaliacao_solicitante IS NOT NULL) THEN
+                    UPDATE usuario SET media_avaliacoes = fnc_media_avaliacao_atendente(NEW.atendente_id) WHERE id = NEW.atendente_id;
                 END IF;
         
                 RETURN NEW;

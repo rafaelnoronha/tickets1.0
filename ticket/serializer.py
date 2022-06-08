@@ -46,10 +46,10 @@ class TicketSerializer(serializers.ModelSerializer):
     """
         Campos para executar a validação de impedir a alteração do ticket
         
-        'subgrupo',
-        'solucionado',
-        'finalizado',
-        'cancelado',
+
+        
+        
+    
         'motivo_cancelamento',
         'avaliacao_solicitante',
         'observacao_avaliacao_solicitante',
@@ -94,6 +94,8 @@ class TicketSerializer(serializers.ModelSerializer):
         return subgrupo
 
     def validate_solucionado(self, solucionado):
+        self.valida_edicao_ticket()
+
         if solucionado and not solucionado.solucao:
             raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao 'solucao=false'")
 
@@ -109,32 +111,33 @@ class TicketSerializer(serializers.ModelSerializer):
 
         return avaliacao_solicitante
 
-    def validate_avaliacao_atendente(self, avaliacao_atendente):
-        if self.instance.avaliacao_atendente is not None:
-            raise serializers.ValidationError("Não é possível avaliar um ticket que já está avaliado")
-
-        if not self.instance.atendente:
-            raise serializers.ValidationError("Não é possível avaliar um ticket sem um atendente")
-
-        return avaliacao_atendente
-
     def validate_observacao_avaliacao_solicitante(self, observacao_avaliacao_solicitante):
         if self.instance.observacao_avaliacao_solicitante:
             raise serializers.ValidationError("Não é possível sobrescrever a observacao de uma avaliação")
 
         return observacao_avaliacao_solicitante
 
-    def validate_observacao_avaliacao_atendente(self, observacao_avaliacao_atendente):
-        if self.instance.observacao_avaliacao_atendente:
-            raise serializers.ValidationError("Não é possível sobrescrever a observacao de uma avaliação")
+    def validate_finalizado(self, finalizado):
+        self.valida_edicao_ticket()
 
-        return observacao_avaliacao_atendente
+        return finalizado
 
     def validate_cancelado(self, cancelado):
-        if self.instance.cancelado and not self.instance.motivo_cancelamento:
+        self.valida_edicao_ticket()
+
+        if cancelado and not self.instance.motivo_cancelamento:
             raise serializers.ValidationError("Não é possível cancelar um ticket sem informar o motivo do cancelamento")
 
         return cancelado
+
+    def validate_motivo_cancelamento(self, motivo_cancelamento):
+        self.valida_edicao_ticket()
+
+        if motivo_cancelamento and not self.instance.cancelado:
+            raise serializers.ValidationError("Não é possível informar o motivo do cancelamento se o ticket não estiver"
+                                              "cancelado")
+
+        return motivo_cancelamento
 
     class Meta:
         model = Ticket
@@ -181,8 +184,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
-            'avaliacao_atendente',
-            'observacao_avaliacao_atendente',
             'data_cadastro',
             'hora_cadastro',
         ]
@@ -217,8 +218,6 @@ class TicketSerializerCreate(TicketSerializer):
             'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
-            'avaliacao_atendente',
-            'observacao_avaliacao_atendente',
             'data_cadastro',
             'hora_cadastro',
         ]
@@ -350,8 +349,6 @@ class TicketSerializerRetrieve(TicketSerializer):
             'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
-            'avaliacao_atendente',
-            'observacao_avaliacao_atendente',
             'mensagens',
             'data_cadastro',
             'hora_cadastro',

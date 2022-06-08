@@ -129,19 +129,6 @@ class Ticket(Base):
         default='',
     )
 
-    avaliacao_atendente = models.SmallIntegerField(
-        verbose_name='Avaliação do Atendente',
-        choices=AVALIACAO_CHOISES,
-        null=True,
-        help_text='Avaliação do atendente referente ao chamado',
-    )
-
-    observacao_avaliacao_atendente = models.TextField(
-        verbose_name='Observação Avaliação do Atendente',
-        help_text='Observações referente à avaliação do atendente',
-        default='',
-    )
-
     solucionado = models.ForeignKey(
         'MensagemTicket',
         verbose_name='Solucionado',
@@ -223,7 +210,6 @@ class Ticket(Base):
             models.Index(fields=['prioridade'], name='idx_prioridade_tik'),
             models.Index(fields=['solicitante'], name='idx_solicitante_tik'),
             models.Index(fields=['atendente'], name='idx_atendente_tik'),
-            models.Index(fields=['avaliacao_atendente'], name='idx_avaliacao_atendente_tik'),
             models.Index(fields=['avaliacao_solicitante'], name='idx_avaliacao_solicitante_tik'),
             models.Index(fields=['grupo'], name='idx_grupo_tik'),
             models.Index(fields=['subgrupo'], name='idx_subgrupo_tik'),
