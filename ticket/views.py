@@ -1,4 +1,5 @@
 from rest_framework import viewsets, mixins
+from django.db.models import Q
 from core.views import ModelViewSetComAuditoria, CreateModelMixinAuditoria
 from .models import Ticket, MensagemTicket
 from .filters import TicketFilter, MensagemTicketFilter
@@ -32,19 +33,19 @@ class TicketViewSet(ModelViewSetComAuditoria):
     def get_queryset(self):
         usuario = self.request.user
 
-        print(usuario.empresa.id)
+        if usuario.is_superuser:
+            return self.queryset
 
         if usuario.is_staff:
-            if not usuario.is_superuser:
-                print('='*100)
-                return Ticket.objects.filter(empresa=usuario.empresa.id)
+            if not usuario.is_manager:
+                return Ticket.objects.filter(Q(atendente=usuario) | Q(atendente__isnull=True))
 
-            return self.queryset
+            return Ticket.objects.filter(Q(atendente__empresa=usuario.empresa) | Q(atendente__isnull=True))
         else:
             if usuario.is_manager:
-                return Ticket.objects.filter(empresa=usuario.empresa.id)
+                return Ticket.objects.filter(solicitante__empresa=usuario.empresa)
             else:
-                return Ticket.objects.filter(empresa=usuario.empresa.id, solicitante=usuario.id)
+                return Ticket.objects.filter(solicitante=usuario)
 
 
 class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,
@@ -66,3 +67,20 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, MensagemTicketSerializer)
+
+    def get_queryset(self):
+        usuario = self.request.user
+
+        if usuario.is_superuser:
+            return self.queryset
+
+        if usuario.is_staff:
+            if not usuario.is_manager:
+                return MensagemTicket.objects.filter(ticket__atendente=usuario)
+
+            return MensagemTicket.objects.filter(ticket__atendente__empresa=usuario.empresa)
+        else:
+            if usuario.is_manager:
+                return MensagemTicket.objects.filter(ticket__solicitante__empresa=usuario.empresa)
+            else:
+                return MensagemTicket.objects.filter(ticket__solicitante=usuario)

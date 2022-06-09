@@ -189,6 +189,7 @@ class TicketFilter(filter.FilterSet):
         model = Ticket
         fields = {
             'uuid': lookup_types_ticket['uuid'],
+            'codigo': lookup_types_ticket['codigo'],
             'status': lookup_types_ticket['status'],
             'solicitante': lookup_types_ticket['solicitante'],
             'solicitante__uuid': lookup_types_usuario['uuid'],
@@ -430,6 +431,7 @@ class MensagemTicketFilter(filter.FilterSet):
             'usuario__groups': lookup_types_usuario['groups'],
             'ticket': lookup_types_mensagem_ticket['ticket'],
             'ticket__uuid': lookup_types_ticket['uuid'],
+            'ticket__codigo': lookup_types_ticket['codigo'],
             'ticket__status': lookup_types_ticket['status'],
             'ticket__solicitante': lookup_types_ticket['solicitante'],
             'ticket__solicitante__uuid': lookup_types_usuario['uuid'],
