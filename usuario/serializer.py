@@ -3,6 +3,7 @@ from .models import Usuario, LogAutenticacao
 from django.contrib.auth.models import Group, Permission
 from empresa.models import Empresa
 from empresa.serializer import EmpresaSerializer
+import re
 
 
 class UsuarioSerializerAuditoria(serializers.ModelSerializer):
@@ -49,7 +50,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         is_staff = usuario['is_staff'] if 'is_staff' in usuario else False
 
         if not empresa.ativo:
-            raise serializers.ValidationError("Não é possível salvar um usuário se a empresa vinculada está como"
+            raise serializers.ValidationError("Não é possível salvar um usuário se a empresa vinculada está como "
                                               "'ativo=false'")
 
         if empresa.prestadora_servico:
@@ -63,6 +64,18 @@ class UsuarioSerializer(serializers.ModelSerializer):
                                                   "vinculada estiver como 'prestadora_servico=false'")
 
         return empresa
+
+    def validate_password(self, password):
+        if len(password) < 6:
+            raise serializers.ValidationError("Sua senha deve ter no mínimo 6 caracteres")
+
+        if not re.findall('[A-Z]', password) or not re.findall('[a-z]', password) or not re.findall('[0-9]', password):
+            raise serializers.ValidationError("A senha deve ser composta por letras, números e ao menos uma letra em "
+                                              "caixa alta")
+
+        self.instance.set_password(password)
+
+        return self.instance.password
 
     class Meta:
         model = Usuario

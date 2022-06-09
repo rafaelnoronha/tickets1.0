@@ -5,13 +5,16 @@ from ticket.triggers import trg_ticket_prioridade, trg_ticket_status, trg_ticket
                             trg_ticket_avaliacao_solicitante
 
 
-def post_migrate_triggers(sender, **kwargs):
+def pre_migrate_functions(sender, **kwargs):
     with connection.cursor() as cursor:
         """
             FUNCTIONS
         """
         cursor.execute(fnc_media_avaliacao_usuario.function())
 
+
+def post_migrate_triggers(sender, **kwargs):
+    with connection.cursor() as cursor:
         """
             TRIGGERS
         """
