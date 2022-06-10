@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Usuario, LogAutenticacao
 from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.hashers import make_password
 from empresa.models import Empresa
 from empresa.serializer import EmpresaSerializer
 import re
@@ -73,9 +74,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A senha deve ser composta por letras, números e ao menos uma letra em "
                                               "caixa alta")
 
-        self.instance.set_password(password)
-
-        return self.instance.password
+        return make_password(password)
 
     class Meta:
         model = Usuario

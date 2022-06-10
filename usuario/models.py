@@ -2,18 +2,10 @@ from django.db import models
 from django.apps import apps
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.hashers import make_password
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
 from core.models import get_uuid
-
-
-def serializador_codigo():
-    ultimo_registro = Usuario.objects.all().order_by('id').last()
-
-    if not ultimo_registro:
-        return 1
-
-    return int(ultimo_registro.codigo) + 1
 
 
 class GerenciadorUsuario(UserManager):
@@ -30,7 +22,7 @@ class GerenciadorUsuario(UserManager):
         GlobalUserModel = apps.get_model(self.model._meta.app_label, self.model._meta.object_name)
         username = GlobalUserModel.normalize_username(username)
         user = self.model(username=username, email=email, **extra_fields)
-        user.password = password
+        user.password = make_password(password)
         user.save(using=self._db)
         return user
 
@@ -44,6 +36,15 @@ class GerenciadorUsuario(UserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(username, email, password, **extra_fields)
+
+
+def serializador_codigo():
+    ultimo_registro = Usuario.objects.all().order_by('id').last()
+
+    if not ultimo_registro:
+        return 1
+
+    return int(ultimo_registro.codigo) + 1
 
 
 class Usuario(AbstractUser):
@@ -158,7 +159,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
         indexes = [
             models.Index(fields=['uuid'], name='idx_uuid_usr'),
-            #models.Index(fields=['codigo'], name='idx_codigo_usr'),
+            models.Index(fields=['codigo'], name='idx_codigo_usr'),
             models.Index(fields=['empresa'], name='idx_empresa_usr'),
             models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
         ]
