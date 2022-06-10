@@ -1,11 +1,21 @@
 from django.db import models
 from django.apps import apps
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager, Group
 from django.contrib.auth.hashers import make_password
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
 from core.models import get_uuid
+
+
+Group.add_to_class(
+    'uuid',
+    models.UUIDField(
+        verbose_name='UUID',
+        default=get_uuid,
+        help_text='UUID Código único não sequencial',
+    )
+)
 
 
 class GerenciadorUsuario(UserManager):
@@ -159,7 +169,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
         indexes = [
             models.Index(fields=['uuid'], name='idx_uuid_usr'),
-            models.Index(fields=['codigo'], name='idx_codigo_usr'),
+            # models.Index(fields=['codigo'], name='idx_codigo_usr'),
             models.Index(fields=['empresa'], name='idx_empresa_usr'),
             models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
         ]

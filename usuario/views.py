@@ -55,7 +55,7 @@ class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     permission_classes = (BasePemission, )
     auditoria = {
         'modelo': Group,
-        'nome_tabela': 'usuario',
+        'nome_tabela': 'auth_group',
         'serializer': GrupoPermissoesUsuarioSerializerAuditoria,
     }
 
@@ -75,6 +75,6 @@ class PermissaoUsuarioViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, 
     permission_classes = (BasePemission, )
     auditoria = {
         'modelo': Permission,
-        'nome_tabela': 'usuario',
+        'nome_tabela': 'auth_permission',
         'serializer': PermissaoUsuarioSerializerAuditoria,
     }
