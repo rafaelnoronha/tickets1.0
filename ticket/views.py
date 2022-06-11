@@ -1,12 +1,15 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django.db.models import Q
 from core.views import ModelViewSetComAuditoria, CreateModelMixinAuditoria
 from .models import Ticket, MensagemTicket
 from .filters import TicketFilter, MensagemTicketFilter
 from core.permissions import BasePemission
-from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, TicketSerializerUpdatePartialUpdate, \
-                        MensagemTicketSerializer, MensagemTicketSerializerCreate, MensagemTicketSerializerRetrieve, \
-                        TicketSerializerAuditoria, MensagemTicketSerializerAuditoria
+from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, \
+                        TicketSerializerUpdatePartialUpdate, MensagemTicketSerializer, MensagemTicketSerializerCreate, \
+                        MensagemTicketSerializerRetrieve, TicketSerializerAuditoria, MensagemTicketSerializerAuditoria, \
+                        TicketSerializerFinalizar
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
@@ -46,6 +49,17 @@ class TicketViewSet(ModelViewSetComAuditoria):
                 return Ticket.objects.filter(solicitante__empresa=usuario.empresa)
             else:
                 return Ticket.objects.filter(solicitante=usuario)
+
+    @action(detail=True, methods=['post'])
+    def finalizar(self, request, uuid):
+        serializer = TicketSerializerFinalizar(data=request.data, partial=True)
+        print(dir(serializer))
+        print(dir(self))
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
 
 class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,

@@ -216,8 +216,6 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
                                             required=False)
     solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
                                                allow_null=True, required=False)
-    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
-                                              required=False)
     cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
                                               required=False)
 
@@ -235,10 +233,44 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
             'descricao',
             'data_solucao',
             'hora_solucao',
+            'finalizado',
             'data_finalizacao',
             'hora_finalizacao',
             'data_cancelamento',
             'hora_cancelamento',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+
+
+class TicketSerializerFinalizar(TicketSerializer):
+    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'data_solucao',
+            'hora_solucao',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
             'data_cadastro',
             'hora_cadastro',
         ]

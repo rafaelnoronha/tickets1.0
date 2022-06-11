@@ -193,8 +193,14 @@ class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
 class PermissaoUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
+        read_only_fields = [
+            'uuid',
+            'name',
+            'content_type',
+            'codename',
+        ]
         fields = [
-            'id',
+            'uuid',
             'name',
             'content_type',
             'codename',

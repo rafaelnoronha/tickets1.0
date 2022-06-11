@@ -51,6 +51,7 @@ class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
 
 class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     queryset = Group.objects.all()
+    lookup_field = 'uuid'
     serializer_class = GrupoPermissoesUsuarioSerializer
     permission_classes = (BasePemission, )
     auditoria = {
@@ -71,6 +72,7 @@ class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
 
 class PermissaoUsuarioViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Permission.objects.all()
+    lookup_field = 'uuid'
     serializer_class = PermissaoUsuarioSerializer
     permission_classes = (BasePemission, )
     auditoria = {

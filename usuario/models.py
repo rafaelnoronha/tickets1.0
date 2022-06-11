@@ -1,7 +1,7 @@
 from django.db import models
 from django.apps import apps
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser, UserManager, Group
+from django.contrib.auth.models import AbstractUser, UserManager, Group, Permission
 from django.contrib.auth.hashers import make_password
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
@@ -9,6 +9,15 @@ from core.models import get_uuid
 
 
 Group.add_to_class(
+    'uuid',
+    models.UUIDField(
+        verbose_name='UUID',
+        default=get_uuid,
+        help_text='UUID Código único não sequencial',
+    )
+)
+
+Permission.add_to_class(
     'uuid',
     models.UUIDField(
         verbose_name='UUID',
