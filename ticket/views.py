@@ -9,7 +9,7 @@ from core.permissions import BasePemission
 from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, \
                         TicketSerializerUpdatePartialUpdate, MensagemTicketSerializer, MensagemTicketSerializerCreate, \
                         MensagemTicketSerializerRetrieve, TicketSerializerAuditoria, MensagemTicketSerializerAuditoria, \
-                        TicketSerializerFinalizar
+                        TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerAvaliar
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
@@ -50,11 +50,30 @@ class TicketViewSet(ModelViewSetComAuditoria):
             else:
                 return Ticket.objects.filter(solicitante=usuario)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['patch'])
     def finalizar(self, request, uuid):
-        serializer = TicketSerializerFinalizar(data=request.data, partial=True)
-        print(dir(serializer))
-        print(dir(self))
+        instance = self.get_object()
+        serializer = TicketSerializerFinalizar(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+
+    @action(detail=True, methods=['patch'])
+    def cancelar(self, request, uuid):
+        instance = self.get_object()
+        serializer = TicketSerializerCancelar(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+
+    @action(detail=True, methods=['patch'])
+    def avaliar(self, request, uuid):
+        instance = self.get_object()
+        serializer = TicketSerializerAvaliar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         headers = self.get_success_headers(serializer.data)

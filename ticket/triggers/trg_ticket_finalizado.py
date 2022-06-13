@@ -3,7 +3,7 @@ def trigger():
         CREATE OR REPLACE FUNCTION trg_ticket_finalizado()
         RETURNS TRIGGER AS $$
             BEGIN
-                IF (OLD.finalizado_id IS NULL AND NEW.finalizado_id) THEN
+                IF (OLD.finalizado_id IS NULL AND NEW.finalizado_id IS NOT NULL) THEN
                     NEW.data_finalizacao := NOW();
                     NEW.hora_finalizacao := NOW();
                 END IF;

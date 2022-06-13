@@ -109,17 +109,19 @@ class TicketSerializer(serializers.ModelSerializer):
     def validate_cancelado(self, cancelado):
         self.valida_edicao_ticket()
 
-        if cancelado and not self.instance.motivo_cancelamento:
-            raise serializers.ValidationError("Não é possível cancelar um ticket sem informar o motivo do cancelamento")
+        if self.instance.cancelado:
+            raise serializers.ValidationError("Não é possível cancelar um ticket já está cancelado")
 
         return cancelado
 
     def validate_motivo_cancelamento(self, motivo_cancelamento):
         self.valida_edicao_ticket()
 
-        if motivo_cancelamento and not self.instance.cancelado:
-            raise serializers.ValidationError("Não é possível informar o motivo do cancelamento se o ticket não estiver"
-                                              "cancelado")
+        if self.instance.cancelado:
+            raise serializers.ValidationError("Não é possivel informar o motivo do cancelamento de um ticket cancelado")
+
+        if self.instance.motivo_cancelamento:
+            raise serializers.ValidationError("Não é possivel alterar o motivo do cancelamento")
 
         return motivo_cancelamento
 
@@ -216,8 +218,6 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
                                             required=False)
     solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
                                                allow_null=True, required=False)
-    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
-                                              required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -244,7 +244,7 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
 
 
 class TicketSerializerFinalizar(TicketSerializer):
-    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=True, allow_null=False, allow_empty=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -271,6 +271,68 @@ class TicketSerializerFinalizar(TicketSerializer):
             'hora_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+
+
+class TicketSerializerCancelar(TicketSerializer):
+    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'data_cancelamento',
+            'hora_cancelamento',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+
+
+class TicketSerializerAvaliar(TicketSerializer):
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
             'data_cadastro',
             'hora_cadastro',
         ]
@@ -361,6 +423,7 @@ class TicketSerializerRetrieve(TicketSerializer):
             'data_finalizacao',
             'hora_finalizacao',
             'cancelado',
+            'motivo_cancelamento',
             'data_cancelamento',
             'hora_cancelamento',
             'avaliacao_solicitante',
