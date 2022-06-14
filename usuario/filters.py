@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filter
-from .models import Usuario, LogAutenticacao
+from .models import Usuario, Classificacao, LogAutenticacao
 from empresa.filters import lookup_types_empresa
 
 lookup_types_usuario = {
@@ -11,6 +11,7 @@ lookup_types_usuario = {
     'email': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'telefone': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'celular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'classificacao': ['exact', ],
     'observacoes': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
     'empresa': ['exact', ],
@@ -20,6 +21,13 @@ lookup_types_usuario = {
     'is_superuser': ['exact', ],
     'is_active': ['exact', ],
     'groups': [],
+}
+
+lookup_types_classificacao = {
+    'uuid': ['exact', 'in', ],
+    'codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    'descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
 }
 
 lookup_types_log_autenticacao = {
@@ -65,6 +73,10 @@ class UsuarioFilter(filter.FilterSet):
             'email': lookup_types_usuario['email'],
             'telefone': lookup_types_usuario['telefone'],
             'celular': lookup_types_usuario['celular'],
+            'classificacao': lookup_types_classificacao['classificacao'],
+            'classificacao__codigo': lookup_types_classificacao['codigo'],
+            'classificacao__nome': lookup_types_classificacao['nome'],
+            'classificacao__descricao': lookup_types_classificacao['descricao'],
             'observacoes': lookup_types_usuario['observacoes'],
             'media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'empresa': lookup_types_usuario['empresa'],
@@ -92,6 +104,17 @@ class UsuarioFilter(filter.FilterSet):
         }
 
 
+class ClassificacaoFilter(filter.FilterSet):
+    class Meta:
+        model = Classificacao
+        fields = {
+            'uuid': lookup_types_classificacao['uuid'],
+            'codigo': lookup_types_classificacao['codigo'],
+            'nome': lookup_types_classificacao['nome'],
+            'descricao': lookup_types_classificacao['descricao'],
+        }
+
+
 class LogAutenticacaoFilter(filter.FilterSet):
     class Meta:
         model = LogAutenticacao
@@ -108,6 +131,10 @@ class LogAutenticacaoFilter(filter.FilterSet):
             'usuario__email': lookup_types_usuario['email'],
             'usuario__telefone': lookup_types_usuario['telefone'],
             'usuario__celular': lookup_types_usuario['celular'],
+            'usuario__classificacao': lookup_types_classificacao['classificacao'],
+            'usuario__classificacao__codigo': lookup_types_classificacao['codigo'],
+            'usuario__classificacao__nome': lookup_types_classificacao['nome'],
+            'usuario__classificacao__descricao': lookup_types_classificacao['descricao'],
             'usuario__observacoes': lookup_types_usuario['observacoes'],
             'usuario__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'usuario__empresa': lookup_types_usuario['empresa'],

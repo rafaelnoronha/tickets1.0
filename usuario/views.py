@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins
-from .models import Usuario, LogAutenticacao
+from .models import Usuario, Classificacao, LogAutenticacao
 from core.views import ModelViewSetComAuditoria
-from .filters import UsuarioFilter, LogAutenticacaoFilter
+from .filters import UsuarioFilter, ClassificacaoFilter, LogAutenticacaoFilter
 from core.permissions import BasePemission
 from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
@@ -9,7 +9,7 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
                         LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
                         PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate, \
                         UsuarioSerializerAuditoria, GrupoPermissoesUsuarioSerializerAuditoria, \
-                        PermissaoUsuarioSerializerAuditoria
+                        PermissaoUsuarioSerializerAuditoria, ClassificacaoSerializerAuditoria, ClassificacaoSerializer
 
 
 class UsuarioViewSet(ModelViewSetComAuditoria):
@@ -32,6 +32,19 @@ class UsuarioViewSet(ModelViewSetComAuditoria):
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, UsuarioSerializer)
+
+
+class ClassificacaoViewSet(ModelViewSetComAuditoria):
+    queryset = Classificacao.objects.all()
+    lookup_field = 'uuid'
+    serializer_class = ClassificacaoSerializer
+    filterset_class = ClassificacaoFilter
+    permission_classes = (BasePemission, )
+    auditoria = {
+        'modelo': Classificacao,
+        'nome_tabela': 'classificacao',
+        'serializer': ClassificacaoSerializerAuditoria,
+    }
 
 
 class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,

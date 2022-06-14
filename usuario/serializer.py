@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario, LogAutenticacao
+from .models import Usuario, Classificacao, LogAutenticacao
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.hashers import make_password
 from empresa.models import Empresa
@@ -12,6 +12,12 @@ class UsuarioSerializerAuditoria(serializers.ModelSerializer):
 
     class Meta:
         model = Usuario
+        fields = '__all__'
+
+
+class ClassificacaoSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = Classificacao
         fields = '__all__'
 
 
@@ -115,6 +121,21 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'is_superuser',
             'is_active',
             'groups',
+        ]
+
+
+class ClassificacaoSerializer(serializers.ModelSerializer):
+    class Meta(UsuarioSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+        fields = [
+            'codigo',
+            'nome',
+            'descricao',
+            'ativo',
         ]
 
 
