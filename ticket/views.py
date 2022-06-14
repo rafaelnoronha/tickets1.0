@@ -9,7 +9,8 @@ from core.permissions import BasePemission
 from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, \
                         TicketSerializerUpdatePartialUpdate, MensagemTicketSerializer, MensagemTicketSerializerCreate, \
                         MensagemTicketSerializerRetrieve, TicketSerializerAuditoria, MensagemTicketSerializerAuditoria, \
-                        TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerAvaliar
+                        TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerAvaliar, \
+                        TicketSerializerSolucionar
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
@@ -74,6 +75,16 @@ class TicketViewSet(ModelViewSetComAuditoria):
     def avaliar(self, request, uuid):
         instance = self.get_object()
         serializer = TicketSerializerAvaliar(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+
+    @action(detail=True, methods=['patch'])
+    def solucionar(self, request, uuid):
+        instance = self.get_object()
+        serializer = TicketSerializerSolucionar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         headers = self.get_success_headers(serializer.data)

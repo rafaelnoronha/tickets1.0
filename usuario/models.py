@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser, UserManager, Group, Permiss
 from django.contrib.auth.hashers import make_password
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
-from core.models import get_uuid
+from core.models import Base, get_uuid
 
 
 Group.add_to_class(
@@ -103,6 +103,15 @@ class Usuario(AbstractUser):
         validators=[
             RegexValidator(regex=RegexCelular.get_regex(), message=RegexCelular.get_mensagem()),
         ]
+    )
+
+    classificacao = models.ForeignKey(
+        'Classificacao',
+        verbose_name='Classificação',
+        related_name='classificacao_classificacao_usuario',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='A qual classificação de usuário o ticket é designado'
     )
 
     media_avaliacoes = models.DecimalField(
@@ -241,3 +250,43 @@ class LogAutenticacao(models.Model):
 
     def __str__(self):
         return str(self.uuid)
+
+
+class Classificacao(Base):
+    """
+    Modelo da classificação dos usuários.
+    """
+
+    codigo = models.CharField(
+        verbose_name='Código',
+        max_length=20,
+        unique=True,
+        help_text='Código da Classificação',
+    )
+
+    nome = models.CharField(
+        verbose_name='Nome',
+        max_length=255,
+        help_text='Nome da classificação',
+    )
+
+    descricao = models.TextField(
+        verbose_name='descricao',
+        help_text='Descrição da classificação',
+        blank=True,
+        default='',
+    )
+
+    class Meta:
+        ordering = ['-id']
+        db_table = 'classificacao'
+        verbose_name = 'Classificacao'
+        verbose_name_plural = 'Classificacoes'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_cls'),
+            models.Index(fields=['codigo'], name='idx_codigo_cls'),
+        ]
+
+    def __str__(self):
+        return str(self.uuid)
+

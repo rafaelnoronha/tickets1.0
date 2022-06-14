@@ -45,7 +45,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def validate_solicitante(self, solicitante):
         if not solicitante.is_active:
-            raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante 'is_active=false'")
+            raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante inativo")
 
         if solicitante.is_staff:
             raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante 'is_staff=true'")
@@ -54,7 +54,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def validate_atendente(self, atendente):
         if atendente and not atendente.is_active:
-            raise serializers.ValidationError("Não é possível salvar um ticket com um atendente 'is_active=false'")
+            raise serializers.ValidationError("Não é possível salvar um ticket com um atendente inativo")
 
         if atendente and not atendente.is_staff:
             raise serializers.ValidationError("Não é possível salvar um ticket com um atendente 'is_staff=false'")
@@ -65,7 +65,7 @@ class TicketSerializer(serializers.ModelSerializer):
         self.valida_edicao_ticket()
 
         if grupo and not grupo.ativo:
-            raise serializers.ValidationError("Não é possível salvar um ticket com um grupo 'ativo=false'")
+            raise serializers.ValidationError("Não é possível salvar um ticket com um grupo inativo")
 
         return grupo
 
@@ -73,7 +73,7 @@ class TicketSerializer(serializers.ModelSerializer):
         self.valida_edicao_ticket()
 
         if subgrupo and not subgrupo.ativo:
-            raise serializers.ValidationError("Não é possível salvar um ticket com um subgrupo 'ativo=false'")
+            raise serializers.ValidationError("Não é possível salvar um ticket com um subgrupo inativo")
 
         return subgrupo
 
@@ -81,15 +81,23 @@ class TicketSerializer(serializers.ModelSerializer):
         self.valida_edicao_ticket()
 
         if solucionado and not solucionado.solucao:
-            raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao 'solucao=false'")
+            raise serializers.ValidationError("Não é possível salvar um ticket com uma solução setada como "
+                                              "'solucao=false'")
 
         if solucionado and not solucionado.usuario.is_staff:
-            raise serializers.ValidationError("Não é possível salvar um ticket com uma solucao em que o usuario esteja"
+            raise serializers.ValidationError("Não é possível salvar um ticket com uma solução em que o usuario esteja "
                                               "como 'is_staff=false'")
 
         return solucionado
 
     def validate_avaliacao_solicitante(self, avaliacao_solicitante):
+        if self.instance.cancelado:
+            raise serializers.ValidationError("Não é possível avaliar um ticket cancelado")
+
+        if not self.instance.atendente:
+            raise serializers.ValidationError("Não é possível avaliar um ticket que não está atribuido a nenhum "
+                                              "atendente")
+
         if self.instance.avaliacao_solicitante is not None:
             raise serializers.ValidationError("Não é possível avaliar um ticket que já está avaliado")
 
@@ -216,8 +224,6 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
                                          required=False)
     subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
                                             required=False)
-    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
-                                               allow_null=True, required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -244,7 +250,8 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
 
 
 class TicketSerializerFinalizar(TicketSerializer):
-    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=True, allow_null=False, allow_empty=False)
+    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=True,
+                                              allow_null=False, allow_empty=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -277,7 +284,8 @@ class TicketSerializerFinalizar(TicketSerializer):
 
 
 class TicketSerializerCancelar(TicketSerializer):
-    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=False,
+                                             allow_empty=False, required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -333,6 +341,40 @@ class TicketSerializerAvaliar(TicketSerializer):
             'motivo_cancelamento',
             'data_cancelamento',
             'hora_cancelamento',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+
+
+class TicketSerializerSolucionar(TicketSerializer):
+    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
+                                               allow_null=True, allow_empty=False, required=False)
+
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
             'data_cadastro',
             'hora_cadastro',
         ]

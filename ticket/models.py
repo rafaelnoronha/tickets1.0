@@ -1,6 +1,6 @@
 from django.db import models
 from core.models import Base
-from usuario.models import Usuario
+from usuario.models import Usuario, Classificacao
 from agrupamento.models import Grupo, Subgrupo
 
 
@@ -64,6 +64,15 @@ class Ticket(Base):
         related_name='solicitante_usuario_ticket',
         on_delete=models.PROTECT,
         help_text='Solicitante/Cliente responsável pelo ticket'
+    )
+
+    classificacao_atendente = models.ForeignKey(
+        Classificacao,
+        verbose_name='Classificação',
+        related_name='classificacao_atendente_usuario_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='A qual classificação de usuário o ticket é designado'
     )
 
     atendente = models.ForeignKey(
