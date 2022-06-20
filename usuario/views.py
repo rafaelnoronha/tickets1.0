@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
-                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate, \
+                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve, \
                         UsuarioSerializerAuditoria, GrupoPermissoesUsuarioSerializerAuditoria, \
                         PermissaoUsuarioSerializerAuditoria, ClassificacaoSerializerAuditoria, ClassificacaoSerializer
 
@@ -74,9 +74,10 @@ class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     }
 
     serializer_classes = {
-        'create': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
-        'update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
-        'partial_update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
+        'retrieve': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
+        'create': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
+        'update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
+        'partial_update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
     }
 
     def get_serializer_class(self):
