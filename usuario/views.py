@@ -7,9 +7,10 @@ from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
                         UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
                         LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
-                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve, \
+                        PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate, \
                         UsuarioSerializerAuditoria, GrupoPermissoesUsuarioSerializerAuditoria, \
-                        PermissaoUsuarioSerializerAuditoria, ClassificacaoSerializerAuditoria, ClassificacaoSerializer
+                        PermissaoUsuarioSerializerAuditoria, ClassificacaoSerializerAuditoria, \
+                        ClassificacaoSerializer, GrupoPermissoesUsuarioSerializerRetrieve
 
 
 class UsuarioViewSet(ModelViewSetComAuditoria):
@@ -74,10 +75,10 @@ class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     }
 
     serializer_classes = {
-        'retrieve': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
-        'create': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
-        'update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
-        'partial_update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve,
+        'retrieve': GrupoPermissoesUsuarioSerializerRetrieve,
+        'create': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
+        'update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
+        'partial_update': GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate,
     }
 
     def get_serializer_class(self):

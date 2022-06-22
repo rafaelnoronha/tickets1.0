@@ -240,12 +240,24 @@ class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
         ]
 
 
-class GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadateRetrieve(GrupoPermissoesUsuarioSerializer):
-    class Meta(GrupoPermissoesUsuarioSerializer):
+class GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate(GrupoPermissoesUsuarioSerializer):
+    permissions = serializers.SlugRelatedField(queryset=Permission.objects.all(), slug_field='uuid')
+
+    class Meta(GrupoPermissoesUsuarioSerializer.Meta):
         fields = [
             'uuid',
             'name',
-            'permissions'
+            'permissions',
+        ]
+
+
+class GrupoPermissoesUsuarioSerializerRetrieve(GrupoPermissoesUsuarioSerializer):
+    class Meta(GrupoPermissoesUsuarioSerializer.Meta):
+        read_only_fields = ['uuid',]
+        fields = [
+            'uuid',
+            'name',
+            'permissions',
         ]
 
 
