@@ -229,8 +229,6 @@ class PermissaoUsuarioSerializer(serializers.ModelSerializer):
 
 
 class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
-    permissions = PermissaoUsuarioSerializer(many=True)
-
     class Meta:
         model = Group
         read_only_fields = ['uuid',]
@@ -241,7 +239,7 @@ class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
 
 
 class GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate(GrupoPermissoesUsuarioSerializer):
-    permissions = serializers.SlugRelatedField(queryset=Permission.objects.all(), slug_field='uuid')
+    permissions = serializers.ListSerializer(queryset=Permission.objects.all(), slug_field='uuid', many=True)
 
     class Meta(GrupoPermissoesUsuarioSerializer.Meta):
         fields = [
@@ -249,6 +247,8 @@ class GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate(GrupoPermissoes
             'name',
             'permissions',
         ]
+
+    # https://www.django-rest-framework.org/api-guide/serializers/#customizing-multiple-update
 
 
 class GrupoPermissoesUsuarioSerializerRetrieve(GrupoPermissoesUsuarioSerializer):
