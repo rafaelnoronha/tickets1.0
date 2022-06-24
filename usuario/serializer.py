@@ -9,6 +9,7 @@ import re
 
 class UsuarioSerializerAuditoria(serializers.ModelSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
 
     class Meta:
         model = Usuario
@@ -36,6 +37,7 @@ class GrupoPermissoesUsuarioSerializerAuditoria(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
+    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='nome')
 
     def validate_is_staff(self, is_staff):
         empresa = Empresa.objects.get(uuid=self.initial_data['empresa'])
@@ -72,6 +74,13 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
         return empresa
 
+    def validate_classificacao(self, classificacao):
+        if not classificacao.ativo:
+            raise serializers.ValidationError("Não é possível salvar um usuário se a classificação vinculada está como "
+                                              "'ativo=false'")
+
+        return classificacao
+
     def validate_password(self, password):
         if len(password) < 6:
             raise serializers.ValidationError("Sua senha deve ter no mínimo 6 caracteres")
@@ -86,7 +95,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         read_only_fields = [
             'uuid',
-            #'codigo',
             'last_login',
             'media_avaliacoes',
             'is_superuser',
@@ -103,7 +111,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         }
         fields = [
             'uuid',
-            #'codigo',
             'username',
             'password',
             'codigo_verificacao_segunda_etapa',
@@ -116,6 +123,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'media_avaliacoes',
             'empresa',
             'last_login',
+            'classificacao',
             'is_staff',
             'is_manager',
             'is_superuser',
@@ -142,11 +150,11 @@ class ClassificacaoSerializer(serializers.ModelSerializer):
 class UsuarioSerializerCreate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
+    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid')
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'uuid',
-            #'codigo',
             'last_login',
             'media_avaliacoes',
         ]
@@ -159,11 +167,11 @@ class UsuarioSerializerCreate(UsuarioSerializer):
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
+    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid')
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'uuid',
-            #'codigo',
             'last_login',
             'media_avaliacoes',
             'username',
@@ -176,14 +184,15 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
 class UsuarioSerializerSimples(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
+    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
 
     class Meta(UsuarioSerializer.Meta):
         fields = [
             'uuid',
-            #'codigo',
             'username',
             'email',
             'empresa',
+            'classificacao',
             'is_staff',
             'is_manager',
             'is_superuser',
@@ -264,3 +273,4 @@ class GrupoPermissoesUsuarioSerializerRetrieve(GrupoPermissoesUsuarioSerializer)
 class UsuarioSerializerRetrieve(UsuarioSerializer):
     empresa = EmpresaSerializer(read_only=True)
     groups = GrupoPermissoesUsuarioSerializer(read_only=True, many=True)
+    classificacao = ClassificacaoSerializer(read_only=True)

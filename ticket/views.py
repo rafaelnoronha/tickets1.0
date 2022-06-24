@@ -52,9 +52,9 @@ class TicketViewSet(ModelViewSetComAuditoria):
                 return Ticket.objects.filter(solicitante=usuario)
 
     @action(detail=True, methods=['patch'])
-    def finalizar(self, request, uuid):
+    def solucionar(self, request, uuid):
         instance = self.get_object()
-        serializer = TicketSerializerFinalizar(instance, data=request.data, partial=True)
+        serializer = TicketSerializerSolucionar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -62,9 +62,9 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def cancelar(self, request, uuid):
+    def finalizar(self, request, uuid):
         instance = self.get_object()
-        serializer = TicketSerializerCancelar(instance, data=request.data, partial=True)
+        serializer = TicketSerializerFinalizar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -82,9 +82,9 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def solucionar(self, request, uuid):
+    def cancelar(self, request, uuid):
         instance = self.get_object()
-        serializer = TicketSerializerSolucionar(instance, data=request.data, partial=True)
+        serializer = TicketSerializerCancelar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         headers = self.get_success_headers(serializer.data)

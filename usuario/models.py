@@ -78,13 +78,6 @@ class Usuario(AbstractUser):
         help_text='UUID Código único não sequencial',
     )
 
-    """codigo = models.PositiveBigIntegerField(
-        verbose_name='Código',
-        default=serializador_codigo,
-        unique=True,
-        help_text='Código do usuário',
-    )"""
-
     telefone = models.CharField(
         verbose_name='Telefone',
         max_length=10,
@@ -187,7 +180,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
         indexes = [
             models.Index(fields=['uuid'], name='idx_uuid_usr'),
-            # models.Index(fields=['codigo'], name='idx_codigo_usr'),
+            models.Index(fields=['classificacao'], name='idx_classificacao_usr'),
             models.Index(fields=['empresa'], name='idx_empresa_usr'),
             models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
         ]
@@ -289,4 +282,3 @@ class Classificacao(Base):
 
     def __str__(self):
         return str(self.uuid)
-
