@@ -62,7 +62,7 @@ class Empresa(Base):
     complemento = models.CharField(
         verbose_name='Complemento',
         max_length=60,
-        default='',
+        blank=True,
         help_text='Complemento do endereço',
     )
 

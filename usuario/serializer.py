@@ -152,7 +152,8 @@ class ClassificacaoSerializer(serializers.ModelSerializer):
 class UsuarioSerializerCreate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid')
+    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+                                                 required=False)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
@@ -169,7 +170,8 @@ class UsuarioSerializerCreate(UsuarioSerializer):
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid')
+    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+                                                 required=False)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [

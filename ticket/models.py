@@ -13,6 +13,7 @@ STATUS_CHOISES = [
 ]
 
 AVALIACAO_CHOISES = [
+    (0, 'Não Avaliado'),
     (1, 'Péssimo'),
     (2, 'Ruim'),
     (3, 'Bom'),
@@ -127,14 +128,14 @@ class Ticket(Base):
     avaliacao_solicitante = models.SmallIntegerField(
         verbose_name='Avaliação do Solicitante',
         choices=AVALIACAO_CHOISES,
-        null=True,
+        default=0,
         help_text='Avaliação do solicitante referente ao chamado',
     )
 
     observacao_avaliacao_solicitante = models.TextField(
         verbose_name='Observação Avaliação do Solicitante',
         help_text='Observações referente à avaliação do solicitante',
-        default='',
+        blank=True,
     )
 
     solucionado = models.ForeignKey(
@@ -191,7 +192,7 @@ class Ticket(Base):
     motivo_cancelamento = models.TextField(
         verbose_name='Motivo do Cancelamento',
         help_text='Motivo/Justificativa do cancelamento do ticket',
-        default='',
+        blank=True,
     )
 
     data_cancelamento = models.DateField(

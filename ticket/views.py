@@ -10,7 +10,7 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
                         TicketSerializerUpdatePartialUpdate, MensagemTicketSerializer, MensagemTicketSerializerCreate, \
                         MensagemTicketSerializerRetrieve, TicketSerializerAuditoria, MensagemTicketSerializerAuditoria, \
                         TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerAvaliar, \
-                        TicketSerializerSolucionar
+                        TicketSerializerSolucionar, TicketSerializerAtribuirAtendente
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
@@ -50,6 +50,16 @@ class TicketViewSet(ModelViewSetComAuditoria):
                 return Ticket.objects.filter(solicitante__empresa=usuario.empresa)
             else:
                 return Ticket.objects.filter(solicitante=usuario)
+
+    @action(detail=True, methods=['patch'])
+    def atribuir_atendente(self, request, uuid):
+        instance = self.get_object()
+        serializer = TicketSerializerAtribuirAtendente(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
     def solucionar(self, request, uuid):

@@ -90,7 +90,6 @@ class Usuario(AbstractUser):
     celular = models.CharField(
         verbose_name='Celular',
         max_length=11,
-        default='',
         blank=True,
         help_text='Telefone celular ex: 31900000000',
         validators=[
@@ -126,7 +125,6 @@ class Usuario(AbstractUser):
 
     observacoes = models.TextField(
         verbose_name='Observações',
-        default='',
         blank=True,
         help_text='Observações referênte ao usuário',
     )
