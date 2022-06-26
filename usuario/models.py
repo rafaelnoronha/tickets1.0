@@ -57,13 +57,13 @@ class GerenciadorUsuario(UserManager):
         return self._create_user(username, email, password, **extra_fields)
 
 
-def serializador_codigo():
+"""def serializador_codigo():
     ultimo_registro = Usuario.objects.all().order_by('id').last()
 
     if not ultimo_registro:
         return 1
 
-    return int(ultimo_registro.codigo) + 1
+    return int(ultimo_registro.codigo) + 1"""
 
 
 class Usuario(AbstractUser):

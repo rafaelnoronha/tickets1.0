@@ -134,12 +134,14 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class ClassificacaoSerializer(serializers.ModelSerializer):
     class Meta(UsuarioSerializer.Meta):
+        model = Classificacao
         read_only_fields = [
             'uuid',
             'data_cadastro',
             'hora_cadastro',
         ]
         fields = [
+            'uuid',
             'codigo',
             'nome',
             'descricao',
