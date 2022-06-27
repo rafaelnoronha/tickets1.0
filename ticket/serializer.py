@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from .models import Ticket, MensagemTicket
-from usuario.serializer import UsuarioSerializerSimples
-from usuario.models import Usuario
+from usuario.serializer import UsuarioSerializerSimples, ClassificacaoSerializer
+from usuario.models import Usuario, Classificacao
 from agrupamento.models import Grupo, Subgrupo
 from agrupamento.serializer import GrupoSerializer, SubgrupoSerializer
 
 
 class TicketSerializerAuditoria(serializers.ModelSerializer):
     solicitante = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
@@ -32,6 +33,7 @@ class MensagemTicketSerializerAuditoria(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     solicitante = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
@@ -52,7 +54,17 @@ class TicketSerializer(serializers.ModelSerializer):
 
         return solicitante
 
+    def validate_classificacao_atendente(self, classificacao_atendente):
+        self.valida_edicao_ticket()
+
+        if classificacao_atendente and not classificacao_atendente.ativo:
+            raise serializers.ValidationError("Não é possível salvar um ticket se 'classificacao_atendente=false'")
+
+        return classificacao_atendente
+
     def validate_atendente(self, atendente):
+        self.valida_edicao_ticket()
+
         if atendente and not atendente.is_active:
             raise serializers.ValidationError("Não é possível salvar um ticket com um atendente inativo")
 
@@ -93,6 +105,9 @@ class TicketSerializer(serializers.ModelSerializer):
     def validate_avaliacao_solicitante(self, avaliacao_solicitante):
         if self.instance.cancelado:
             raise serializers.ValidationError("Não é possível avaliar um ticket cancelado")
+
+        if not self.instance.finalizado:
+            raise serializers.ValidationError("Não é possível avaliar um ticket que não esteja finalizado")
 
         if not self.instance.atendente:
             raise serializers.ValidationError("Não é possível avaliar um ticket que não está atribuido a nenhum "
@@ -164,6 +179,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'status',
             'prioridade',
             'solicitante',
+            'classificacao_atendente',
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
@@ -190,6 +206,8 @@ class TicketSerializer(serializers.ModelSerializer):
 
 class TicketSerializerCreate(TicketSerializer):
     solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+                                                           allow_null=True, required=False)
     atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
                                              required=False)
     grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
@@ -223,6 +241,8 @@ class TicketSerializerCreate(TicketSerializer):
 
 
 class TicketSerializerUpdatePartialUpdate(TicketSerializer):
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+                                                           allow_null=True, required=False)
     grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
                                          required=False)
     subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
@@ -267,7 +287,7 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
             'status',
             'prioridade',
             'solicitante',
-            'atendente',
+            'classificacao_atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
             'titulo',
@@ -301,6 +321,7 @@ class TicketSerializerSolucionar(TicketSerializer):
             'status',
             'prioridade',
             'solicitante',
+            'classificacao_atendente',
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
@@ -335,6 +356,7 @@ class TicketSerializerFinalizar(TicketSerializer):
             'status',
             'prioridade',
             'solicitante',
+            'classificacao_atendente',
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
@@ -366,6 +388,7 @@ class TicketSerializerAvaliar(TicketSerializer):
             'status',
             'prioridade',
             'solicitante',
+            'classificacao_atendente',
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
@@ -400,6 +423,7 @@ class TicketSerializerCancelar(TicketSerializer):
             'status',
             'prioridade',
             'solicitante',
+            'classificacao_atendente',
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
@@ -477,6 +501,7 @@ class MensagemTicketSerializerRetrieveTicket(MensagemTicketSerializer):
 
 class TicketSerializerRetrieve(TicketSerializer):
     solicitante = UsuarioSerializerSimples(read_only=True)
+    classificacao_atendente = ClassificacaoSerializer(read_only=True)
     atendente = UsuarioSerializerSimples(read_only=True)
     mensagens = MensagemTicketSerializerRetrieveTicket(source='ticket_ticket_mensagem_ticket', many=True,
                                                        read_only=True)
@@ -493,6 +518,7 @@ class TicketSerializerRetrieve(TicketSerializer):
             'status',
             'prioridade',
             'solicitante',
+            'classificacao_atendente',
             'atendente',
             'data_atribuicao_atendente',
             'hora_atribuicao_atendente',
