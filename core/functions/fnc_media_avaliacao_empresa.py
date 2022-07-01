@@ -5,7 +5,7 @@ def function():
             BEGIN
                 RETURN (
                     SELECT
-                        (COALESCE(SUM(tk.avaliacao_solicitante), 0) / COALESCE(COUNT(tk.id), 0))
+                        CAST((CAST(SUM(tk.avaliacao_solicitante) AS numeric)) / COUNT(tk.id) AS numeric(2,1))
                     FROM ticket AS tk
                         LEFT JOIN usuario AS us ON us.id = tk.atendente_id
                     WHERE 
