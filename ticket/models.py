@@ -68,7 +68,7 @@ class Ticket(Base):
 
     classificacao_atendente = models.ForeignKey(
         Classificacao,
-        verbose_name='Classificação',
+        verbose_name='Classificação do Atendente',
         related_name='classificacao_atendente_usuario_ticket',
         null=True,
         on_delete=models.PROTECT,
@@ -141,7 +141,7 @@ class Ticket(Base):
     solucionado = models.ForeignKey(
         'MensagemTicket',
         verbose_name='Solucionado',
-        related_name='solucionado_ticket_ticket',
+        related_name='solucionado_ticket_mensagem_ticket',
         null=True,
         on_delete=models.PROTECT,
         help_text='Mensagem de solução do ticket',
@@ -222,7 +222,6 @@ class Ticket(Base):
             models.Index(fields=['avaliacao_solicitante'], name='idx_avaliacao_solicitante_tik'),
             models.Index(fields=['grupo'], name='idx_grupo_tik'),
             models.Index(fields=['subgrupo'], name='idx_subgrupo_tik'),
-            models.Index(fields=['solucionado'], name='idx_solucionado_tik'),
             models.Index(fields=['finalizado'], name='idx_finalizado_tik'),
             models.Index(fields=['cancelado'], name='idx_cancelado_tik'),
         ]
@@ -278,9 +277,104 @@ class MensagemTicket(Base):
         verbose_name_plural = 'Mensagens do Ticket'
         indexes = [
             models.Index(fields=['uuid'], name='idx_uuid_mtik'),
-            models.Index(fields=['ticket'], name='idx_codigo_mtik'),
-            models.Index(fields=['usuario'], name='idx_status_mtik'),
-            models.Index(fields=['solucao'], name='idx_prioridade_mtik'),
+            models.Index(fields=['ticket'], name='idx_ticket_mtik'),
+            models.Index(fields=['usuario'], name='idx_usuario_mtik'),
+            models.Index(fields=['solucao'], name='idx_solucao_mtik'),
+        ]
+
+    def __str__(self):
+        return str(self.uuid)
+
+
+class MovimentoTicket(Base):
+    ticket = models.ForeignKey(
+        Ticket,
+        verbose_name='Ticket',
+        related_name='ticket_ticket_movimento_ticket',
+        on_delete=models.PROTECT,
+        help_text='Ticket responsável pela movimentação'
+    )
+
+    data_inicio = models.DateField(
+        verbose_name='Data de Início',
+        null=True,
+        help_text='Data que o ticket foi atribuido pela primeira vez',
+    )
+
+    hora_inicio = models.TimeField(
+        verbose_name='Hora de Início',
+        null=True,
+        help_text='Hora em que o ticket foi atribuido pela primeira vez'
+    )
+
+    data_fim = models.DateField(
+        verbose_name='Data de Finalizacao',
+        null=True,
+        help_text='Data que o ticket foi finalizado',
+    )
+
+    hora_fim = models.TimeField(
+        verbose_name='Hora do Fim',
+        null=True,
+        help_text='Hora em que o ticket foi finalizado'
+    )
+
+    atendente = models.ForeignKey(
+        Usuario,
+        verbose_name='Atendente',
+        related_name='atendente_usuario_movimento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Atendente/Técnico responsável pelo ticket'
+    )
+
+    classificacao_atendente = models.ForeignKey(
+        Classificacao,
+        verbose_name='Classificação do Atendente',
+        related_name='classificacao_atendente_usuario_movimento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='A qual classificação de usuário o ticket é designado'
+    )
+
+    solucionado = models.ForeignKey(
+        'MensagemTicket',
+        verbose_name='Solucionado',
+        related_name='solucao_ticket_movimento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Mensagem de solução do ticket',
+    )
+
+    finalizado = models.ForeignKey(
+        Usuario,
+        verbose_name='Finalizado',
+        related_name='finalizado_ticket_movimento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Usuário que finalizou o ticket',
+    )
+
+    cancelado = models.ForeignKey(
+        Usuario,
+        verbose_name='Cancelado',
+        related_name='cancelado_ticket_movimento_ticket',
+        null=True,
+        on_delete=models.PROTECT,
+        help_text='Usuário que finalizou o ticket',
+    )
+
+    class Meta:
+        ordering = ['-id']
+        db_table = 'movimento_ticket'
+        verbose_name = 'Movimento do Ticket'
+        verbose_name_plural = 'Movimentos do Ticket'
+        indexes = [
+            models.Index(fields=['uuid'], name='idx_uuid_movtik'),
+            models.Index(fields=['ticket'], name='idx_ticket_movtik'),
+            models.Index(fields=['atendente'], name='idx_atendente_movtik'),
+            models.Index(fields=['finalizado'], name='idx_finalizado_movtik'),
+            models.Index(fields=['cancelado'], name='idx_cancelado_movtik'),
         ]
 
     def __str__(self):

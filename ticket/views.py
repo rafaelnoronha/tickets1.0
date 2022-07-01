@@ -3,14 +3,15 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from core.views import ModelViewSetComAuditoria, CreateModelMixinAuditoria
-from .models import Ticket, MensagemTicket
-from .filters import TicketFilter, MensagemTicketFilter
+from .models import Ticket, MensagemTicket, MovimentoTicket
+from .filters import TicketFilter, MensagemTicketFilter, MovimentoTicketFilter
 from core.permissions import BasePemission
 from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, \
                         TicketSerializerUpdatePartialUpdate, MensagemTicketSerializer, MensagemTicketSerializerCreate, \
                         MensagemTicketSerializerRetrieve, TicketSerializerAuditoria, MensagemTicketSerializerAuditoria, \
                         TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerAvaliar, \
-                        TicketSerializerSolucionar, TicketSerializerAtribuirAtendente
+                        TicketSerializerSolucionar, TicketSerializerAtribuirAtendente, TicketSerializerReclassificar, \
+                        MovimentoTicketSerializer, MovimentoTicketSerializerRetrieve
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
@@ -51,10 +52,31 @@ class TicketViewSet(ModelViewSetComAuditoria):
             else:
                 return Ticket.objects.filter(solicitante=usuario)
 
+    @action(detail=True, methods=['get'])
+    def movimento(self, request, uuid):
+        instance = self.get_object()
+        movimentos = MovimentoTicket.objects.filter(ticket=instance)
+        serializer = MovimentoTicketSerializer(movimentos, many=True)
+        print(serializer)
+        headers = self.get_success_headers(serializer)
+
+        return Response(movimentos, status=status.HTTP_200_OK, headers=headers)
+
     @action(detail=True, methods=['patch'])
     def atribuir_atendente(self, request, uuid):
         instance = self.get_object()
         serializer = TicketSerializerAtribuirAtendente(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+
+    @action(detail=True, methods=['patch'])
+    def reclassificar(self, request, uuid):
+        instance = self.get_object()
+        instance.atendente = None
+        serializer = TicketSerializerReclassificar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -138,3 +160,17 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
                 return MensagemTicket.objects.filter(ticket__solicitante__empresa=usuario.empresa)
             else:
                 return MensagemTicket.objects.filter(ticket__solicitante=usuario)
+
+
+class MovimentoTicketViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = MovimentoTicket.objects.all()
+    lookup_field = 'uuid'
+    filterset_class = MovimentoTicketFilter
+    permission_classes = (BasePemission,)
+
+    serializer_classes = {
+        'retrieve': MovimentoTicketSerializerRetrieve,
+    }
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, MovimentoTicketSerializer)

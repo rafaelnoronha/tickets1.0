@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ticket, MensagemTicket
+from .models import Ticket, MensagemTicket, MovimentoTicket
 from usuario.serializer import UsuarioSerializerSimples, ClassificacaoSerializer
 from usuario.models import Usuario, Classificacao
 from agrupamento.models import Grupo, Subgrupo
@@ -310,6 +310,41 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
         ]
 
 
+class TicketSerializerReclassificar(TicketSerializer):
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+                                                           required=True, allow_null=True)
+
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+
+
 class TicketSerializerSolucionar(TicketSerializer):
     solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
                                                allow_null=True, allow_empty=False, required=False)
@@ -542,3 +577,43 @@ class TicketSerializerRetrieve(TicketSerializer):
             'data_cadastro',
             'hora_cadastro',
         ]
+
+
+class MovimentoTicketSerializer(serializers.ModelSerializer):
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='nome')
+    atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
+
+    class Meta:
+        model = MovimentoTicket
+        fields = [
+            'uuid',
+            'ticket',
+            'data_inicio',
+            'hora_inicio',
+            'data_fim',
+            'hora_fim',
+            'classificacao_atendente',
+            'atendente',
+            'solucionado',
+            'finalizado',
+            'cancelado',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+        read_only_fields = fields
+
+
+class MovimentoTicketSerializerRetrieve(MovimentoTicketSerializer):
+    ticket = TicketSerializer(read_only=True)
+    classificacao_atendente = ClassificacaoSerializer(read_only=True)
+    atendente = UsuarioSerializerSimples(read_only=True)
+    solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
+    finalizado = UsuarioSerializerSimples(read_only=True)
+    cancelado = UsuarioSerializerSimples(read_only=True)
+
+    class Meta(MovimentoTicketSerializer.Meta):
+        pass

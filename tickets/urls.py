@@ -20,7 +20,7 @@ from usuario.urls import router_usuario, router_classificacao, router_log_autent
     router_grupo_permissoes_usuario,router_permissao_usuario
 from empresa.urls import router_empresa
 from politica_privacidade.urls import router_politica_privacidade, router_consentimento_politica_privacidade
-from ticket.urls import router_ticket, router_mensagem_ticket
+from ticket.urls import router_ticket, router_mensagem_ticket, router_movimento_ticket
 from auditoria.urls import router_auditoria
 from agrupamento.urls import router_grupo, router_subgrupo
 
@@ -39,6 +39,7 @@ urlpatterns = [
     path(f'{base_url_v1}consentimento_politica_privacidade/', include(router_consentimento_politica_privacidade.urls)),
     path(f'{base_url_v1}ticket/', include(router_ticket.urls)),
     path(f'{base_url_v1}mensagem_ticket/', include(router_mensagem_ticket.urls)),
+    path(f'{base_url_v1}movimento_ticket/', include(router_movimento_ticket.urls)),
     path(f'{base_url_v1}auditoria/', include(router_auditoria.urls)),
     path(f'{base_url_v1}grupo/', include(router_grupo.urls)),
     path(f'{base_url_v1}subgrupo/', include(router_subgrupo.urls)),
