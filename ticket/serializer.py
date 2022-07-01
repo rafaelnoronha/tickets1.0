@@ -310,6 +310,41 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
         ]
 
 
+class TicketSerializerReclassificar(TicketSerializer):
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+                                                           required=True, allow_null=True)
+
+    class Meta(TicketSerializer.Meta):
+        read_only_fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'atendente',
+            'data_atribuicao_atendente',
+            'hora_atribuicao_atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'data_solucao',
+            'hora_solucao',
+            'finalizado',
+            'data_finalizacao',
+            'hora_finalizacao',
+            'cancelado',
+            'motivo_cancelamento',
+            'data_cancelamento',
+            'hora_cancelamento',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+
+
 class TicketSerializerSolucionar(TicketSerializer):
     solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
                                                allow_null=True, allow_empty=False, required=False)
