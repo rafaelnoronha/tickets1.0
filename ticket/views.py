@@ -57,10 +57,9 @@ class TicketViewSet(ModelViewSetComAuditoria):
         instance = self.get_object()
         movimentos = MovimentoTicket.objects.filter(ticket=instance)
         serializer = MovimentoTicketSerializer(movimentos, many=True)
-        print(serializer)
         headers = self.get_success_headers(serializer)
 
-        return Response(movimentos, status=status.HTTP_200_OK, headers=headers)
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
     def atribuir_atendente(self, request, uuid):
