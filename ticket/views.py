@@ -62,7 +62,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def atribuir_atendente(self, request, uuid):
+    def atribuir(self, request, uuid):
         instance = self.get_object()
         serializer = TicketSerializerAtribuirAtendente(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
