@@ -84,18 +84,6 @@ class Ticket(Base):
         help_text='Atendente/Técnico responsável pelo ticket'
     )
 
-    data_atribuicao_atendente = models.DateField(
-        verbose_name='Data de atribuição do atendente',
-        null=True,
-        help_text='Data em que foi atribuído o atendente ao ticket',
-    )
-
-    hora_atribuicao_atendente = models.TimeField(
-        verbose_name='Hora de atribuição do atendente',
-        null=True,
-        help_text='Hora em que foi atribuído o atendente ao ticket',
-    )
-
     titulo = models.CharField(
         verbose_name='Título',
         max_length=255,
@@ -147,18 +135,6 @@ class Ticket(Base):
         help_text='Mensagem de solução do ticket',
     )
 
-    data_solucao = models.DateField(
-        verbose_name='Data da Solução do Ticket',
-        null=True,
-        help_text='Data que o ticket foi solucionado',
-    )
-
-    hora_solucao = models.TimeField(
-        verbose_name='Hora da Solução do Ticket',
-        null=True,
-        help_text='Hora que o ticket foi solucionado',
-    )
-
     finalizado = models.ForeignKey(
         Usuario,
         verbose_name='Finalizado',
@@ -166,18 +142,6 @@ class Ticket(Base):
         null=True,
         on_delete=models.PROTECT,
         help_text='Usuário que finalizou o ticket',
-    )
-
-    data_finalizacao = models.DateField(
-        verbose_name='Data da Finalização do Ticket',
-        null=True,
-        help_text='Data que o ticket foi finalizado',
-    )
-
-    hora_finalizacao = models.TimeField(
-        verbose_name='Hora da Finalização do Ticket',
-        null=True,
-        help_text='Hora que o ticket foi finalizado',
     )
 
     cancelado = models.ForeignKey(
@@ -193,18 +157,6 @@ class Ticket(Base):
         verbose_name='Motivo do Cancelamento',
         help_text='Motivo/Justificativa do cancelamento do ticket',
         blank=True,
-    )
-
-    data_cancelamento = models.DateField(
-        verbose_name='Data de Cancelamento',
-        null=True,
-        help_text='Data que o ticket foi cancelado',
-    )
-
-    hora_cancelamento = models.TimeField(
-        verbose_name='Hora do Cancelamento',
-        null=True,
-        help_text='Hora que o ticket foi cancelado',
     )
 
     class Meta:
