@@ -4,7 +4,7 @@ def trigger():
         RETURNS TRIGGER AS $$
             BEGIN
                 IF (NEW.solucao) THEN
-                    UPDATE ticket SET solucionado_id = NEW.id, data_solucao = NOW(), hora_solucao = NOW() WHERE id = NEW.ticket_id;
+                    UPDATE ticket SET solucionado_id = NEW.id WHERE id = NEW.ticket_id;
                 END IF;
                 
                 RETURN NEW;
