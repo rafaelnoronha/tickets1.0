@@ -454,43 +454,6 @@ class MensagemTicketSerializerRetrieveTicket(MensagemTicketSerializer):
     mensagem_relacionada = MensagemTicketSerializer(read_only=True)
 
 
-class TicketSerializerRetrieve(TicketSerializer):
-    solicitante = UsuarioSerializerSimples(read_only=True)
-    classificacao_atendente = ClassificacaoSerializer(read_only=True)
-    atendente = UsuarioSerializerSimples(read_only=True)
-    mensagens = MensagemTicketSerializerRetrieveTicket(source='ticket_ticket_mensagem_ticket', many=True,
-                                                       read_only=True)
-    grupo = GrupoSerializer(read_only=True)
-    subgrupo = SubgrupoSerializer(read_only=True)
-    solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
-    finalizado = UsuarioSerializerSimples(read_only=True)
-    cancelado = UsuarioSerializerSimples(read_only=True)
-
-    class Meta(TicketSerializer.Meta):
-        fields = [
-            'uuid',
-            'codigo',
-            'status',
-            'prioridade',
-            'solicitante',
-            'classificacao_atendente',
-            'atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'mensagens',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
-
-
 class MovimentoTicketSerializer(serializers.ModelSerializer):
     ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
     classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='nome')
@@ -529,3 +492,41 @@ class MovimentoTicketSerializerRetrieve(MovimentoTicketSerializer):
 
     class Meta(MovimentoTicketSerializer.Meta):
         pass
+
+
+class TicketSerializerRetrieve(TicketSerializer):
+    solicitante = UsuarioSerializerSimples(read_only=True)
+    classificacao_atendente = ClassificacaoSerializer(read_only=True)
+    atendente = UsuarioSerializerSimples(read_only=True)
+    mensagens = MensagemTicketSerializerRetrieveTicket(source='ticket_ticket_mensagem_ticket', many=True,
+                                                       read_only=True)
+    grupo = GrupoSerializer(read_only=True)
+    subgrupo = SubgrupoSerializer(read_only=True)
+    solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
+    finalizado = UsuarioSerializerSimples(read_only=True)
+    cancelado = UsuarioSerializerSimples(read_only=True)
+    movimentos = MovimentoTicketSerializerRetrieve(source='ticket_ticket_movimento_ticket', read_only=True, many=True)
+
+    class Meta(TicketSerializer.Meta):
+        fields = [
+            'uuid',
+            'codigo',
+            'status',
+            'prioridade',
+            'solicitante',
+            'classificacao_atendente',
+            'atendente',
+            'titulo',
+            'descricao',
+            'grupo',
+            'subgrupo',
+            'solucionado',
+            'finalizado',
+            'cancelado',
+            'motivo_cancelamento',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
+            'mensagens',
+            'data_cadastro',
+            'hora_cadastro',
+        ]

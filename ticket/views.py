@@ -52,15 +52,6 @@ class TicketViewSet(ModelViewSetComAuditoria):
             else:
                 return Ticket.objects.filter(solicitante=usuario)
 
-    @action(detail=True, methods=['get'])
-    def movimento(self, request, uuid):
-        instance = self.get_object()
-        movimentos = MovimentoTicket.objects.filter(ticket=instance)
-        serializer = MovimentoTicketSerializer(movimentos, many=True)
-        headers = self.get_success_headers(serializer)
-
-        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
-
     @action(detail=True, methods=['patch'])
     def atribuir(self, request, uuid):
         instance = self.get_object()
