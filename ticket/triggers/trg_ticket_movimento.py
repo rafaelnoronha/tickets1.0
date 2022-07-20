@@ -74,5 +74,5 @@ def trigger():
         DROP TRIGGER IF EXISTS trg_ticket_movimento ON ticket;
         CREATE TRIGGER trg_ticket_movimento
         BEFORE INSERT OR UPDATE ON ticket
-        FOR EACH ROW EXECUTE PROCEDURE trg_ticket_movimento();    
+        FOR EACH ROW EXECUTE PROCEDURE trg_ticket_movimento();
     """
