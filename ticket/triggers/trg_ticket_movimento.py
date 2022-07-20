@@ -33,39 +33,49 @@ def trigger():
                         hora_fim := ultimo_movimento.hora_fim;
                     END IF;
                 END IF;
+                
+                IF (
+                    TG_OP = 'INSERT'
+                    OR OLD.atendente_id IS DISTINCT FROM NEW.atendente_id
+                    OR OLD.cancelado_id IS DISTINCT FROM NEW.cancelado_id
+                    OR OLD.classificacao_atendente_id IS DISTINCT FROM NEW.classificacao_atendente_id
+                    OR OLD.finalizado_id IS DISTINCT FROM NEW.finalizado_id
+                    OR OLD.solucionado_id IS DISTINCT FROM NEW.solucionado_id
+                ) THEN
         
-                INSERT INTO movimento_ticket(
-                    uuid
-                    ,ativo
-                    ,data_cadastro
-                    ,hora_cadastro
-                    ,data_inicio
-                    ,hora_inicio
-                    ,data_fim
-                    ,hora_fim
-                    ,atendente_id
-                    ,cancelado_id
-                    ,classificacao_atendente_id
-                    ,finalizado_id
-                    ,solucionado_id
-                    ,ticket_id
-                )
-                VALUES(
-                    uuid_generate_v4()
-                    ,true
-                    ,now()
-                    ,now()
-                    ,data_inicio
-                    ,hora_inicio
-                    ,data_fim
-                    ,hora_fim
-                    ,NEW.atendente_id
-                    ,NEW.cancelado_id
-                    ,NEW.classificacao_atendente_id
-                    ,NEW.finalizado_id
-                    ,NEW.solucionado_id
-                    ,NEW.id
-                );
+                    INSERT INTO movimento_ticket(
+                        uuid
+                        ,ativo
+                        ,data_cadastro
+                        ,hora_cadastro
+                        ,data_inicio
+                        ,hora_inicio
+                        ,data_fim
+                        ,hora_fim
+                        ,atendente_id
+                        ,cancelado_id
+                        ,classificacao_atendente_id
+                        ,finalizado_id
+                        ,solucionado_id
+                        ,ticket_id
+                    ) 
+                    VALUES(
+                        uuid_generate_v4()
+                        ,true
+                        ,now()
+                        ,now()
+                        ,data_inicio
+                        ,hora_inicio
+                        ,data_fim
+                        ,hora_fim
+                        ,NEW.atendente_id
+                        ,NEW.cancelado_id
+                        ,NEW.classificacao_atendente_id
+                        ,NEW.finalizado_id
+                        ,NEW.solucionado_id
+                        ,NEW.id
+                    );
+                END IF;
         
                 RETURN NEW;
             END
@@ -74,5 +84,5 @@ def trigger():
         DROP TRIGGER IF EXISTS trg_ticket_movimento ON ticket;
         CREATE TRIGGER trg_ticket_movimento
         BEFORE INSERT OR UPDATE ON ticket
-        FOR EACH ROW EXECUTE PROCEDURE trg_ticket_movimento();    
+        FOR EACH ROW EXECUTE PROCEDURE trg_ticket_movimento();
     """

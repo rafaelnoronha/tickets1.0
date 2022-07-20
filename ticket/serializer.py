@@ -45,6 +45,11 @@ class TicketSerializer(serializers.ModelSerializer):
         if self.instance and (self.instance.finalizado or self.instance.cancelado):
             raise serializers.ValidationError("Não é possível alterar um ticket finalizado ou cancelado")
 
+    def validate(self, attrs):
+        self.valida_edicao_ticket()
+
+        return attrs
+
     def validate_solicitante(self, solicitante):
         if not solicitante.is_active:
             raise serializers.ValidationError("Não é possível salvar um ticket com um solicitante inativo")
@@ -55,16 +60,12 @@ class TicketSerializer(serializers.ModelSerializer):
         return solicitante
 
     def validate_classificacao_atendente(self, classificacao_atendente):
-        self.valida_edicao_ticket()
-
         if classificacao_atendente and not classificacao_atendente.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket se 'classificacao_atendente=false'")
 
         return classificacao_atendente
 
     def validate_atendente(self, atendente):
-        self.valida_edicao_ticket()
-
         if atendente and not atendente.is_active:
             raise serializers.ValidationError("Não é possível salvar um ticket com um atendente inativo")
 
@@ -74,24 +75,18 @@ class TicketSerializer(serializers.ModelSerializer):
         return atendente
 
     def validate_grupo(self, grupo):
-        self.valida_edicao_ticket()
-
         if grupo and not grupo.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket com um grupo inativo")
 
         return grupo
 
     def validate_subgrupo(self, subgrupo):
-        self.valida_edicao_ticket()
-
         if subgrupo and not subgrupo.ativo:
             raise serializers.ValidationError("Não é possível salvar um ticket com um subgrupo inativo")
 
         return subgrupo
 
     def validate_solucionado(self, solucionado):
-        self.valida_edicao_ticket()
-
         if solucionado and not solucionado.solucao:
             raise serializers.ValidationError("Não é possível salvar um ticket com uma solução setada como "
                                               "'solucao=false'")
@@ -125,24 +120,44 @@ class TicketSerializer(serializers.ModelSerializer):
         return observacao_avaliacao_solicitante
 
     def validate_finalizado(self, finalizado):
-        self.valida_edicao_ticket()
+        ticket = self.instance
+
+        if ticket.finalizado:
+            raise serializers.ValidationError("Não é possível finalizar um ticket que já está finalizado")
+
+        if finalizado != ticket.solicitante and (not ticket.atendente or ticket.atendente and finalizado !=
+                                                 ticket.atendente):
+            raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário que não esteja "
+                                              "vinculado ao ticket")
+
+        if finalizado and not finalizado.is_active:
+            raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário inativo")
+
+        if not ticket.solucionado:
+            raise serializers.ValidationError("Não é possível finalizar um ticket que não esteja solucionado")
 
         return finalizado
 
     def validate_cancelado(self, cancelado):
-        self.valida_edicao_ticket()
+        ticket = self.instance
 
-        if self.instance.cancelado:
-            raise serializers.ValidationError("Não é possível cancelar um ticket já está cancelado")
+        if ticket.cancelado:
+            raise serializers.ValidationError("Não é possível cancelar um ticket já que já está cancelado")
 
         if 'motivo_cancelamento' not in self.get_initial():
             raise serializers.ValidationError("Não é possível cancelar um ticket sem informar o motivo do cancelamento")
 
+        if cancelado != ticket.solicitante and (not ticket.atendente or ticket.atendente and cancelado !=
+                                                ticket.atendente):
+            raise serializers.ValidationError("Não é possível cancelar um ticket com um usuário que não esteja "
+                                              "vinculado ao ticket")
+
+        if cancelado and not cancelado.is_active:
+            raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário inativo")
+
         return cancelado
 
     def validate_motivo_cancelamento(self, motivo_cancelamento):
-        self.valida_edicao_ticket()
-
         if self.instance.cancelado:
             raise serializers.ValidationError("Não é possivel informar o motivo do cancelamento de um ticket cancelado")
 
@@ -409,12 +424,32 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 
     def validate_usuario(self, usuario):
         mensagem = self.initial_data
+        ticket = Ticket.objects.get(uuid=mensagem['ticket'])
 
-        if 'solucao' in mensagem and mensagem['solucao'] and not usuario.is_staff:
-            raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket com um usuário "
+        if usuario != ticket.solicitante and (ticket.atendente and usuario != ticket.atendente):
+            raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket com um usuário que não esteja "
+                                              "vinculado ao ticket como solicitante ou atendente")
+
+        if not usuario.is_active:
+            raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket com um usuário que esteja "
+                                              "como 'is_active=false'")
+
+    def validate_ticket(self, ticket):
+        if ticket.finalizado or ticket.cancelado:
+            raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket para um ticket finalizado ou "
+                                              "cancelado")
+
+        return ticket
+
+    def validate_solucao(self, solucao):
+        mensagem = self.initial_data
+        usuario = Usuario.objects.get(uuid=mensagem['usuario'])
+
+        if solucao and not usuario.is_staff:
+            raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket como solução com um usuário "
                                               "'is_staff=false'")
 
-        return usuario
+        return solucao
 
     class Meta:
         model = MensagemTicket
@@ -527,6 +562,7 @@ class TicketSerializerRetrieve(TicketSerializer):
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'mensagens',
+            'movimentos',
             'data_cadastro',
             'hora_cadastro',
         ]
