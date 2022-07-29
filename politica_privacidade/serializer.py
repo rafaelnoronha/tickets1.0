@@ -56,14 +56,14 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Não é possível consentir com uma política de privacidade vencida')
 
         if not politica_privacidade.ativo:
-            raise serializers.ValidationError("Não é possível consentir com uma política de privacidade 'ativo=false'")
+            raise serializers.ValidationError("Não é possível consentir com uma política de privacidade inativa")
 
         return politica_privacidade
 
     def validate_titular(self, titular):
         if not titular.is_active:
-            raise serializers.ValidationError("Não é possível consentir com uma política de privacidade com o titular"
-                                              "'ativo=false'")
+            raise serializers.ValidationError("Não é possível consentir com uma política de privacidade com o titular "
+                                              "inativo")
 
         return titular
 

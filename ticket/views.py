@@ -2,6 +2,7 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
+from django.db import connection
 from core.views import ModelViewSetComAuditoria, CreateModelMixinAuditoria
 from .models import Ticket, MensagemTicket, MovimentoTicket
 from .filters import TicketFilter, MensagemTicketFilter, MovimentoTicketFilter
@@ -43,7 +44,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
 
         if usuario.is_staff:
             if not usuario.is_manager:
-                return Ticket.objects.filter(Q(atendente=usuario) | Q(atendente__isnull=True))
+                return Ticket.objects.filter(Q(atendente=usuario) | Q(atendente__isnull=True)).select_related('solicitante').prefetch_related('')
 
             return Ticket.objects.filter(Q(atendente__empresa=usuario.empresa) | Q(atendente__isnull=True))
         else:
@@ -51,6 +52,23 @@ class TicketViewSet(ModelViewSetComAuditoria):
                 return Ticket.objects.filter(solicitante__empresa=usuario.empresa)
             else:
                 return Ticket.objects.filter(solicitante=usuario)
+
+    def dispatch(self, *args, **kwargs):
+        response = super().dispatch(*args, **kwargs)
+        print(' QUERIES '.center(100, '='))
+        print(f'Número de consultas { len(connection.queries) }')
+        print(connection.queries)
+        print('='*100)
+        return response
+
+    @action(detail=True, methods=['get'])
+    def movimento(self, request, uuid):
+        instance = self.get_object()
+        movimentos = MovimentoTicket.objects.filter(ticket=instance)
+        serializer = MovimentoTicketSerializer(movimentos, many=True)
+        headers = self.get_success_headers(serializer)
+
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
     def atribuir(self, request, uuid):
