@@ -13,7 +13,7 @@ class CreateModelMixinAuditoria(mixins.CreateModelMixin):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         dado_criado = self.auditoria['serializer'](
-            self.auditoria['modelo'].objects.get(uuid=serializer.data['uuid']))
+            self.auditoria['modelo'].objects.get(id=serializer.data['id']))
 
         Auditoria.objects.create(tabela_operacao=self.auditoria['nome_tabela'], tipo_operacao='CREATE',
                                  usuario_operacao=request.user, estado_anterior='', estado_atual=dado_criado.data)

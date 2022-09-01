@@ -293,26 +293,10 @@ PAISES_CHOISES = [
 ]
 
 
-def get_uuid():
-    with connection.cursor() as cursor:
-        cursor.execute(""" CREATE EXTENSION IF NOT EXISTS "uuid-ossp" """)
-        cursor.execute(""" SELECT uuid_generate_v4() """)
-        uuid = cursor.fetchone()[0]
-
-    return uuid
-
-
 class Base(models.Model):
     """
     Modelo padrão do sistema, herdado em quase todas as tabelas.
     """
-
-    uuid = models.UUIDField(
-        verbose_name='UUID',
-        default=get_uuid,
-        unique=True,
-        help_text='UUID Código único não sequencial',
-    )
 
     ativo = models.BooleanField(
         verbose_name='Ativo',
