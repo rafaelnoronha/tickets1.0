@@ -9,7 +9,7 @@ class AuditoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auditoria
         read_only_fields = [
-            'uuid',
+            'id',
             'data_operacao',
             'hora_operacao',
             'tabela_operacao',
@@ -19,7 +19,7 @@ class AuditoriaSerializer(serializers.ModelSerializer):
             'estado_atual',
         ]
         fields = [
-            'uuid',
+            'id',
             'data_operacao',
             'hora_operacao',
             'tabela_operacao',

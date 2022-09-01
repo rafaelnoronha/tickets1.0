@@ -1,6 +1,5 @@
 from django.db import models
 from usuario.models import Usuario
-from core.models import get_uuid
 
 
 TIPO_OPERACAO_CHOISES = [
@@ -14,12 +13,6 @@ class Auditoria(models.Model):
     """
     Modelo responsável por gravar as operações realizadas no sistema.
     """
-
-    uuid = models.UUIDField(
-        verbose_name='UUID',
-        default=get_uuid,
-        help_text='UUID Código único não sequencial',
-    )
 
     data_operacao = models.DateField(
         verbose_name='Data da Operação',
@@ -72,11 +65,10 @@ class Auditoria(models.Model):
         verbose_name = 'Auditoria'
         verbose_name_plural = 'Auditoria'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid'),
             models.Index(fields=['tabela_operacao'], name='idx_tabela_operacao_audt'),
             models.Index(fields=['tipo_operacao'], name='idx_tipo_operacao_audt'),
             models.Index(fields=['usuario_operacao'], name='idx_usuario_operacao_audt'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)

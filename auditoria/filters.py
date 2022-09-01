@@ -4,7 +4,6 @@ from usuario.filters import lookup_types_usuario
 from empresa.filters import lookup_types_empresa
 
 lookup_types_auditoria = {
-    'uuid': ['exact', 'in', ],
     'data_operacao': [
         'exact',
         'range',
@@ -41,13 +40,11 @@ class AuditoriaFilter(filter.FilterSet):
     class Meta:
         model = Auditoria
         fields = {
-            'uuid': lookup_types_auditoria['uuid'],
             'data_operacao': lookup_types_auditoria['data_operacao'],
             'hora_operacao': lookup_types_auditoria['hora_operacao'],
             'tabela_operacao': lookup_types_auditoria['tabela_operacao'],
             'tipo_operacao': lookup_types_auditoria['tipo_operacao'],
             'usuario_operacao': lookup_types_auditoria['usuario_operacao'],
-            'usuario_operacao__uuid': lookup_types_usuario['uuid'],
             'usuario_operacao__username': lookup_types_usuario['username'],
             'usuario_operacao__first_name': lookup_types_usuario['first_name'],
             'usuario_operacao__last_name': lookup_types_usuario['last_name'],
@@ -57,7 +54,6 @@ class AuditoriaFilter(filter.FilterSet):
             'usuario_operacao__observacoes': lookup_types_usuario['observacoes'],
             'usuario_operacao__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'usuario_operacao__empresa': lookup_types_usuario['empresa'],
-            'usuario_operacao__empresa__uuid': lookup_types_empresa['uuid'],
             'usuario_operacao__empresa__codigo': lookup_types_empresa['codigo'],
             'usuario_operacao__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'usuario_operacao__empresa__razao_social': lookup_types_empresa['razao_social'],

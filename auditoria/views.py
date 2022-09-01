@@ -7,7 +7,6 @@ from core.permissions import BasePemission
 
 class AuditoriaViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Auditoria.objects.all()
-    lookup_field = 'uuid'
     filterset_class = AuditoriaFilter
     permission_classes = (BasePemission, )
 
