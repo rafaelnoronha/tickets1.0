@@ -131,9 +131,8 @@ class Empresa(Base):
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_emp'),
             models.Index(fields=['codigo'], name='idx_codigo_emp'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)

@@ -12,7 +12,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empresa
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'media_avaliacoes',
             'data_cadastro',
@@ -22,7 +22,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
             'complemento': {'allow_blank': True},
         }
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'cpf_cnpj',
             'razao_social',
@@ -47,7 +47,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
 class EmpresaSerializerUpdatePartialUpdate(EmpresaSerializer):
     class Meta(EmpresaSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'media_avaliacoes',
             'data_cadastro',

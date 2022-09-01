@@ -7,7 +7,6 @@ from core.permissions import BasePemission
 
 class EmpresaViewSet(ModelViewSetComAuditoria):
     queryset = Empresa.objects.all()
-    lookup_field = 'uuid'
     filterset_class = EmpresaFilter
     permission_classes = (BasePemission, )
     auditoria = {
