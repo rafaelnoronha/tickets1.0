@@ -18,13 +18,13 @@ class GrupoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grupo
         read_only_fields = [
-            'uuid',
+            'id',
         ]
         extra_kwargs = {
             'codigo': {'allow_blank': True, },
         }
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'nome',
             'prioridade',
@@ -39,13 +39,13 @@ class SubgrupoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subgrupo
         read_only_fields = [
-            'uuid',
+            'id',
         ]
         extra_kwargs = {
             'codigo': {'allow_blank': True, },
         }
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'nome',
             'prioridade',

@@ -7,7 +7,6 @@ from core.permissions import BasePemission
 
 class GrupoViewSet(ModelViewSetComAuditoria):
     queryset = Grupo.objects.all()
-    lookup_field = 'uuid'
     filterset_class = GrupoFilter
     serializer_class = GrupoSerializer
     permission_classes = (BasePemission, )
@@ -20,7 +19,6 @@ class GrupoViewSet(ModelViewSetComAuditoria):
 
 class SubgrupoViewSet(ModelViewSetComAuditoria):
     queryset = Subgrupo.objects.all()
-    lookup_field = 'uuid'
     filterset_class = SubgrupoFilter
     serializer_class = SubgrupoSerializer
     permission_classes = (BasePemission, )

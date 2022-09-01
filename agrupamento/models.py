@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import Base, get_uuid
+from core.models import Base
 
 
 TIPO_CHOISES = [
@@ -46,13 +46,12 @@ class Grupo(Base):
         verbose_name = 'Grupo'
         verbose_name_plural = 'Grupos'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_grp'),
             models.Index(fields=['tipo'], name='idx_tipo_grp'),
             models.Index(fields=['codigo'], name='idx_codigo_grp'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)
 
 
 class Subgrupo(Base):
@@ -93,10 +92,9 @@ class Subgrupo(Base):
         verbose_name = 'Subgrupo'
         verbose_name_plural = 'Subgrupos'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_sgr'),
             models.Index(fields=['tipo'], name='idx_tipo_sgr'),
             models.Index(fields=['codigo'], name='idx_codigo_sgr'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)
