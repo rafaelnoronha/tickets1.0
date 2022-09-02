@@ -165,7 +165,6 @@ class Ticket(Base):
         verbose_name = 'Ticket'
         verbose_name_plural = 'Tickets'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_tik'),
             models.Index(fields=['codigo'], name='idx_codigo_tik'),
             models.Index(fields=['status'], name='idx_status_tik'),
             models.Index(fields=['prioridade'], name='idx_prioridade_tik'),
@@ -179,7 +178,7 @@ class Ticket(Base):
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)
 
 
 class MensagemTicket(Base):
@@ -228,14 +227,13 @@ class MensagemTicket(Base):
         verbose_name = 'Mensagem do Ticket'
         verbose_name_plural = 'Mensagens do Ticket'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_mtik'),
             models.Index(fields=['ticket'], name='idx_ticket_mtik'),
             models.Index(fields=['usuario'], name='idx_usuario_mtik'),
             models.Index(fields=['solucao'], name='idx_solucao_mtik'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)
 
 
 class MovimentoTicket(Base):
@@ -322,7 +320,6 @@ class MovimentoTicket(Base):
         verbose_name = 'Movimento do Ticket'
         verbose_name_plural = 'Movimentos do Ticket'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_movtik'),
             models.Index(fields=['ticket'], name='idx_ticket_movtik'),
             models.Index(fields=['atendente'], name='idx_atendente_movtik'),
             models.Index(fields=['finalizado'], name='idx_finalizado_movtik'),
@@ -330,4 +327,4 @@ class MovimentoTicket(Base):
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)

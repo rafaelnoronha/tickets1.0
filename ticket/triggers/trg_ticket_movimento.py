@@ -44,8 +44,7 @@ def trigger():
                 ) THEN
         
                     INSERT INTO movimento_ticket(
-                        uuid
-                        ,ativo
+                        ativo
                         ,data_cadastro
                         ,hora_cadastro
                         ,data_inicio
@@ -60,8 +59,7 @@ def trigger():
                         ,ticket_id
                     ) 
                     VALUES(
-                        uuid_generate_v4()
-                        ,true
+                        true
                         ,now()
                         ,now()
                         ,data_inicio

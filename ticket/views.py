@@ -17,7 +17,6 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
 
 class TicketViewSet(ModelViewSetComAuditoria):
     queryset = Ticket.objects.all()
-    lookup_field = 'uuid'
     filterset_class = TicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -62,7 +61,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return response
 
     @action(detail=True, methods=['get'])
-    def movimento(self, request, uuid):
+    def movimento(self, request, id):
         instance = self.get_object()
         movimentos = MovimentoTicket.objects.filter(ticket=instance)
         serializer = MovimentoTicketSerializer(movimentos, many=True)
@@ -71,7 +70,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def atribuir(self, request, uuid):
+    def atribuir(self, request, id):
         instance = self.get_object()
         serializer = TicketSerializerAtribuirAtendente(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -81,7 +80,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def reclassificar(self, request, uuid):
+    def reclassificar(self, request, id):
         instance = self.get_object()
         instance.atendente = None
         serializer = TicketSerializerReclassificar(instance, data=request.data, partial=True)
@@ -92,7 +91,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def solucionar(self, request, uuid):
+    def solucionar(self, request, id):
         instance = self.get_object()
         serializer = TicketSerializerSolucionar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -102,7 +101,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def finalizar(self, request, uuid):
+    def finalizar(self, request, id):
         instance = self.get_object()
         serializer = TicketSerializerFinalizar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -112,7 +111,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def avaliar(self, request, uuid):
+    def avaliar(self, request, id):
         instance = self.get_object()
         serializer = TicketSerializerAvaliar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -122,7 +121,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=True, methods=['patch'])
-    def cancelar(self, request, uuid):
+    def cancelar(self, request, id):
         instance = self.get_object()
         serializer = TicketSerializerCancelar(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -135,7 +134,6 @@ class TicketViewSet(ModelViewSetComAuditoria):
 class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,
                             viewsets.GenericViewSet):
     queryset = MensagemTicket.objects.all()
-    lookup_field = 'uuid'
     filterset_class = MensagemTicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -172,7 +170,6 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
 
 class MovimentoTicketViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = MovimentoTicket.objects.all()
-    lookup_field = 'uuid'
     filterset_class = MovimentoTicketFilter
     permission_classes = (BasePemission,)
 

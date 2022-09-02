@@ -7,14 +7,14 @@ from agrupamento.serializer import GrupoSerializer, SubgrupoSerializer
 
 
 class TicketSerializerAuditoria(serializers.ModelSerializer):
-    solicitante = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    atendente = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    grupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    solicitante = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    atendente = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    grupo = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta:
         model = Ticket
@@ -22,9 +22,9 @@ class TicketSerializerAuditoria(serializers.ModelSerializer):
 
 
 class MensagemTicketSerializerAuditoria(serializers.ModelSerializer):
-    usuario = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    usuario = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta:
         model = MensagemTicket
@@ -37,7 +37,7 @@ class TicketSerializer(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
-    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='id')
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
     cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
@@ -169,7 +169,7 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -181,7 +181,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'observacao_avaliacao_solicitante',
         ]
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -204,19 +204,19 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class TicketSerializerCreate(TicketSerializer):
-    solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
-    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+    solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                            allow_null=True, required=False)
-    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=True,
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=True,
                                              required=False)
-    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
+    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='id', allow_null=True,
                                          required=False)
-    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
+    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='id', allow_null=True,
                                             required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -232,16 +232,16 @@ class TicketSerializerCreate(TicketSerializer):
 
 
 class TicketSerializerUpdatePartialUpdate(TicketSerializer):
-    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                            allow_null=True, required=False)
-    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='uuid', allow_null=True,
+    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='id', allow_null=True,
                                          required=False)
-    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='uuid', allow_null=True,
+    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='id', allow_null=True,
                                             required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -260,12 +260,12 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
 
 
 class TicketSerializerAtribuirAtendente(TicketSerializer):
-    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=True,
+    atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', required=True,
                                               allow_null=False, allow_empty=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -286,12 +286,12 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
 
 
 class TicketSerializerReclassificar(TicketSerializer):
-    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+    classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                            required=True, allow_null=True)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -313,12 +313,12 @@ class TicketSerializerReclassificar(TicketSerializer):
 
 
 class TicketSerializerSolucionar(TicketSerializer):
-    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
+    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='id',
                                                allow_null=True, allow_empty=False, required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -340,12 +340,12 @@ class TicketSerializerSolucionar(TicketSerializer):
 
 
 class TicketSerializerFinalizar(TicketSerializer):
-    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', required=True,
+    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', required=True,
                                               allow_null=False, allow_empty=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -369,7 +369,7 @@ class TicketSerializerFinalizar(TicketSerializer):
 class TicketSerializerAvaliar(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -390,13 +390,13 @@ class TicketSerializerAvaliar(TicketSerializer):
 
 
 class TicketSerializerCancelar(TicketSerializer):
-    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid', allow_null=False,
+    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=False,
                                              allow_empty=False, required=True)
     motivo_cancelamento = serializers.CharField(required=True, allow_null=False, allow_blank=True)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
@@ -418,13 +418,13 @@ class TicketSerializerCancelar(TicketSerializer):
 
 class MensagemTicketSerializer(serializers.ModelSerializer):
     usuario = serializers.SlugRelatedField(read_only=True, slug_field='username')
-    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='uuid', allow_null=True,
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='id', allow_null=True,
                                                         required=False)
 
     def validate_usuario(self, usuario):
         mensagem = self.initial_data
-        ticket = Ticket.objects.get(uuid=mensagem['ticket'])
+        ticket = Ticket.objects.get(id=mensagem['ticket'])
 
         if usuario != ticket.solicitante and (ticket.atendente and usuario != ticket.atendente):
             raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket com um usuário que não esteja "
@@ -443,7 +443,7 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 
     def validate_solucao(self, solucao):
         mensagem = self.initial_data
-        usuario = Usuario.objects.get(uuid=mensagem['usuario'])
+        usuario = Usuario.objects.get(id=mensagem['usuario'])
 
         if solucao and not usuario.is_staff:
             raise serializers.ValidationError("Não é possível salvar uma mensagem_ticket como solução com um usuário "
@@ -454,12 +454,12 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = MensagemTicket
         read_only_fields = [
-            'uuid',
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]
         fields = [
-            'uuid',
+            'id',
             'usuario',
             'ticket',
             'mensagem',
@@ -471,9 +471,9 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 
 
 class MensagemTicketSerializerCreate(MensagemTicketSerializer):
-    usuario = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
-    ticket = serializers.SlugRelatedField(queryset=Ticket.objects.all(), slug_field='uuid')
-    mensagem_relacionada = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='uuid',
+    usuario = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
+    ticket = serializers.SlugRelatedField(queryset=Ticket.objects.all(), slug_field='id')
+    mensagem_relacionada = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='id',
                                                         allow_null=True, required=False)
 
 
@@ -485,22 +485,22 @@ class MensagemTicketSerializerRetrieve(MensagemTicketSerializer):
 
 class MensagemTicketSerializerRetrieveTicket(MensagemTicketSerializer):
     usuario = UsuarioSerializerSimples(read_only=True)
-    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
     mensagem_relacionada = MensagemTicketSerializer(read_only=True)
 
 
 class MovimentoTicketSerializer(serializers.ModelSerializer):
-    ticket = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
     classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
-    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='id')
     finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
     cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     class Meta:
         model = MovimentoTicket
         fields = [
-            'uuid',
+            'id',
             'ticket',
             'data_inicio',
             'hora_inicio',
@@ -544,7 +544,7 @@ class TicketSerializerRetrieve(TicketSerializer):
 
     class Meta(TicketSerializer.Meta):
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'status',
             'prioridade',
