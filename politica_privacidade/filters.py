@@ -4,7 +4,6 @@ from usuario.filters import lookup_types_usuario
 from empresa.filters import lookup_types_empresa
 
 lookup_types_politica_privacidade = {
-    'uuid': ['exact', 'in', ],
     'codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -49,7 +48,6 @@ lookup_types_politica_privacidade = {
 }
 
 lookup_types_consentimento_politica_privacidade = {
-    'uuid': ['exact', 'in', ],
     'titular': ['exact', ],
     'politica_privacidade': ['exact', ],
     'consentimento': ['exact', ],
@@ -84,7 +82,6 @@ class PoliticaPrivacidadeFilter(filter.FilterSet):
     class Meta:
         model = PoliticaPrivacidade
         fields = {
-            'uuid': lookup_types_politica_privacidade['uuid'],
             'codigo': lookup_types_politica_privacidade['codigo'],
             'titulo': lookup_types_politica_privacidade['titulo'],
             'descricao': lookup_types_politica_privacidade['descricao'],
@@ -100,9 +97,7 @@ class ConsentimentoPoliticaPrivacidadeFilter(filter.FilterSet):
     class Meta:
         model = ConsentimentoPoliticaPrivacidade
         fields = {
-            'uuid': lookup_types_consentimento_politica_privacidade['uuid'],
             'titular': lookup_types_consentimento_politica_privacidade['titular'],
-            'titular__uuid': lookup_types_usuario['uuid'],
             'titular__username': lookup_types_usuario['username'],
             'titular__first_name': lookup_types_usuario['first_name'],
             'titular__last_name': lookup_types_usuario['last_name'],
@@ -112,7 +107,6 @@ class ConsentimentoPoliticaPrivacidadeFilter(filter.FilterSet):
             'titular__observacoes': lookup_types_usuario['observacoes'],
             'titular__media_avaliacoes': lookup_types_usuario['media_avaliacoes'],
             'titular__empresa': lookup_types_usuario['empresa'],
-            'titular__empresa__uuid': lookup_types_empresa['uuid'],
             'titular__empresa__cpf_cnpj': lookup_types_empresa['cpf_cnpj'],
             'titular__empresa__razao_social': lookup_types_empresa['razao_social'],
             'titular__empresa__nome_fantasia': lookup_types_empresa['nome_fantasia'],

@@ -12,8 +12,8 @@ class PoliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
 
 
 class ConsentimentoPliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
-    titular = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    titular = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta:
         model = ConsentimentoPoliticaPrivacidade
@@ -30,12 +30,12 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PoliticaPrivacidade
         read_only_fields = [
-            'uuid',
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'titulo',
             'descricao',
@@ -70,12 +70,12 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConsentimentoPoliticaPrivacidade
         read_only_fields = [
-            'uuid',
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]
         fields = [
-            'uuid',
+            'id',
             'titular',
             'politica_privacidade',
             'consentimento',
@@ -90,5 +90,5 @@ class ConsentimentoPoliticaPrivacidadeSerializerRetrieve(ConsentimentoPoliticaPr
 
 
 class ConsentimentoPoliticaPrivacidadeSerializerCreate(ConsentimentoPoliticaPrivacidadeSerializer):
-    titular = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='uuid')
-    politica_privacidade = serializers.SlugRelatedField(queryset=PoliticaPrivacidade.objects.all(), slug_field='uuid')
+    titular = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
+    politica_privacidade = serializers.SlugRelatedField(queryset=PoliticaPrivacidade.objects.all(), slug_field='id')
