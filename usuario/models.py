@@ -1,30 +1,11 @@
 from django.db import models
 from django.apps import apps
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser, UserManager, Group, Permission
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.auth.hashers import make_password
+from core.models import Base
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
-from core.models import Base, get_uuid
-
-
-Group.add_to_class(
-    'uuid',
-    models.UUIDField(
-        verbose_name='UUID',
-        default=get_uuid,
-        help_text='UUID Código único não sequencial',
-    )
-)
-
-Permission.add_to_class(
-    'uuid',
-    models.UUIDField(
-        verbose_name='UUID',
-        default=get_uuid,
-        help_text='UUID Código único não sequencial',
-    )
-)
 
 
 class GerenciadorUsuario(UserManager):
@@ -57,26 +38,11 @@ class GerenciadorUsuario(UserManager):
         return self._create_user(username, email, password, **extra_fields)
 
 
-"""def serializador_codigo():
-    ultimo_registro = Usuario.objects.all().order_by('id').last()
-
-    if not ultimo_registro:
-        return 1
-
-    return int(ultimo_registro.codigo) + 1"""
-
-
 class Usuario(AbstractUser):
     """
     Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
     dos usuários que vão soluciuonar os tickets, eles não vão ter nenhuma empresa vinculada a eles.
     """
-
-    uuid = models.UUIDField(
-        verbose_name='UUID',
-        default=get_uuid,
-        help_text='UUID Código único não sequencial',
-    )
 
     telefone = models.CharField(
         verbose_name='Telefone',
@@ -177,26 +143,19 @@ class Usuario(AbstractUser):
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_usr'),
             models.Index(fields=['classificacao'], name='idx_classificacao_usr'),
             models.Index(fields=['empresa'], name='idx_empresa_usr'),
             models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)
 
 
 class LogAutenticacao(models.Model):
     """
     Modelo que vai guardar as tentativas de login, tanto as que tiveram sucesso quanto as que falharem.
     """
-
-    uuid = models.UUIDField(
-        verbose_name='UUID',
-        default=get_uuid,
-        help_text='UUID Código único não sequencial',
-    )
 
     ip = models.GenericIPAddressField(
         verbose_name='IP',
@@ -235,12 +194,11 @@ class LogAutenticacao(models.Model):
         verbose_name = 'Log de autenticação'
         verbose_name_plural = 'Logs de autenticação'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_lgaut'),
             models.Index(fields=['ip'], name='idx_ip_lgaut'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)
 
 
 class Classificacao(Base):
@@ -274,9 +232,8 @@ class Classificacao(Base):
         verbose_name = 'Classificacao'
         verbose_name_plural = 'Classificacoes'
         indexes = [
-            models.Index(fields=['uuid'], name='idx_uuid_cls'),
             models.Index(fields=['codigo'], name='idx_codigo_cls'),
         ]
 
     def __str__(self):
-        return str(self.uuid)
+        return str(self.id)

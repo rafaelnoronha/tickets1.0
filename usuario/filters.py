@@ -3,8 +3,6 @@ from .models import Usuario, Classificacao, LogAutenticacao
 from empresa.filters import lookup_types_empresa
 
 lookup_types_usuario = {
-    'uuid': ['exact', 'in', ],
-    #'codigo': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
     'username': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'first_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'last_name': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -24,7 +22,6 @@ lookup_types_usuario = {
 }
 
 lookup_types_classificacao = {
-    'uuid': ['exact', 'in', ],
     'codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     'descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
@@ -65,8 +62,6 @@ class UsuarioFilter(filter.FilterSet):
     class Meta:
         model = Usuario
         fields = {
-            'uuid': lookup_types_usuario['uuid'],
-            #'codigo': lookup_types_usuario['codigo'],
             'username': lookup_types_usuario['username'],
             'first_name': lookup_types_usuario['first_name'],
             'last_name': lookup_types_usuario['last_name'],
@@ -108,7 +103,6 @@ class ClassificacaoFilter(filter.FilterSet):
     class Meta:
         model = Classificacao
         fields = {
-            'uuid': lookup_types_classificacao['uuid'],
             'codigo': lookup_types_classificacao['codigo'],
             'nome': lookup_types_classificacao['nome'],
             'descricao': lookup_types_classificacao['descricao'],
@@ -124,7 +118,6 @@ class LogAutenticacaoFilter(filter.FilterSet):
             'data_autenticacao': lookup_types_log_autenticacao['data_autenticacao'],
             'hora_autenticacao': lookup_types_log_autenticacao['hora_autenticacao'],
             'usuario': lookup_types_log_autenticacao['usuario'],
-            #'usuario__codigo': lookup_types_usuario['codigo'],
             'usuario__username': lookup_types_usuario['username'],
             'usuario__first_name': lookup_types_usuario['first_name'],
             'usuario__last_name': lookup_types_usuario['last_name'],

@@ -8,8 +8,8 @@ import re
 
 
 class UsuarioSerializerAuditoria(serializers.ModelSerializer):
-    empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
-    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    empresa = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta:
         model = Usuario
@@ -40,7 +40,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     classificacao = serializers.SlugRelatedField(read_only=True, slug_field='nome')
 
     def validate_is_staff(self, is_staff):
-        empresa = Empresa.objects.get(uuid=self.initial_data['empresa'])
+        empresa = Empresa.objects.get(id=self.initial_data['empresa'])
 
         if is_staff:
             if not empresa.prestadora_servico:
@@ -94,7 +94,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         read_only_fields = [
-            'uuid',
+            'id',
             'last_login',
             'media_avaliacoes',
             'is_superuser',
@@ -110,7 +110,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'email': {'allow_null': False, 'allow_blank': False},
         }
         fields = [
-            'uuid',
+            'id',
             'username',
             'password',
             'codigo_verificacao_segunda_etapa',
@@ -136,12 +136,12 @@ class ClassificacaoSerializer(serializers.ModelSerializer):
     class Meta(UsuarioSerializer.Meta):
         model = Classificacao
         read_only_fields = [
-            'uuid',
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]
         fields = [
-            'uuid',
+            'id',
             'codigo',
             'nome',
             'descricao',
@@ -150,14 +150,14 @@ class ClassificacaoSerializer(serializers.ModelSerializer):
 
 
 class UsuarioSerializerCreate(UsuarioSerializer):
-    empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
+    empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='id')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                  required=False)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'last_login',
             'media_avaliacoes',
         ]
@@ -168,14 +168,14 @@ class UsuarioSerializerCreate(UsuarioSerializer):
 
 
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
-    empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='uuid')
+    empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='id')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='uuid',
+    classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                  required=False)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
-            'uuid',
+            'id',
             'last_login',
             'media_avaliacoes',
             'username',
@@ -186,13 +186,13 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
 
 
 class UsuarioSerializerSimples(UsuarioSerializer):
-    empresa = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    empresa = serializers.SlugRelatedField(read_only=True, slug_field='id')
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
-    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    classificacao = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta(UsuarioSerializer.Meta):
         fields = [
-            'uuid',
+            'id',
             'username',
             'email',
             'empresa',
@@ -209,9 +209,9 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LogAutenticacao
-        read_only_fields = ['uuid']
+        read_only_fields = ['id']
         fields = [
-            'uuid',
+            'id',
             'ip',
             'autenticado',
             'data_autenticacao',
@@ -228,13 +228,13 @@ class PermissaoUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
         read_only_fields = [
-            'uuid',
+            'id',
             'name',
             'content_type',
             'codename',
         ]
         fields = [
-            'uuid',
+            'id',
             'name',
             'content_type',
             'codename',
@@ -244,19 +244,19 @@ class PermissaoUsuarioSerializer(serializers.ModelSerializer):
 class GrupoPermissoesUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        read_only_fields = ['uuid',]
+        read_only_fields = ['id',]
         fields = [
-            'uuid',
+            'id',
             'name',
         ]
 
 
 class GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate(GrupoPermissoesUsuarioSerializer):
-    permissions = serializers.SlugRelatedField(queryset=Permission.objects.all(), slug_field='uuid', many=True)
+    permissions = serializers.SlugRelatedField(queryset=Permission.objects.all(), slug_field='id', many=True)
 
     class Meta(GrupoPermissoesUsuarioSerializer.Meta):
         fields = [
-            'uuid',
+            'id',
             'name',
             'permissions',
         ]
@@ -266,9 +266,9 @@ class GrupoPermissoesUsuarioSerializerRetrieve(GrupoPermissoesUsuarioSerializer)
     permissions = PermissaoUsuarioSerializer(many=True)
 
     class Meta(GrupoPermissoesUsuarioSerializer.Meta):
-        read_only_fields = ['uuid',]
+        read_only_fields = ['id',]
         fields = [
-            'uuid',
+            'id',
             'name',
             'permissions',
         ]

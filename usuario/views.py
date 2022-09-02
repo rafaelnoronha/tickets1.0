@@ -15,7 +15,6 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
 
 class UsuarioViewSet(ModelViewSetComAuditoria):
     queryset = Usuario.objects.all()
-    lookup_field = 'uuid'
     filterset_class = UsuarioFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -37,7 +36,6 @@ class UsuarioViewSet(ModelViewSetComAuditoria):
 
 class ClassificacaoViewSet(ModelViewSetComAuditoria):
     queryset = Classificacao.objects.all()
-    lookup_field = 'uuid'
     serializer_class = ClassificacaoSerializer
     filterset_class = ClassificacaoFilter
     permission_classes = (BasePemission, )
@@ -51,7 +49,6 @@ class ClassificacaoViewSet(ModelViewSetComAuditoria):
 class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
                              viewsets.GenericViewSet):
     queryset = LogAutenticacao.objects.all()
-    lookup_field = 'uuid'
     filterset_class = LogAutenticacaoFilter
     permission_classes = (BasePemission, )
 
@@ -65,7 +62,6 @@ class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
 
 class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     queryset = Group.objects.all()
-    lookup_field = 'uuid'
     serializer_class = GrupoPermissoesUsuarioSerializer
     permission_classes = (BasePemission, )
     auditoria = {
@@ -87,7 +83,6 @@ class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
 
 class PermissaoUsuarioViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Permission.objects.all()
-    lookup_field = 'uuid'
     serializer_class = PermissaoUsuarioSerializer
     permission_classes = (BasePemission, )
     auditoria = {
