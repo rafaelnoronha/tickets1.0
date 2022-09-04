@@ -16,7 +16,16 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
-    queryset = Ticket.objects.all()
+    queryset = Ticket.objects \
+        .prefetch_related('solicitante') \
+        .prefetch_related('classificacao_atendente') \
+        .prefetch_related('atendente') \
+        .prefetch_related('grupo') \
+        .prefetch_related('subgrupo') \
+        .prefetch_related('solucionado') \
+        .prefetch_related('finalizado') \
+        .prefetch_related('cancelado') \
+        .all()
     filterset_class = TicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -35,7 +44,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, TicketSerializer)
 
-    def get_queryset(self):
+    def get_queryset_OLD(self):
         usuario = self.request.user
 
         if usuario.is_superuser:
@@ -56,7 +65,6 @@ class TicketViewSet(ModelViewSetComAuditoria):
         response = super().dispatch(*args, **kwargs)
         print(' QUERIES '.center(100, '='))
         print(f'Número de consultas { len(connection.queries) }')
-        print(connection.queries)
         print('='*100)
         return response
 
