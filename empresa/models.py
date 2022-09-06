@@ -4,26 +4,10 @@ from core.validators import RegexCep, RegexTelefone, ValidaCpfCnpj
 from core.models import Base, UF_CHOICES, PAISES_CHOISES
 
 
-def serializador_codigo():
-    ultimo_registro = Empresa.objects.all().order_by('id').last()
-
-    if not ultimo_registro:
-        return 1
-
-    return int(ultimo_registro.codigo) + 1
-
-
 class Empresa(Base):
     """
     Modelo responsável por armazenar as informações dos clientes da prestadora de serviço.
     """
-
-    codigo = models.PositiveBigIntegerField(
-        verbose_name='Código',
-        default=serializador_codigo,
-        unique=True,
-        help_text='Código da empresa',
-    )
 
     cpf_cnpj = models.CharField(
         verbose_name='CPF/CNPJ',
@@ -130,9 +114,6 @@ class Empresa(Base):
         db_table = 'empresa'
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
-        indexes = [
-            models.Index(fields=['codigo'], name='idx_codigo_emp'),
-        ]
 
     def __str__(self):
         return str(self.id)

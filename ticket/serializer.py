@@ -170,7 +170,6 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solucionado',
@@ -182,7 +181,6 @@ class TicketSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -217,7 +215,6 @@ class TicketSerializerCreate(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solucionado',
@@ -242,7 +239,6 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -266,7 +262,6 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -292,7 +287,6 @@ class TicketSerializerReclassificar(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -319,7 +313,6 @@ class TicketSerializerSolucionar(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -346,7 +339,6 @@ class TicketSerializerFinalizar(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -370,7 +362,6 @@ class TicketSerializerAvaliar(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -397,7 +388,6 @@ class TicketSerializerCancelar(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',
@@ -545,7 +535,6 @@ class TicketSerializerRetrieve(TicketSerializer):
     class Meta(TicketSerializer.Meta):
         fields = [
             'id',
-            'codigo',
             'status',
             'prioridade',
             'solicitante',

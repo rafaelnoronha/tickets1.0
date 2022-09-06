@@ -13,7 +13,6 @@ class EmpresaSerializer(serializers.ModelSerializer):
         model = Empresa
         read_only_fields = [
             'id',
-            'codigo',
             'media_avaliacoes',
             'data_cadastro',
             'hora_cadastro',
@@ -23,7 +22,6 @@ class EmpresaSerializer(serializers.ModelSerializer):
         }
         fields = [
             'id',
-            'codigo',
             'cpf_cnpj',
             'razao_social',
             'nome_fantasia',
@@ -48,7 +46,6 @@ class EmpresaSerializerUpdatePartialUpdate(EmpresaSerializer):
     class Meta(EmpresaSerializer.Meta):
         read_only_fields = [
             'id',
-            'codigo',
             'media_avaliacoes',
             'data_cadastro',
             'hora_cadastro',

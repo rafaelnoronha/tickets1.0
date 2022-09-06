@@ -29,3 +29,6 @@ e depois cadastrar o super usuário
 - [x] Não permitir cadastrar um usuário `is_staff=true` com uma empresa `prestadora_servico=false` e vice e versa
 - [x] Não permitir vincular um usuário que não possua `is_staff=True` como `atendente` há um ticket e não permitir o contrário no campo `solicitante`
 - [ ] Calcular prioridade do ticket com base no `grupo` e `subgrupo`
+
+Guias de orientação à LGPD
+https://www.gov.br/governodigital/pt-br/seguranca-e-protecao-de-dados/guias/
