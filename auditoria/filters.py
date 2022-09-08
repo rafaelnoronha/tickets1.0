@@ -44,6 +44,5 @@ class AuditoriaFilter(filter.FilterSet):
         fields_auditoria.update(lookup_types_empresa('usuario_operacao__empresa__'))
         fields_auditoria.update(lookup_types_classificacao('usuario_operacao__classificacao__'))
 
-
         model = Auditoria
         fields = fields_auditoria
