@@ -44,7 +44,16 @@ class TicketViewSet(ModelViewSetComAuditoria):
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, TicketSerializer)
 
-    def get_queryset_OLD(self):
+    def get_queryset(self):
+        queryset = Ticket.objects \
+                    .prefetch_related('solicitante') \
+                    .prefetch_related('classificacao_atendente') \
+                    .prefetch_related('atendente') \
+                    .prefetch_related('grupo') \
+                    .prefetch_related('subgrupo') \
+                    .prefetch_related('solucionado') \
+                    .prefetch_related('finalizado') \
+                    .prefetch_related('cancelado')
         usuario = self.request.user
 
         if usuario.is_superuser:
@@ -52,14 +61,14 @@ class TicketViewSet(ModelViewSetComAuditoria):
 
         if usuario.is_staff:
             if not usuario.is_manager:
-                return Ticket.objects.filter(Q(atendente=usuario) | Q(atendente__isnull=True)).select_related('solicitante').prefetch_related('')
+                return queryset.filter(Q(atendente=usuario) | Q(atendente__isnull=True))
 
-            return Ticket.objects.filter(Q(atendente__empresa=usuario.empresa) | Q(atendente__isnull=True))
+            return queryset.filter(Q(atendente__empresa=usuario.empresa) | Q(atendente__isnull=True))
         else:
             if usuario.is_manager:
-                return Ticket.objects.filter(solicitante__empresa=usuario.empresa)
+                return queryset.filter(solicitante__empresa=usuario.empresa)
             else:
-                return Ticket.objects.filter(solicitante=usuario)
+                return queryset.filter(solicitante=usuario)
 
     def dispatch(self, *args, **kwargs):
         response = super().dispatch(*args, **kwargs)
@@ -141,7 +150,11 @@ class TicketViewSet(ModelViewSetComAuditoria):
 
 class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,
                             viewsets.GenericViewSet):
-    queryset = MensagemTicket.objects.all()
+    queryset = MensagemTicket.objects \
+        .prefetch_related('usuario') \
+        .prefetch_related('ticket') \
+        .prefetch_related('mensagem_relacionada') \
+        .all()
     filterset_class = MensagemTicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -159,6 +172,10 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
         return self.serializer_classes.get(self.action, MensagemTicketSerializer)
 
     def get_queryset(self):
+        queryset = MensagemTicket.objects \
+            .prefetch_related('usuario') \
+            .prefetch_related('ticket') \
+            .prefetch_related('mensagem_relacionada')
         usuario = self.request.user
 
         if usuario.is_superuser:
@@ -166,18 +183,25 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
 
         if usuario.is_staff:
             if not usuario.is_manager:
-                return MensagemTicket.objects.filter(ticket__atendente=usuario)
+                return queryset.filter(ticket__atendente=usuario)
 
-            return MensagemTicket.objects.filter(ticket__atendente__empresa=usuario.empresa)
+            return queryset.filter(ticket__atendente__empresa=usuario.empresa)
         else:
             if usuario.is_manager:
-                return MensagemTicket.objects.filter(ticket__solicitante__empresa=usuario.empresa)
+                return queryset.filter(ticket__solicitante__empresa=usuario.empresa)
             else:
-                return MensagemTicket.objects.filter(ticket__solicitante=usuario)
+                return queryset.filter(ticket__solicitante=usuario)
 
 
 class MovimentoTicketViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = MovimentoTicket.objects.all()
+    queryset = MovimentoTicket.objects \
+        .prefetch_related('ticket') \
+        .prefetch_related('atendente') \
+        .prefetch_related('classificacao_atendente') \
+        .prefetch_related('solucionado') \
+        .prefetch_related('finalizado') \
+        .prefetch_related('cancelado') \
+        .all()
     filterset_class = MovimentoTicketFilter
     permission_classes = (BasePemission,)
 

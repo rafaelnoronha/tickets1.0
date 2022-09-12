@@ -3,14 +3,15 @@ from core.views import CreateModelMixinAuditoria, DestroyModelMixinAuditoria
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
 from .filters import PoliticaPrivacidadeFilter, ConsentimentoPoliticaPrivacidadeFilter
 from core.permissions import BasePemission
-from .serializer import PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer, \
-                        ConsentimentoPoliticaPrivacidadeSerializerRetrieve, \
-                        ConsentimentoPoliticaPrivacidadeSerializerCreate, PoliticaPrivacidadeSerializerAuditoria, \
-                        ConsentimentoPliticaPrivacidadeSerializerAuditoria
+from .serializer import (
+    PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializerRetrieve,
+    ConsentimentoPoliticaPrivacidadeSerializerCreate, PoliticaPrivacidadeSerializerAuditoria, ConsentimentoPliticaPrivacidadeSerializerAuditoria
+)
 
 
-class PoliticaPrivacidadeViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, DestroyModelMixinAuditoria,
-                                 mixins.ListModelMixin, viewsets.GenericViewSet):
+class PoliticaPrivacidadeViewSet(
+    CreateModelMixinAuditoria, mixins.RetrieveModelMixin, DestroyModelMixinAuditoria, mixins.ListModelMixin, viewsets.GenericViewSet
+):
     queryset = PoliticaPrivacidade.objects.all()
     filterset_class = PoliticaPrivacidadeFilter
     permission_classes = (BasePemission, )
@@ -22,9 +23,13 @@ class PoliticaPrivacidadeViewSet(CreateModelMixinAuditoria, mixins.RetrieveModel
     }
 
 
-class ConsentimentoPoliticaPrivacidadeViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin,
-                                              mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = ConsentimentoPoliticaPrivacidade.objects.all()
+class ConsentimentoPoliticaPrivacidadeViewSet(
+    CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
+    queryset = ConsentimentoPoliticaPrivacidade.objects \
+        .prefetch_related('titular') \
+        .prefetch_related('politica_privacidade') \
+        .all()
     filterset_class = ConsentimentoPoliticaPrivacidadeFilter
     permission_classes = (BasePemission, )
     auditoria = {

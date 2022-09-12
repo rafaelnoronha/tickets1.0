@@ -90,7 +90,7 @@ class ConsentimentoPoliticaPrivacidade(Base):
         verbose_name_plural = 'Consentimentos das Políticas de Privacidade'
         indexes = [
             models.Index(fields=['politica_privacidade'], name='idx_politica_privacidade_cpop'),
-            models.Index(fields=['consentimento'], name='idx_consentimento_cpop'),
+            models.Index(fields=['titular'], name='idx_titular_cpop'),
         ]
 
     def __str__(self):
