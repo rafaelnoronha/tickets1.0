@@ -15,7 +15,7 @@ class Empresa(Base):
         unique=True,
         help_text='CPF ou CNPJ da empresa(apenas números)',
         validators=[
-            ValidaCpfCnpj.valida_cpf_cnpj
+            # ValidaCpfCnpj.valida_cpf_cnpj
         ],
     )
 

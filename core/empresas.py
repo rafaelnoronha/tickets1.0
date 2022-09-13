@@ -1,3 +1,9 @@
+from random import randint
+from .nomes import lista_nomes
+from .models import UF_CHOICES
+
+lista_logradouro = ['Rua', 'Avenida', 'Praça']
+
 lista_empresas = [
     'Walmart',
     'ExxonMobil',
@@ -447,3 +453,32 @@ lista_empresas = [
     'Actelion Ltd-Reg',
     'Liberty Global Plc-A',
 ]
+
+def criar_empresas():
+    from empresa.models import Empresa
+    from usuario.models import Usuario
+
+    for empresa in lista_empresas:
+        nome = lista_nomes[randint(0, 10000)]
+
+        emp = Empresa.objects.create(
+            cpf_cnpj=randint(10000000000000, 99999999999999),
+            razao_social=f'{empresa} LTDA',
+            nome_fantasia=empresa,
+            logradouro=f'{lista_logradouro[randint(0, 2)]} {nome}',
+            numero=randint(1, 99999),
+            bairro=nome[len(nome) - 1],
+            municipio='Município',
+            uf=UF_CHOICES[len(UF_CHOICES) -1][0],
+            cep=randint(10000000, 99999999),
+            telefone=randint(1000000000, 9999999999)
+        )
+
+        for index, nome_pessoa in enumerate(lista_nomes):
+            Usuario.objects.create(
+                username=f"{nome_pessoa.replace(' ', '_', 100)}_{emp.id}{index}",
+                password=randint(1000, 9999),
+                codigo_verificacao_segunda_etapa=randint(1000, 9999),
+                telefone=emp.telefone,
+                empresa=emp
+            )
