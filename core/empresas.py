@@ -482,3 +482,19 @@ def criar_empresas():
                 telefone=emp.telefone,
                 empresa=emp
             )
+
+def criar_tickets():
+    from usuario.models import Usuario
+    from ticket.models import Ticket
+    from agrupamento.models import Grupo, Subgrupo
+
+    solicitantes = Usuario.objects.filter(is_staff=False)
+
+    for solicitante in solicitantes:
+        Ticket.objects.create(
+            solicitante=solicitante,
+            titulo=f'Chamado de {solicitante.username}',
+            descricao=f'O cliente {solicitante.id} possui um erro!',
+            grupo=Grupo.objects.get(id=randint(1, 3)),
+            subgrupo=Subgrupo.objects.get(id=randint(1, 3))
+        )
