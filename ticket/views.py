@@ -46,14 +46,14 @@ class TicketViewSet(ModelViewSetComAuditoria):
 
     def get_queryset(self):
         queryset = Ticket.objects \
-                    .prefetch_related('solicitante') \
-                    .prefetch_related('classificacao_atendente') \
-                    .prefetch_related('atendente') \
-                    .prefetch_related('grupo') \
-                    .prefetch_related('subgrupo') \
-                    .prefetch_related('solucionado') \
-                    .prefetch_related('finalizado') \
-                    .prefetch_related('cancelado')
+            .prefetch_related('solicitante') \
+            .prefetch_related('classificacao_atendente') \
+            .prefetch_related('atendente') \
+            .prefetch_related('grupo') \
+            .prefetch_related('subgrupo') \
+            .prefetch_related('solucionado') \
+            .prefetch_related('finalizado') \
+            .prefetch_related('cancelado')
         usuario = self.request.user
 
         if usuario.is_superuser:
@@ -74,6 +74,11 @@ class TicketViewSet(ModelViewSetComAuditoria):
         response = super().dispatch(*args, **kwargs)
         print(' QUERIES '.center(100, '='))
         print(f'Número de consultas { len(connection.queries) }')
+        print('='*100)
+        print(' CONSULTAS '.center(100, '='))
+        for consulta in connection.queries:
+            print(consulta)
+            print()
         print('='*100)
         return response
 
