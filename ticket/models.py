@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import Base
 from usuario.models import Usuario, Classificacao
-from agrupamento.models import Grupo, Subgrupo
+from agrupamento.models import Agrupamento
 
 
 STATUS_CHOISES = [
@@ -79,7 +79,7 @@ class Ticket(Base):
     )
 
     grupo = models.ForeignKey(
-        Grupo,
+        Agrupamento,
         verbose_name='Grupo',
         related_name='grupo_agrupamento_ticket',
         null=True,
@@ -88,7 +88,7 @@ class Ticket(Base):
     )
 
     subgrupo = models.ForeignKey(
-        Subgrupo,
+        Agrupamento,
         verbose_name='Subgrupo',
         related_name='subgrupo_agrupamento_ticket',
         null=True,

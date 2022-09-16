@@ -7,10 +7,10 @@ def trigger():
                 prioridade_subgrupo smallint;
         
             BEGIN
-                prioridade_grupo = COALESCE((SELECT prioridade FROM grupo WHERE id = NEW.grupo_id), 0);
-                prioridade_subgrupo = COALESCE((SELECT prioridade FROM subgrupo WHERE id = NEW.subgrupo_id), 0);
+                prioridade_grupo := COALESCE((SELECT prioridade FROM agrupamento WHERE id = NEW.grupo_id), 0);
+                prioridade_subgrupo := COALESCE((SELECT prioridade FROM agrupamento WHERE id = NEW.subgrupo_id), 0);
             
-                NEW.prioridade = prioridade_grupo + prioridade_subgrupo;
+                NEW.prioridade := prioridade_grupo + prioridade_subgrupo;
                 
                 RETURN NEW;
             END

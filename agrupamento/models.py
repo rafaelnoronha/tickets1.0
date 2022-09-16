@@ -3,97 +3,51 @@ from core.models import Base
 
 
 TIPO_CHOISES = [
-    ('A', 'Analítico'),
+    ('G', 'Grupo'),
     ('S', 'Sintético'),
 ]
 
 
-class Grupo(Base):
+class Agrupamento(Base):
     """
-    Modelo dos grupos dos tickets.
-    """
-
-    codigo = models.CharField(
-        verbose_name='Código',
-        max_length=20,
-        unique=True,
-        help_text='Código do Grupo',
-    )
-
-    nome = models.CharField(
-        verbose_name='Nome',
-        max_length=255,
-        help_text='Nome do Grupo',
-    )
-
-    prioridade = models.PositiveSmallIntegerField(
-        verbose_name='Prioridade',
-        default=0,
-        help_text='Prioridade do Grupo',
-    )
-
-    tipo = models.CharField(
-        verbose_name='Tipo do Grupo',
-        choices=TIPO_CHOISES,
-        default='A',
-        max_length=1,
-        help_text='Peso do Grupo',
-    )
-
-    class Meta:
-        ordering = ['-id']
-        db_table = 'grupo'
-        verbose_name = 'Grupo'
-        verbose_name_plural = 'Grupos'
-        indexes = [
-            models.Index(fields=['tipo'], name='idx_tipo_grp'),
-            models.Index(fields=['codigo'], name='idx_codigo_grp'),
-        ]
-
-    def __str__(self):
-        return str(self.id)
-
-
-class Subgrupo(Base):
-    """
-    Modelo dos subgrupos dos tickets.
+    Modelo de grupo e subgrupo dos tickets.
     """
 
     codigo = models.CharField(
         verbose_name='Código',
         max_length=20,
         unique=True,
-        help_text='Código do Subgrupo',
+        help_text='Código do Agrupamento',
     )
 
     nome = models.CharField(
         verbose_name='Nome',
-        max_length=255,
-        help_text='Nome do Subgrupo',
+        max_length=60,
+        help_text='Nome do Agrupamento',
     )
 
     prioridade = models.PositiveSmallIntegerField(
         verbose_name='Prioridade',
         default=0,
-        help_text='Prioridade do Subgrupo',
+        help_text='Prioridade do Agrupamento',
     )
 
     tipo = models.CharField(
-        verbose_name='Tipo do Grupo',
+        verbose_name='Tipo',
         choices=TIPO_CHOISES,
-        default='A',
+        default='G',
         max_length=1,
-        help_text='Peso do Subgrupo',
+        help_text='Tipo do Agrupamrento',
     )
 
     class Meta:
         ordering = ['-id']
-        db_table = 'subgrupo'
-        verbose_name = 'Subgrupo'
-        verbose_name_plural = 'Subgrupos'
+        db_table = 'agrupamento'
+        verbose_name = 'Agrupamento'
+        verbose_name_plural = 'Agrupamentos'
         indexes = [
-            models.Index(fields=['tipo'], name='idx_tipo_sgr'),
-            models.Index(fields=['codigo'], name='idx_codigo_sgr'),
+            models.Index(fields=['tipo'], name='idx_gr_tipo'),
+            models.Index(fields=['codigo'], name='idx_gr_codigo'),
         ]
 
     def __str__(self):

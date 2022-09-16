@@ -2,6 +2,7 @@ from django_filters import rest_framework as filter
 from .models import Ticket, MensagemTicket, MovimentoTicket
 from usuario.filters import lookup_types_usuario, lookup_types_classificacao
 from empresa.filters import lookup_types_empresa
+from agrupamento.filters import lookup_types_agrupamento
 
 def lookup_types_ticket(prefixo=''):
     return {
@@ -11,6 +12,8 @@ def lookup_types_ticket(prefixo=''):
         f'{prefixo}atendente': ['exact', ],
         f'{prefixo}titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
         f'{prefixo}descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}grupo': ['exact', ],
+        f'{prefixo}subgrupo': ['exact', ],
         f'{prefixo}solucionado': ['exact', ],
         f'{prefixo}finalizado': ['exact', ],
         f'{prefixo}cancelado': ['exact', ],
@@ -184,6 +187,9 @@ class TicketFilter(filter.FilterSet):
         fields_ticket.update(lookup_types_empresa('atendente__empresa__'))
         fields_ticket.update(lookup_types_classificacao('atendente__classificacao__'))
 
+        fields_ticket.update(lookup_types_agrupamento('grupo__'))
+        fields_ticket.update(lookup_types_agrupamento('subgrupo__'))
+
         fields_ticket.update(lookup_types_ticket('solucionado__ticket__'))
         fields_ticket.update(lookup_types_usuario('solucionado__usuario__'))
         fields_ticket.update(lookup_types_empresa('solucionado__usuario__empresa__'))
@@ -220,6 +226,9 @@ class MensagemTicketFilter(filter.FilterSet):
         fields_mensagem_ticket.update(lookup_types_empresa('ticket__atendente__empresa__'))
         fields_mensagem_ticket.update(lookup_types_classificacao('ticket__atendente__classificacao__'))
 
+        fields_mensagem_ticket.update(lookup_types_agrupamento('ticket__grupo__'))
+        fields_mensagem_ticket.update(lookup_types_agrupamento('ticket__subgrupo__'))
+
         fields_mensagem_ticket.update(lookup_types_mensagem_ticket('ticket__solucionado__'))
         fields_mensagem_ticket.update(lookup_types_ticket('ticket__solucionado__ticket__'))
         fields_mensagem_ticket.update(lookup_types_usuario('ticket__solucionado__usuario__'))
@@ -252,6 +261,9 @@ class MovimentoTicketFilter(filter.FilterSet):
         fields_movimento_ticket.update(lookup_types_usuario('ticket__atendente__'))
         fields_movimento_ticket.update(lookup_types_empresa('ticket__atendente__empresa__'))
         fields_movimento_ticket.update(lookup_types_classificacao('ticket__atendente__classificacao__'))
+
+        fields_movimento_ticket.update(lookup_types_agrupamento('ticket__grupo__'))
+        fields_movimento_ticket.update(lookup_types_agrupamento('ticket__subgrupo__'))
 
         fields_movimento_ticket.update(lookup_types_ticket('ticket__solucionado__ticket__'))
         fields_movimento_ticket.update(lookup_types_usuario('ticket__solucionado__usuario__'))

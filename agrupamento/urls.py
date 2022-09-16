@@ -1,8 +1,5 @@
 from rest_framework.routers import SimpleRouter
-from .views import GrupoViewSet, SubgrupoViewSet
+from .views import AgrupamentoViewSet
 
-router_grupo = SimpleRouter()
-router_grupo.register('', GrupoViewSet)
-
-router_subgrupo = SimpleRouter()
-router_subgrupo.register('', SubgrupoViewSet)
+router_agrupamento = SimpleRouter()
+router_agrupamento.register('', AgrupamentoViewSet)

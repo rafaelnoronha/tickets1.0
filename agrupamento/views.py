@@ -1,29 +1,17 @@
 from core.views import ModelViewSetComAuditoria
-from .models import Grupo, Subgrupo
-from .serializer import GrupoSerializer, SubgrupoSerializer, GrupoSerializerAuditoria, SubgrupoSerializerAuditoria
-from .filters import GrupoFilter, SubgrupoFilter
+from .models import Agrupamento
+from .serializer import AgrupamentoSerializer, AgrupamentoSerializerAuditoria
+from .filters import AgrupamentoFilter
 from core.permissions import BasePemission
 
 
-class GrupoViewSet(ModelViewSetComAuditoria):
-    queryset = Grupo.objects.all()
-    filterset_class = GrupoFilter
-    serializer_class = GrupoSerializer
+class AgrupamentoViewSet(ModelViewSetComAuditoria):
+    queryset = Agrupamento.objects.all()
+    filterset_class = AgrupamentoFilter
+    serializer_class = AgrupamentoSerializer
     permission_classes = (BasePemission, )
     auditoria = {
-        'modelo': Grupo,
-        'nome_tabela': 'grupo',
-        'serializer': GrupoSerializerAuditoria,
-    }
-
-
-class SubgrupoViewSet(ModelViewSetComAuditoria):
-    queryset = Subgrupo.objects.all()
-    filterset_class = SubgrupoFilter
-    serializer_class = SubgrupoSerializer
-    permission_classes = (BasePemission, )
-    auditoria = {
-        'modelo': Subgrupo,
-        'nome_tabela': 'subgrupo',
-        'serializer': SubgrupoSerializerAuditoria,
+        'modelo': Agrupamento,
+        'nome_tabela': 'agrupamento',
+        'serializer': AgrupamentoSerializerAuditoria,
     }

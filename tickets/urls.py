@@ -22,7 +22,7 @@ from empresa.urls import router_empresa
 from politica_privacidade.urls import router_politica_privacidade, router_consentimento_politica_privacidade
 from ticket.urls import router_ticket, router_mensagem_ticket, router_movimento_ticket
 from auditoria.urls import router_auditoria
-from agrupamento.urls import router_grupo, router_subgrupo
+from agrupamento.urls import router_agrupamento
 
 base_url_v1 = 'api/v1/'
 
@@ -41,6 +41,5 @@ urlpatterns = [
     path(f'{base_url_v1}mensagem_ticket/', include(router_mensagem_ticket.urls)),
     path(f'{base_url_v1}movimento_ticket/', include(router_movimento_ticket.urls)),
     path(f'{base_url_v1}auditoria/', include(router_auditoria.urls)),
-    path(f'{base_url_v1}grupo/', include(router_grupo.urls)),
-    path(f'{base_url_v1}subgrupo/', include(router_subgrupo.urls)),
+    path(f'{base_url_v1}agrupamento/', include(router_agrupamento.urls)),
 ]

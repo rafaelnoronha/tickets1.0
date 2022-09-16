@@ -2,8 +2,8 @@ from rest_framework import serializers
 from .models import Ticket, MensagemTicket, MovimentoTicket
 from usuario.serializer import UsuarioSerializerSimples, ClassificacaoSerializer
 from usuario.models import Usuario, Classificacao
-from agrupamento.models import Grupo, Subgrupo
-from agrupamento.serializer import GrupoSerializer, SubgrupoSerializer
+from agrupamento.models import Agrupamento
+from agrupamento.serializer import AgrupamentoSerializer
 
 
 class TicketSerializerAuditoria(serializers.ModelSerializer):
@@ -198,9 +198,9 @@ class TicketSerializerCreate(TicketSerializer):
                                                             allow_null=True, required=False)
     atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=True,
                                                 required=False)
-    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='id', allow_null=True,
+    grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='GRP'), slug_field='id', allow_null=True,
                                             required=False)
-    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='id', allow_null=True,
+    subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='SGR'), slug_field='id', allow_null=True,
                                             required=False)
 
     class Meta(TicketSerializer.Meta):
@@ -222,9 +222,9 @@ class TicketSerializerCreate(TicketSerializer):
 class TicketSerializerUpdatePartialUpdate(TicketSerializer):
     classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                             allow_null=True, required=False)
-    grupo = serializers.SlugRelatedField(queryset=Grupo.objects.all(), slug_field='id', allow_null=True,
+    grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='GRP'), slug_field='id', allow_null=True,
                                             required=False)
-    subgrupo = serializers.SlugRelatedField(queryset=Subgrupo.objects.all(), slug_field='id', allow_null=True,
+    subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='SGR'), slug_field='id', allow_null=True,
                                             required=False)
 
     class Meta(TicketSerializer.Meta):
@@ -513,8 +513,8 @@ class TicketSerializerRetrieve(TicketSerializer):
     atendente = UsuarioSerializerSimples(read_only=True)
     mensagens = MensagemTicketSerializerRetrieveTicket(source='ticket_ticket_mensagem_ticket', many=True,
                                                         read_only=True)
-    grupo = GrupoSerializer(read_only=True)
-    subgrupo = SubgrupoSerializer(read_only=True)
+    grupo = AgrupamentoSerializer(read_only=True)
+    subgrupo = AgrupamentoSerializer(read_only=True)
     solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
     finalizado = UsuarioSerializerSimples(read_only=True)
     cancelado = UsuarioSerializerSimples(read_only=True)

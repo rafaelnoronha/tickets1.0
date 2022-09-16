@@ -1,43 +1,16 @@
 from rest_framework import serializers
-from .models import Grupo, Subgrupo
+from .models import Agrupamento
 
 
-class GrupoSerializerAuditoria(serializers.ModelSerializer):
+class AgrupamentoSerializerAuditoria(serializers.ModelSerializer):
     class Meta:
-        model = Grupo
+        model = Agrupamento
         fields = '__all__'
 
 
-class SubgrupoSerializerAuditoria(serializers.ModelSerializer):
+class AgrupamentoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Subgrupo
-        fields = '__all__'
-
-
-class GrupoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Grupo
-        read_only_fields = [
-            'id',
-        ]
-        extra_kwargs = {
-            'codigo': {'allow_blank': True, },
-        }
-        fields = [
-            'id',
-            'codigo',
-            'nome',
-            'prioridade',
-            'tipo',
-            'ativo',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
-
-
-class SubgrupoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subgrupo
+        model = Agrupamento
         read_only_fields = [
             'id',
         ]
