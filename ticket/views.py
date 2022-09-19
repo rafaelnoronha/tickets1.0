@@ -16,7 +16,7 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
-    queryset = Ticket.objects \
+    queryset = Ticket.objects.all() \
         .prefetch_related('solicitante') \
         .prefetch_related('classificacao_atendente') \
         .prefetch_related('atendente') \
@@ -24,8 +24,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         .prefetch_related('subgrupo') \
         .prefetch_related('solucionado') \
         .prefetch_related('finalizado') \
-        .prefetch_related('cancelado') \
-        .all()
+        .prefetch_related('cancelado')
     filterset_class = TicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -155,11 +154,10 @@ class TicketViewSet(ModelViewSetComAuditoria):
 
 class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,
                             viewsets.GenericViewSet):
-    queryset = MensagemTicket.objects \
+    queryset = MensagemTicket.objects.all() \
         .prefetch_related('usuario') \
         .prefetch_related('ticket') \
-        .prefetch_related('mensagem_relacionada') \
-        .all()
+        .prefetch_related('mensagem_relacionada')
     filterset_class = MensagemTicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -199,14 +197,13 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
 
 
 class MovimentoTicketViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = MovimentoTicket.objects \
+    queryset = MovimentoTicket.objects.all() \
         .prefetch_related('ticket') \
         .prefetch_related('atendente') \
         .prefetch_related('classificacao_atendente') \
         .prefetch_related('solucionado') \
         .prefetch_related('finalizado') \
-        .prefetch_related('cancelado') \
-        .all()
+        .prefetch_related('cancelado')
     filterset_class = MovimentoTicketFilter
     permission_classes = (BasePemission,)
 

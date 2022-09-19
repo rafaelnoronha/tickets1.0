@@ -6,9 +6,8 @@ from core.permissions import BasePemission
 
 
 class AuditoriaViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = Auditoria.objects \
-        .prefetch_related('usuario_operacao') \
-        .all()
+    queryset = Auditoria.objects.all() \
+        .prefetch_related('usuario_operacao')
     filterset_class = AuditoriaFilter
     permission_classes = (BasePemission, )
 
