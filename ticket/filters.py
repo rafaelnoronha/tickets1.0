@@ -14,10 +14,6 @@ def lookup_types_ticket(prefixo=''):
         f'{prefixo}descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
         f'{prefixo}grupo': ['exact', ],
         f'{prefixo}subgrupo': ['exact', ],
-        f'{prefixo}solucionado': ['exact', ],
-        f'{prefixo}finalizado': ['exact', ],
-        f'{prefixo}cancelado': ['exact', ],
-        f'{prefixo}motivo_cancelamento': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
         f'{prefixo}avaliacao_solicitante': [
             'exact',
             'iexact',
@@ -31,6 +27,7 @@ def lookup_types_ticket(prefixo=''):
             'gt',
             'lt',
         ],
+        f'{prefixo}observacao_avaliacao_solicitante': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
         f'{prefixo}data_cadastro': [
             'exact',
             'range',
@@ -143,9 +140,10 @@ def lookup_types_movimento_ticket(prefixo=''):
         ],
         f'{prefixo}classificacao_atendente': ['exact', ],
         f'{prefixo}atendente': ['exact', ],
-        f'{prefixo}solucionado': ['exact', ],
+        f'{prefixo}solucao': ['exact', ],
         f'{prefixo}finalizado': ['exact', ],
         f'{prefixo}cancelado': ['exact', ],
+        f'{prefixo}motivo_cancelamento': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
         f'{prefixo}data_cadastro': [
             'exact',
             'range',
@@ -181,27 +179,14 @@ class TicketFilter(filter.FilterSet):
         fields_ticket.update(lookup_types_empresa('solicitante__empresa__'))
         fields_ticket.update(lookup_types_classificacao('solicitante__classificacao__'))
 
-        fields_ticket.update(lookup_types_classificacao('classificacao_atendente__'))
-
         fields_ticket.update(lookup_types_usuario('atendente__'))
         fields_ticket.update(lookup_types_empresa('atendente__empresa__'))
         fields_ticket.update(lookup_types_classificacao('atendente__classificacao__'))
 
+        fields_ticket.update(lookup_types_classificacao('classificacao_atendente__'))
+
         fields_ticket.update(lookup_types_agrupamento('grupo__'))
         fields_ticket.update(lookup_types_agrupamento('subgrupo__'))
-
-        fields_ticket.update(lookup_types_ticket('solucionado__ticket__'))
-        fields_ticket.update(lookup_types_usuario('solucionado__usuario__'))
-        fields_ticket.update(lookup_types_empresa('solucionado__usuario__empresa__'))
-        fields_ticket.update(lookup_types_classificacao('solucionado__usuario__classificacao__'))
-
-        fields_ticket.update(lookup_types_usuario('finalizado__'))
-        fields_ticket.update(lookup_types_empresa('finalizado__empresa__'))
-        fields_ticket.update(lookup_types_classificacao('finalizado__classificacao__'))
-
-        fields_ticket.update(lookup_types_usuario('cancelado__'))
-        fields_ticket.update(lookup_types_empresa('cancelado__empresa__'))
-        fields_ticket.update(lookup_types_classificacao('cancelado__classificacao__'))
 
         model = Ticket
         fields = fields_ticket
@@ -220,28 +205,14 @@ class MensagemTicketFilter(filter.FilterSet):
         fields_mensagem_ticket.update(lookup_types_empresa('ticket__solicitante__empresa__'))
         fields_mensagem_ticket.update(lookup_types_classificacao('ticket__solicitante__classificacao__'))
 
-        fields_mensagem_ticket.update(lookup_types_classificacao('ticket__classificacao_atendente__'))
-
         fields_mensagem_ticket.update(lookup_types_usuario('ticket__atendente__'))
         fields_mensagem_ticket.update(lookup_types_empresa('ticket__atendente__empresa__'))
         fields_mensagem_ticket.update(lookup_types_classificacao('ticket__atendente__classificacao__'))
 
+        fields_mensagem_ticket.update(lookup_types_classificacao('ticket__classificacao_atendente__'))
+
         fields_mensagem_ticket.update(lookup_types_agrupamento('ticket__grupo__'))
         fields_mensagem_ticket.update(lookup_types_agrupamento('ticket__subgrupo__'))
-
-        fields_mensagem_ticket.update(lookup_types_mensagem_ticket('ticket__solucionado__'))
-        fields_mensagem_ticket.update(lookup_types_ticket('ticket__solucionado__ticket__'))
-        fields_mensagem_ticket.update(lookup_types_usuario('ticket__solucionado__usuario__'))
-        fields_mensagem_ticket.update(lookup_types_empresa('ticket__solucionado__usuario__empresa__'))
-        fields_mensagem_ticket.update(lookup_types_classificacao('ticket__solucionado__usuario__classificacao__'))
-
-        fields_mensagem_ticket.update(lookup_types_usuario('ticket__finalizado__'))
-        fields_mensagem_ticket.update(lookup_types_empresa('ticket__finalizado__empresa__'))
-        fields_mensagem_ticket.update(lookup_types_classificacao('ticket__finalizado__classificacao__'))
-
-        fields_mensagem_ticket.update(lookup_types_usuario('ticket__cancelado__'))
-        fields_mensagem_ticket.update(lookup_types_empresa('ticket__cancelado__empresa__'))
-        fields_mensagem_ticket.update(lookup_types_classificacao('ticket__cancelado__classificacao__'))
 
         model = MensagemTicket
         fields = fields_mensagem_ticket
@@ -256,38 +227,19 @@ class MovimentoTicketFilter(filter.FilterSet):
         fields_movimento_ticket.update(lookup_types_empresa('ticket__solicitante__empresa__'))
         fields_movimento_ticket.update(lookup_types_classificacao('ticket__solicitante__classificacao__'))
 
-        fields_movimento_ticket.update(lookup_types_classificacao('ticket__classificacao_atendente__'))
-
         fields_movimento_ticket.update(lookup_types_usuario('ticket__atendente__'))
         fields_movimento_ticket.update(lookup_types_empresa('ticket__atendente__empresa__'))
         fields_movimento_ticket.update(lookup_types_classificacao('ticket__atendente__classificacao__'))
 
+        fields_movimento_ticket.update(lookup_types_classificacao('ticket__classificacao_atendente__'))
+
         fields_movimento_ticket.update(lookup_types_agrupamento('ticket__grupo__'))
         fields_movimento_ticket.update(lookup_types_agrupamento('ticket__subgrupo__'))
-
-        fields_movimento_ticket.update(lookup_types_ticket('ticket__solucionado__ticket__'))
-        fields_movimento_ticket.update(lookup_types_usuario('ticket__solucionado__usuario__'))
-        fields_movimento_ticket.update(lookup_types_empresa('ticket__solucionado__usuario__empresa__'))
-        fields_movimento_ticket.update(lookup_types_classificacao('ticket__solucionado__usuario__classificacao__'))
-
-        fields_movimento_ticket.update(lookup_types_usuario('ticket__finalizado__'))
-        fields_movimento_ticket.update(lookup_types_empresa('ticket__finalizado__empresa__'))
-        fields_movimento_ticket.update(lookup_types_classificacao('ticket__finalizado__classificacao__'))
-
-        fields_movimento_ticket.update(lookup_types_usuario('ticket__cancelado__'))
-        fields_movimento_ticket.update(lookup_types_empresa('ticket__cancelado__empresa__'))
-        fields_movimento_ticket.update(lookup_types_classificacao('ticket__cancelado__classificacao__'))
-
-        fields_movimento_ticket.update(lookup_types_classificacao('classificacao_atendente__'))
-
-        fields_movimento_ticket.update(lookup_types_usuario('atendente__'))
-        fields_movimento_ticket.update(lookup_types_empresa('atendente__empresa__'))
-        fields_movimento_ticket.update(lookup_types_classificacao('atendente__classificacao__'))
-
-        fields_movimento_ticket.update(lookup_types_ticket('solucionado__ticket__'))
-        fields_movimento_ticket.update(lookup_types_usuario('solucionado__usuario__'))
-        fields_movimento_ticket.update(lookup_types_empresa('solucionado__usuario__empresa__'))
-        fields_movimento_ticket.update(lookup_types_classificacao('solucionado__usuario__classificacao__'))
+        
+        fields_movimento_ticket.update(lookup_types_ticket('solucao__ticket__'))
+        fields_movimento_ticket.update(lookup_types_usuario('solucao__usuario__'))
+        fields_movimento_ticket.update(lookup_types_empresa('solucao__usuario__empresa__'))
+        fields_movimento_ticket.update(lookup_types_classificacao('solucao__usuario__classificacao__'))
 
         fields_movimento_ticket.update(lookup_types_usuario('finalizado__'))
         fields_movimento_ticket.update(lookup_types_empresa('finalizado__empresa__'))
@@ -296,6 +248,12 @@ class MovimentoTicketFilter(filter.FilterSet):
         fields_movimento_ticket.update(lookup_types_usuario('cancelado__'))
         fields_movimento_ticket.update(lookup_types_empresa('cancelado__empresa__'))
         fields_movimento_ticket.update(lookup_types_classificacao('cancelado__classificacao__'))
+
+        fields_movimento_ticket.update(lookup_types_classificacao('classificacao_atendente__'))
+
+        fields_movimento_ticket.update(lookup_types_usuario('atendente__'))
+        fields_movimento_ticket.update(lookup_types_empresa('atendente__empresa__'))
+        fields_movimento_ticket.update(lookup_types_classificacao('atendente__classificacao__'))
 
         model = MovimentoTicket
         fields = fields_movimento_ticket
