@@ -12,9 +12,6 @@ class TicketSerializerAuditoria(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='id')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='id')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta:
         model = Ticket
@@ -37,9 +34,6 @@ class TicketSerializer(serializers.ModelSerializer):
     atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
     grupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
     subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
-    solucionado = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')
-    cancelado = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     def valida_edicao_ticket(self):
         if self.instance and (self.instance.finalizado or self.instance.cancelado):
@@ -86,11 +80,11 @@ class TicketSerializer(serializers.ModelSerializer):
 
         return subgrupo
 
-    def validate_solucionado(self, solucionado):
-        if solucionado and not solucionado.solucao:
-            raise serializers.ValidationError("A mensagem não é uma solução")
+    # def validate_solucionado(self, solucionado):
+    #     if solucionado and not solucionado.solucao:
+    #         raise serializers.ValidationError("A mensagem não é uma solução")
 
-        return solucionado
+    #     return solucionado
 
     def validate_avaliacao_solicitante(self, avaliacao_solicitante):
         if self.instance.cancelado:
@@ -113,49 +107,49 @@ class TicketSerializer(serializers.ModelSerializer):
 
         return observacao_avaliacao_solicitante
 
-    def validate_finalizado(self, finalizado):
-        ticket = self.instance
+    # def validate_finalizado(self, finalizado):
+    #     ticket = self.instance
 
-        if ticket.finalizado:
-            raise serializers.ValidationError("Não é possível finalizar um ticket que já está finalizado")
+    #     if ticket.finalizado:
+    #         raise serializers.ValidationError("Não é possível finalizar um ticket que já está finalizado")
 
-        if finalizado != ticket.solicitante and (not ticket.atendente or ticket.atendente and finalizado != ticket.atendente):
-            raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário que não esteja vinculado ao ticket")
+    #     if finalizado != ticket.solicitante and (not ticket.atendente or ticket.atendente and finalizado != ticket.atendente):
+    #         raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário que não esteja vinculado ao ticket")
 
-        if finalizado and not finalizado.is_active:
-            raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário inativo")
+    #     if finalizado and not finalizado.is_active:
+    #         raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário inativo")
 
-        if not ticket.solucionado:
-            raise serializers.ValidationError("Não é possível finalizar um ticket que não esteja solucionado")
+    #     if not ticket.solucionado:
+    #         raise serializers.ValidationError("Não é possível finalizar um ticket que não esteja solucionado")
 
-        return finalizado
+    #     return finalizado
 
-    def validate_cancelado(self, cancelado):
-        ticket = self.instance
+    # def validate_cancelado(self, cancelado):
+    #     ticket = self.instance
 
-        if ticket.cancelado:
-            raise serializers.ValidationError("Não é possível cancelar um ticket já que já está cancelado")
+    #     if ticket.cancelado:
+    #         raise serializers.ValidationError("Não é possível cancelar um ticket já que já está cancelado")
 
-        if 'motivo_cancelamento' not in self.get_initial():
-            raise serializers.ValidationError("Não é possível cancelar um ticket sem informar o motivo do cancelamento")
+    #     if 'motivo_cancelamento' not in self.get_initial():
+    #         raise serializers.ValidationError("Não é possível cancelar um ticket sem informar o motivo do cancelamento")
 
-        if cancelado != ticket.solicitante and (not ticket.atendente or ticket.atendente and cancelado !=
-                                                ticket.atendente):
-            raise serializers.ValidationError("Não é possível cancelar um ticket com um usuário que não esteja vinculado ao ticket")
+    #     if cancelado != ticket.solicitante and (not ticket.atendente or ticket.atendente and cancelado !=
+    #                                             ticket.atendente):
+    #         raise serializers.ValidationError("Não é possível cancelar um ticket com um usuário que não esteja vinculado ao ticket")
 
-        if cancelado and not cancelado.is_active:
-            raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário inativo")
+    #     if cancelado and not cancelado.is_active:
+    #         raise serializers.ValidationError("Não é possível finalizar um ticket com um usuário inativo")
 
-        return cancelado
+    #     return cancelado
 
-    def validate_motivo_cancelamento(self, motivo_cancelamento):
-        if self.instance.cancelado:
-            raise serializers.ValidationError("Não é possivel informar o motivo do cancelamento de um ticket cancelado")
+    # def validate_motivo_cancelamento(self, motivo_cancelamento):
+    #     if self.instance.cancelado:
+    #         raise serializers.ValidationError("Não é possivel informar o motivo do cancelamento de um ticket cancelado")
 
-        if self.instance.motivo_cancelamento:
-            raise serializers.ValidationError("Não é possivel alterar o motivo do cancelamento")
+    #     if self.instance.motivo_cancelamento:
+    #         raise serializers.ValidationError("Não é possivel alterar o motivo do cancelamento")
 
-        return motivo_cancelamento
+    #     return motivo_cancelamento
 
     class Meta:
         model = Ticket
@@ -163,10 +157,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'id',
             'status',
             'prioridade',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
         ]
@@ -181,10 +171,6 @@ class TicketSerializer(serializers.ModelSerializer):
             'descricao',
             'grupo',
             'subgrupo',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'data_cadastro',
@@ -208,10 +194,6 @@ class TicketSerializerCreate(TicketSerializer):
             'id',
             'status',
             'prioridade',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
             'avaliacao_solicitante',
             'observacao_avaliacao_solicitante',
             'data_cadastro',
@@ -228,22 +210,12 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
                                             required=False)
 
     class Meta(TicketSerializer.Meta):
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'atendente',
-            'titulo',
-            'descricao',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+        _read_only_fields = TicketSerializer.Meta.fields.copy()
+        _read_only_fields.remove('classificacao_atendente')
+        _read_only_fields.remove('grupo')
+        _read_only_fields.remove('subgrupo')
+
+        read_only_fields = _read_only_fields
 
 
 class TicketSerializerAtribuirAtendente(TicketSerializer):
@@ -251,24 +223,10 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
                                                 allow_null=False, allow_empty=False)
 
     class Meta(TicketSerializer.Meta):
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'classificacao_atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+        _read_only_fields = TicketSerializer.Meta.fields.copy()
+        _read_only_fields.remove('atendente')
+
+        read_only_fields = _read_only_fields
 
 
 class TicketSerializerReclassificar(TicketSerializer):
@@ -276,77 +234,62 @@ class TicketSerializerReclassificar(TicketSerializer):
                                                             required=True, allow_null=True)
 
     class Meta(TicketSerializer.Meta):
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+        _read_only_fields = TicketSerializer.Meta.fields.copy()
+        _read_only_fields.remove('classificacao_atendente')
+
+        read_only_fields = _read_only_fields
 
 
-class TicketSerializerSolucionar(TicketSerializer):
-    solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='id',
-                                                allow_null=True, allow_empty=False, required=False)
+# class TicketSerializerSolucionar(TicketSerializer):
+#     solucionado = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='id',
+#                                                 allow_null=True, allow_empty=False, required=False)
 
-    class Meta(TicketSerializer.Meta):
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'classificacao_atendente',
-            'atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+#     class Meta(TicketSerializer.Meta):
+#         read_only_fields = [
+#             'id',
+#             'status',
+#             'prioridade',
+#             'solicitante',
+#             'classificacao_atendente',
+#             'atendente',
+#             'titulo',
+#             'descricao',
+#             'grupo',
+#             'subgrupo',
+#             'finalizado',
+#             'cancelado',
+#             'motivo_cancelamento',
+#             'avaliacao_solicitante',
+#             'observacao_avaliacao_solicitante',
+#             'data_cadastro',
+#             'hora_cadastro',
+#         ]
 
 
-class TicketSerializerFinalizar(TicketSerializer):
-    finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', required=True,
-                                                allow_null=False, allow_empty=False)
+# class TicketSerializerFinalizar(TicketSerializer):
+#     finalizado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', required=True,
+#                                                 allow_null=False, allow_empty=False)
 
-    class Meta(TicketSerializer.Meta):
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'classificacao_atendente',
-            'atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'solucionado',
-            'cancelado',
-            'motivo_cancelamento',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+#     class Meta(TicketSerializer.Meta):
+#         read_only_fields = [
+#             'id',
+#             'status',
+#             'prioridade',
+#             'solicitante',
+#             'classificacao_atendente',
+#             'atendente',
+#             'titulo',
+#             'descricao',
+#             'grupo',
+#             'subgrupo',
+#             'solucionado',
+#             'cancelado',
+#             'motivo_cancelamento',
+#             'avaliacao_solicitante',
+#             'observacao_avaliacao_solicitante',
+#             'data_cadastro',
+#             'hora_cadastro',
+#         ]
 
 
 class TicketSerializerAvaliar(TicketSerializer):
@@ -371,30 +314,30 @@ class TicketSerializerAvaliar(TicketSerializer):
         ]
 
 
-class TicketSerializerCancelar(TicketSerializer):
-    cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=False,
-                                                allow_empty=False, required=True)
-    motivo_cancelamento = serializers.CharField(required=True, allow_null=False, allow_blank=True)
+# class TicketSerializerCancelar(TicketSerializer):
+#     cancelado = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=False,
+#                                                 allow_empty=False, required=True)
+#     motivo_cancelamento = serializers.CharField(required=True, allow_null=False, allow_blank=True)
 
-    class Meta(TicketSerializer.Meta):
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'classificacao_atendente',
-            'atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'solucionado',
-            'finalizado',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+#     class Meta(TicketSerializer.Meta):
+#         read_only_fields = [
+#             'id',
+#             'status',
+#             'prioridade',
+#             'solicitante',
+#             'classificacao_atendente',
+#             'atendente',
+#             'titulo',
+#             'descricao',
+#             'grupo',
+#             'subgrupo',
+#             'solucionado',
+#             'finalizado',
+#             'avaliacao_solicitante',
+#             'observacao_avaliacao_solicitante',
+#             'data_cadastro',
+#             'hora_cadastro',
+#         ]
 
 
 class MensagemTicketSerializer(serializers.ModelSerializer):
@@ -515,31 +458,7 @@ class TicketSerializerRetrieve(TicketSerializer):
                                                         read_only=True)
     grupo = AgrupamentoSerializer(read_only=True)
     subgrupo = AgrupamentoSerializer(read_only=True)
-    solucionado = MensagemTicketSerializerRetrieveTicket(read_only=True)
-    finalizado = UsuarioSerializerSimples(read_only=True)
-    cancelado = UsuarioSerializerSimples(read_only=True)
     movimentos = MovimentoTicketSerializerRetrieve(source='ticket_ticket_movimento_ticket', read_only=True, many=True)
 
     class Meta(TicketSerializer.Meta):
-        fields = [
-            'id',
-            'status',
-            'prioridade',
-            'solicitante',
-            'classificacao_atendente',
-            'atendente',
-            'titulo',
-            'descricao',
-            'grupo',
-            'subgrupo',
-            'solucionado',
-            'finalizado',
-            'cancelado',
-            'motivo_cancelamento',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-            'mensagens',
-            'movimentos',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
+        pass
