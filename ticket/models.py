@@ -109,39 +109,6 @@ class Ticket(Base):
         blank=True,
     )
 
-    solucionado = models.ForeignKey(
-        'MensagemTicket',
-        verbose_name='Solucionado',
-        related_name='solucionado_ticket_mensagem_ticket',
-        null=True,
-        on_delete=models.PROTECT,
-        help_text='Mensagem de solução do ticket',
-    )
-
-    finalizado = models.ForeignKey(
-        Usuario,
-        verbose_name='Finalizado',
-        related_name='finalizado_ticket_ticket',
-        null=True,
-        on_delete=models.PROTECT,
-        help_text='Usuário que finalizou o ticket',
-    )
-
-    cancelado = models.ForeignKey(
-        Usuario,
-        verbose_name='Cancelado',
-        related_name='cancelado_ticket_ticket',
-        null=True,
-        on_delete=models.PROTECT,
-        help_text='Usuário que finalizou o ticket',
-    )
-
-    motivo_cancelamento = models.TextField(
-        verbose_name='Motivo do Cancelamento',
-        help_text='Motivo/Justificativa do cancelamento do ticket',
-        blank=True,
-    )
-
     class Meta:
         ordering = ['-id']
         db_table = 'ticket'
@@ -155,8 +122,6 @@ class Ticket(Base):
             models.Index(fields=['avaliacao_solicitante'], name='idx_avaliacao_solicitante_tik'),
             models.Index(fields=['grupo'], name='idx_grupo_tik'),
             models.Index(fields=['subgrupo'], name='idx_subgrupo_tik'),
-            models.Index(fields=['finalizado'], name='idx_finalizado_tik'),
-            models.Index(fields=['cancelado'], name='idx_cancelado_tik'),
         ]
 
     def __str__(self):
@@ -269,13 +234,14 @@ class MovimentoTicket(Base):
         help_text='A qual classificação de usuário o ticket é designado'
     )
 
-    solucionado = models.ForeignKey(
+
+    solucao = models.ForeignKey(
         'MensagemTicket',
-        verbose_name='Solucionado',
-        related_name='solucao_ticket_movimento_ticket',
+        verbose_name='Solução',
+        related_name='solucao_ticket_mensagem_ticket',
         null=True,
         on_delete=models.PROTECT,
-        help_text='Mensagem de solução do ticket',
+        help_text='Solução do ticket',
     )
 
     finalizado = models.ForeignKey(
@@ -295,6 +261,13 @@ class MovimentoTicket(Base):
         on_delete=models.PROTECT,
         help_text='Usuário que finalizou o ticket',
     )
+
+    motivo_cancelamento = models.TextField(
+        verbose_name='Motivo do Cancelamento',
+        help_text='Motivo/Justificativa do cancelamento do ticket',
+        blank=True,
+    )
+
 
     class Meta:
         ordering = ['-id']

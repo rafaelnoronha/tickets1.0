@@ -94,8 +94,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'tickets',
-        'USER': 'postgres',
-        'PASSWORD': 'sa',
+        'USER': 'teste',
+        'PASSWORD': 'teste',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -155,10 +155,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'core.pagination.CustomPagination',
     'PAGE_SIZE': 15,
     'DATE_FORMAT': "%d-%m-%Y",
-    'DATE_INPUT_FORMATS': ["%d-%m-%Y"],
+    'DATE_INPUT_FORMATS': ["%d-%m-%Y", "%Y-%m-%d"],
 }
 
 SIMPLE_JWT = {

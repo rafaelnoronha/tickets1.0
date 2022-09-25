@@ -14,10 +14,9 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
 
 
 class UsuarioViewSet(ModelViewSetComAuditoria):
-    queryset = Usuario.objects \
+    queryset = Usuario.objects.all() \
         .prefetch_related('classificacao') \
-        .prefetch_related('empresa') \
-        .all()
+        .prefetch_related('empresa')
     filterset_class = UsuarioFilter
     permission_classes = (BasePemission, )
     auditoria = {
@@ -51,9 +50,8 @@ class ClassificacaoViewSet(ModelViewSetComAuditoria):
 
 class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
                              viewsets.GenericViewSet):
-    queryset = LogAutenticacao.objects \
-        .prefetch_related('usuario') \
-        .all()
+    queryset = LogAutenticacao.objects.all() \
+        .prefetch_related('usuario')
     filterset_class = LogAutenticacaoFilter
     permission_classes = (BasePemission, )
 

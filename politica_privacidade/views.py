@@ -26,10 +26,9 @@ class PoliticaPrivacidadeViewSet(
 class ConsentimentoPoliticaPrivacidadeViewSet(
     CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
 ):
-    queryset = ConsentimentoPoliticaPrivacidade.objects \
+    queryset = ConsentimentoPoliticaPrivacidade.objects.all() \
         .prefetch_related('titular') \
-        .prefetch_related('politica_privacidade') \
-        .all()
+        .prefetch_related('politica_privacidade')
     filterset_class = ConsentimentoPoliticaPrivacidadeFilter
     permission_classes = (BasePemission, )
     auditoria = {
