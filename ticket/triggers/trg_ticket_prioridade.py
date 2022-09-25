@@ -3,14 +3,14 @@ def trigger():
         CREATE OR REPLACE FUNCTION trg_ticket_prioridade()
         RETURNS TRIGGER AS $$
             DECLARE
-                prioridade_grupo smallint;
-                prioridade_subgrupo smallint;
+                _prioridade_grupo smallint;
+                _prioridade_subgrupo smallint;
         
             BEGIN
-                prioridade_grupo := COALESCE((SELECT prioridade FROM agrupamento WHERE id = NEW.grupo_id), 0);
-                prioridade_subgrupo := COALESCE((SELECT prioridade FROM agrupamento WHERE id = NEW.subgrupo_id), 0);
+                _prioridade_grupo := COALESCE((SELECT prioridade FROM agrupamento WHERE id = NEW.grupo_id), 0);
+                _prioridade_subgrupo := COALESCE((SELECT prioridade FROM agrupamento WHERE id = NEW.subgrupo_id), 0);
             
-                NEW.prioridade := prioridade_grupo + prioridade_subgrupo;
+                NEW.prioridade := _prioridade_grupo + _prioridade_subgrupo;
                 
                 RETURN NEW;
             END

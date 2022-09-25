@@ -2,8 +2,12 @@ def trigger():
     return """
         CREATE OR REPLACE FUNCTION trg_ticket_avaliacao_solicitante()
         RETURNS TRIGGER AS $$
+            DECLARE _empresa_id integer;
+
             BEGIN
-                IF (COALESCE(OLD.avaliacao_solicitante, 0) = 0 AND NEW.avaliacao_solicitante > 0) THEN
+                IF (OLD.avaliacao_solicitante = 0 AND NEW.avaliacao_solicitante > 0) THEN
+                    _empresa_id := SELECT empresa_id FROM usuario WHERE id = NEW.atendente_id;
+
                     UPDATE
                         usuario 
                     SET 
@@ -14,9 +18,9 @@ def trigger():
                     UPDATE
                         empresa
                     SET
-                        media_avaliacoes = fnc_media_avaliacao_empresa((SELECT empresa_id FROM usuario WHERE id = NEW.atendente_id))
+                        media_avaliacoes = fnc_media_avaliacao_empresa(_empresa_id)
                     WHERE
-                        id = (SELECT empresa_id FROM usuario WHERE id = NEW.atendente_id);
+                        id = _empresa_id;
                 END IF;
         
                 RETURN NEW;

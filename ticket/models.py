@@ -44,7 +44,7 @@ class Ticket(Base):
     solicitante = models.ForeignKey(
         Usuario,
         verbose_name='Solicitante',
-        related_name='solicitante_usuario_ticket',
+        related_name='rl_solicitante',
         on_delete=models.PROTECT,
         help_text='Solicitante/Cliente responsável pelo ticket'
     )
@@ -52,7 +52,7 @@ class Ticket(Base):
     classificacao_atendente = models.ForeignKey(
         Classificacao,
         verbose_name='Classificação do Atendente',
-        related_name='classificacao_atendente_usuario_ticket',
+        related_name='rl_classificacao_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='A qual classificação de usuário o ticket é designado'
@@ -61,7 +61,7 @@ class Ticket(Base):
     atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
-        related_name='atendente_usuario_ticket',
+        related_name='rl_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='Atendente/Técnico responsável pelo ticket'
@@ -69,7 +69,7 @@ class Ticket(Base):
 
     titulo = models.CharField(
         verbose_name='Título',
-        max_length=255,
+        max_length=100,
         help_text='Título do ticket',
     )
 
@@ -81,7 +81,7 @@ class Ticket(Base):
     grupo = models.ForeignKey(
         Agrupamento,
         verbose_name='Grupo',
-        related_name='grupo_agrupamento_ticket',
+        related_name='rl_grupo',
         null=True,
         on_delete=models.PROTECT,
         help_text='Grupo de classificação do ticket',
@@ -90,7 +90,7 @@ class Ticket(Base):
     subgrupo = models.ForeignKey(
         Agrupamento,
         verbose_name='Subgrupo',
-        related_name='subgrupo_agrupamento_ticket',
+        related_name='rl_subgrupo',
         null=True,
         on_delete=models.PROTECT,
         help_text='Subgrupo de classificação do ticket',
@@ -115,13 +115,14 @@ class Ticket(Base):
         verbose_name = 'Ticket'
         verbose_name_plural = 'Tickets'
         indexes = [
-            models.Index(fields=['status'], name='idx_status_tik'),
-            models.Index(fields=['prioridade'], name='idx_prioridade_tik'),
-            models.Index(fields=['solicitante'], name='idx_solicitante_tik'),
-            models.Index(fields=['atendente'], name='idx_atendente_tik'),
-            models.Index(fields=['avaliacao_solicitante'], name='idx_avaliacao_solicitante_tik'),
-            models.Index(fields=['grupo'], name='idx_grupo_tik'),
-            models.Index(fields=['subgrupo'], name='idx_subgrupo_tik'),
+            models.Index(fields=['status'], name='idx_tc_status'),
+            models.Index(fields=['prioridade'], name='idx_tc_prioridade'),
+            models.Index(fields=['solicitante'], name='idx_tc_solicitante'),
+            models.Index(fields=['atendente'], name='idx_tc_atendente'),
+            models.Index(fields=['classificacao_atendente'], name='idx_tc_classificacao_atendente'),
+            models.Index(fields=['avaliacao_solicitante'], name='idx_tc_avaliacao_solicitante'),
+            models.Index(fields=['grupo'], name='idx_tc_grupo'),
+            models.Index(fields=['subgrupo'], name='idx_tc_subgrupo'),
         ]
 
     def __str__(self):
@@ -136,7 +137,7 @@ class MensagemTicket(Base):
     usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
-        related_name='usuario_usuario_mensagem_ticket',
+        related_name='rl_usuario',
         on_delete=models.PROTECT,
         help_text='Usuário autor(remetente) da mensagem',
     )
@@ -144,7 +145,7 @@ class MensagemTicket(Base):
     ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
-        related_name='ticket_ticket_mensagem_ticket',
+        related_name='rl_ticket',
         on_delete=models.CASCADE,
         help_text='Ticket que receberá a mensagem',
     )
@@ -156,7 +157,7 @@ class MensagemTicket(Base):
 
     mensagem_relacionada = models.ForeignKey(
         'self',
-        related_name='mensagem_relacionada_mensagem_ticket_mensagem_ticket',
+        related_name='rl_mensagem_relacionada',
         on_delete=models.CASCADE,
         null=True,
         help_text='Mensagem a qual a mensagem atual estará vinculada como resposta',
@@ -174,9 +175,9 @@ class MensagemTicket(Base):
         verbose_name = 'Mensagem do Ticket'
         verbose_name_plural = 'Mensagens do Ticket'
         indexes = [
-            models.Index(fields=['ticket'], name='idx_ticket_mtik'),
-            models.Index(fields=['usuario'], name='idx_usuario_mtik'),
-            models.Index(fields=['solucao'], name='idx_solucao_mtik'),
+            models.Index(fields=['ticket'], name='idx_mn_ticket'),
+            models.Index(fields=['usuario'], name='idx_mn_usuario'),
+            models.Index(fields=['mensagem_relacionada'], name='idx_mn_mensagem_relacionada'),
         ]
 
     def __str__(self):
@@ -187,7 +188,7 @@ class MovimentoTicket(Base):
     ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
-        related_name='ticket_ticket_movimento_ticket',
+        related_name='rl_ticket',
         on_delete=models.PROTECT,
         help_text='Ticket responsável pela movimentação'
     )
@@ -219,7 +220,7 @@ class MovimentoTicket(Base):
     atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
-        related_name='atendente_usuario_movimento_ticket',
+        related_name='rl_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='Atendente/Técnico responsável pelo ticket'
@@ -228,7 +229,7 @@ class MovimentoTicket(Base):
     classificacao_atendente = models.ForeignKey(
         Classificacao,
         verbose_name='Classificação do Atendente',
-        related_name='classificacao_atendente_usuario_movimento_ticket',
+        related_name='rl_classificacao_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='A qual classificação de usuário o ticket é designado'
@@ -238,7 +239,7 @@ class MovimentoTicket(Base):
     solucao = models.ForeignKey(
         'MensagemTicket',
         verbose_name='Solução',
-        related_name='solucao_ticket_mensagem_ticket',
+        related_name='rl_solucao',
         null=True,
         on_delete=models.PROTECT,
         help_text='Solução do ticket',
@@ -247,7 +248,7 @@ class MovimentoTicket(Base):
     finalizado = models.ForeignKey(
         Usuario,
         verbose_name='Finalizado',
-        related_name='finalizado_ticket_movimento_ticket',
+        related_name='rl_finalizado',
         null=True,
         on_delete=models.PROTECT,
         help_text='Usuário que finalizou o ticket',
@@ -256,7 +257,7 @@ class MovimentoTicket(Base):
     cancelado = models.ForeignKey(
         Usuario,
         verbose_name='Cancelado',
-        related_name='cancelado_ticket_movimento_ticket',
+        related_name='rl_cancelado',
         null=True,
         on_delete=models.PROTECT,
         help_text='Usuário que finalizou o ticket',
@@ -275,10 +276,12 @@ class MovimentoTicket(Base):
         verbose_name = 'Movimento do Ticket'
         verbose_name_plural = 'Movimentos do Ticket'
         indexes = [
-            models.Index(fields=['ticket'], name='idx_ticket_movtik'),
-            models.Index(fields=['atendente'], name='idx_atendente_movtik'),
-            models.Index(fields=['finalizado'], name='idx_finalizado_movtik'),
-            models.Index(fields=['cancelado'], name='idx_cancelado_movtik'),
+            models.Index(fields=['ticket'], name='idx_mv_ticket'),
+            models.Index(fields=['atendente'], name='idx_mv_atendente'),
+            models.Index(fields=['classificacao_atendente'], name='idx_mv_classificacao_atendente'),
+            models.Index(fields=['finalizado'], name='idx_mv_finalizado'),
+            models.Index(fields=['cancelado'], name='idx_mv_cancelado'),
+            models.Index(fields=['solucao'], name='idx_mv_solucao'),
         ]
 
     def __str__(self):

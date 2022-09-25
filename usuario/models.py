@@ -66,7 +66,7 @@ class Usuario(AbstractUser):
     classificacao = models.ForeignKey(
         'Classificacao',
         verbose_name='Classificação',
-        related_name='classificacao_classificacao_usuario',
+        related_name='rl_classificacao',
         null=True,
         on_delete=models.PROTECT,
         help_text='A qual classificação de usuário o ticket é designado'
@@ -83,7 +83,7 @@ class Usuario(AbstractUser):
     empresa = models.ForeignKey(
         Empresa,
         verbose_name='Empresa',
-        related_name='empresa_empresa_usuario',
+        related_name='rl_empresa',
         on_delete=models.PROTECT,
         null=True,
         help_text='Empresa a qual o usuário pertence',
@@ -143,9 +143,9 @@ class Usuario(AbstractUser):
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
         indexes = [
-            models.Index(fields=['classificacao'], name='idx_classificacao_usr'),
-            models.Index(fields=['empresa'], name='idx_empresa_usr'),
-            models.Index(fields=['media_avaliacoes'], name='idx_media_avaliacoes_usr'),
+            models.Index(fields=['classificacao'], name='idx_sr_classificacao'),
+            models.Index(fields=['empresa'], name='idx_sr_empresa'),
+            models.Index(fields=['media_avaliacoes'], name='idx_sr_media_avaliacoes'),
         ]
 
     def __str__(self):
@@ -165,7 +165,7 @@ class LogAutenticacao(models.Model):
     usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
-        related_name='usuario_usuario_log_autenticacao',
+        related_name='rl_usuario',
         on_delete=models.PROTECT,
         help_text='Usuário da tentativa de autenticação',
     )
@@ -194,7 +194,8 @@ class LogAutenticacao(models.Model):
         verbose_name = 'Log de autenticação'
         verbose_name_plural = 'Logs de autenticação'
         indexes = [
-            models.Index(fields=['ip'], name='idx_ip_lgaut'),
+            models.Index(fields=['ip'], name='idx_lg_ip'),
+            models.Index(fields=['usuario'], name='idx_lg_usuario'),
         ]
 
     def __str__(self):
@@ -215,7 +216,7 @@ class Classificacao(Base):
 
     nome = models.CharField(
         verbose_name='Nome',
-        max_length=255,
+        max_length=50,
         help_text='Nome da classificação',
     )
 
@@ -232,7 +233,7 @@ class Classificacao(Base):
         verbose_name = 'Classificacao'
         verbose_name_plural = 'Classificacoes'
         indexes = [
-            models.Index(fields=['codigo'], name='idx_codigo_cls'),
+            models.Index(fields=['codigo'], name='idx_cl_codigo'),
         ]
 
     def __str__(self):

@@ -22,7 +22,7 @@ class Agrupamento(Base):
 
     nome = models.CharField(
         verbose_name='Nome',
-        max_length=60,
+        max_length=50,
         help_text='Nome do Agrupamento',
     )
 

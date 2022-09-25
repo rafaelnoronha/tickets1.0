@@ -16,14 +16,14 @@ class PoliticaPrivacidade(Base):
 
     codigo = models.CharField(
         verbose_name='Código',
-        max_length=150,
+        max_length=20,
         unique=True,
         help_text='Código da política de privacidade',
     )
 
     titulo = models.CharField(
         verbose_name='Título da Política de Privacidade',
-        max_length=150,
+        max_length=100,
         help_text='Título da política de privacidade',
     )
 
@@ -50,7 +50,7 @@ class PoliticaPrivacidade(Base):
         verbose_name = 'Política de Privacidade'
         verbose_name_plural = 'Políticas de Privacidade'
         indexes = [
-            models.Index(fields=['codigo'], name='idx_codigo_pop'),
+            models.Index(fields=['codigo'], name='idx_pl_codigo'),
         ]
 
     def __str__(self):
@@ -65,7 +65,7 @@ class ConsentimentoPoliticaPrivacidade(Base):
     titular = models.ForeignKey(
         Usuario,
         verbose_name='Consentimento da Política de Privacidade',
-        related_name='titular_usuario_consentimento_politica_privacidade',
+        related_name='rl_titular',
         on_delete=models.PROTECT,
         help_text='Usuário que concentiu ou não com a política de privacidade',
     )
@@ -73,7 +73,7 @@ class ConsentimentoPoliticaPrivacidade(Base):
     politica_privacidade = models.ForeignKey(
         PoliticaPrivacidade,
         verbose_name='Política de Privacidade',
-        related_name='politica_privacidade_politica_privacidade_consentimento_politica_privacidade',
+        related_name='rl_politica_privacidade',
         on_delete=models.PROTECT,
         help_text='Política de privacidade que o usuário consentiu ou não'
     )
@@ -89,8 +89,8 @@ class ConsentimentoPoliticaPrivacidade(Base):
         verbose_name = 'Consentimento da Política de Privacidade'
         verbose_name_plural = 'Consentimentos das Políticas de Privacidade'
         indexes = [
-            models.Index(fields=['politica_privacidade'], name='idx_politica_privacidade_cpop'),
-            models.Index(fields=['titular'], name='idx_titular_cpop'),
+            models.Index(fields=['politica_privacidade'], name='idx_cn_politica_privacidade'),
+            models.Index(fields=['titular'], name='idx_cn_titular'),
         ]
 
     def __str__(self):

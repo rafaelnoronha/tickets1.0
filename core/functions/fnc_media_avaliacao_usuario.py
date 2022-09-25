@@ -8,7 +8,7 @@ def function():
                         CAST(CAST(SUM(avaliacao_solicitante) AS numeric) / COALESCE(COUNT(id), 0) AS numeric(2,1))
                     FROM ticket 
                     WHERE atendente_id = usuario_id
-                    AND finalizado_id IS NOT NULL
+                    AND status IN ('3', '4')
                     AND avaliacao_solicitante IS NOT NULL
                 );
             END

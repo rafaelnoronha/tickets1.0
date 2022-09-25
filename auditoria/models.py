@@ -43,7 +43,7 @@ class Auditoria(models.Model):
         Usuario,
         verbose_name='Usuário da Operação',
         on_delete=models.PROTECT,
-        related_name='usuario_operacao_usuario_auditoria',
+        related_name='rl_usuario_operacao',
         help_text='Usuário responsável pela operação realizada',
     )
 
@@ -65,9 +65,9 @@ class Auditoria(models.Model):
         verbose_name = 'Auditoria'
         verbose_name_plural = 'Auditoria'
         indexes = [
-            models.Index(fields=['tabela_operacao'], name='idx_tabela_operacao_audt'),
-            models.Index(fields=['tipo_operacao'], name='idx_tipo_operacao_audt'),
-            models.Index(fields=['usuario_operacao'], name='idx_usuario_operacao_audt'),
+            models.Index(fields=['tabela_operacao'], name='idx_dt_tabela_operacao'),
+            models.Index(fields=['tipo_operacao'], name='idx_dt_tipo_operacao'),
+            models.Index(fields=['usuario_operacao'], name='idx_dt_usuario_operacao'),
         ]
 
     def __str__(self):

@@ -21,7 +21,7 @@ class Empresa(Base):
 
     razao_social = models.CharField(
         verbose_name='Razão Social',
-        max_length=60,
+        max_length=100,
         help_text='Razão social(nome)',
     )
 
@@ -33,32 +33,32 @@ class Empresa(Base):
 
     logradouro = models.CharField(
         verbose_name='Logradouro',
-        max_length=255,
+        max_length=60,
         help_text='Logradouro/Endereço ex: Rua Direita',
     )
 
     numero = models.CharField(
         verbose_name='Número',
-        max_length=60,
+        max_length=30,
         help_text='Número do logradouro',
     )
 
     complemento = models.CharField(
         verbose_name='Complemento',
-        max_length=60,
+        max_length=30,
         blank=True,
         help_text='Complemento do endereço',
     )
 
     bairro = models.CharField(
         verbose_name='Bairro',
-        max_length=60,
+        max_length=30,
         help_text='Bairro',
     )
 
     municipio = models.CharField(
         verbose_name='Município',
-        max_length=60,
+        max_length=30,
         help_text='Município/Cidade',
     )
 
@@ -114,6 +114,11 @@ class Empresa(Base):
         db_table = 'empresa'
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
+        indexes = [
+            models.Index(fields=['media_avaliacoes'], name='idx_mp_media_avaliacoes'),
+            models.Index(fields=['municipio'], name='idx_mp_municipio'),
+            models.Index(fields=['uf'], name='idx_mp_uf'),
+        ]
 
     def __str__(self):
         return str(self.id)
