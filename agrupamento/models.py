@@ -4,7 +4,7 @@ from core.models import Base
 
 TIPO_CHOISES = [
     ('G', 'Grupo'),
-    ('S', 'Sintético'),
+    ('S', 'Subgrupo'),
 ]
 
 

@@ -480,21 +480,28 @@ def criar_empresas():
                 password=randint(1000, 9999),
                 codigo_verificacao_segunda_etapa=randint(1000, 9999),
                 telefone=emp.telefone,
-                empresa=emp
+                empresa=emp,
+                is_staff=True if randint(1, 100) == 100 else False
             )
 
 def criar_tickets():
-    from usuario.models import Usuario
+    from usuario.models import Usuario, Classificacao
     from ticket.models import Ticket
-    from agrupamento.models import Grupo, Subgrupo
+    from agrupamento.models import Agrupamento
 
     solicitantes = Usuario.objects.filter(is_staff=False)
+    atendentes = Usuario.objects.filter(is_staff=True)
+    classificacoes = Classificacao.objects.all()
 
     for solicitante in solicitantes:
         Ticket.objects.create(
             solicitante=solicitante,
             titulo=f'Chamado de {solicitante.username}',
             descricao=f'O cliente {solicitante.id} possui um erro!',
-            grupo=Grupo.objects.get(id=randint(1, 3)),
-            subgrupo=Subgrupo.objects.get(id=randint(1, 3))
+            grupo=Agrupamento.objects.get(id=randint(1, 3)),
+            subgrupo=Agrupamento.objects.get(id=randint(1, 3)),
+            atendente=atendentes[randint(0, len(atendentes) - 1)],
+            classificacao_atendente=classificacoes[randint(0, len(classificacoes) - 1)],
+            cancelado=atendentes[randint(0, len(atendentes) - 1)],
+            finalizado=atendentes[randint(0, len(atendentes) - 1)]
         )

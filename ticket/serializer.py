@@ -198,9 +198,9 @@ class TicketSerializerCreate(TicketSerializer):
                                                             allow_null=True, required=False)
     atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=True,
                                                 required=False)
-    grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='GRP'), slug_field='id', allow_null=True,
+    grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='G'), slug_field='id', allow_null=True,
                                             required=False)
-    subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='SGR'), slug_field='id', allow_null=True,
+    subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='S'), slug_field='id', allow_null=True,
                                             required=False)
 
     class Meta(TicketSerializer.Meta):
@@ -222,9 +222,9 @@ class TicketSerializerCreate(TicketSerializer):
 class TicketSerializerUpdatePartialUpdate(TicketSerializer):
     classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
                                                             allow_null=True, required=False)
-    grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='GRP'), slug_field='id', allow_null=True,
+    grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='G'), slug_field='id', allow_null=True,
                                             required=False)
-    subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='SGR'), slug_field='id', allow_null=True,
+    subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(tipo='S'), slug_field='id', allow_null=True,
                                             required=False)
 
     class Meta(TicketSerializer.Meta):

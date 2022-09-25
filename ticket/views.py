@@ -16,7 +16,7 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
 
 
 class TicketViewSet(ModelViewSetComAuditoria):
-    queryset = Ticket.objects \
+    queryset = Ticket.objects.all() \
         .prefetch_related('solicitante') \
         .prefetch_related('classificacao_atendente') \
         .prefetch_related('atendente') \
@@ -24,8 +24,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
         .prefetch_related('subgrupo') \
         .prefetch_related('solucionado') \
         .prefetch_related('finalizado') \
-        .prefetch_related('cancelado') \
-        .all()
+        .prefetch_related('cancelado')
     filterset_class = TicketFilter
     permission_classes = (BasePemission, )
     auditoria = {
