@@ -43,7 +43,7 @@ class Auditoria(models.Model):
         Usuario,
         verbose_name='Usuário da Operação',
         on_delete=models.PROTECT,
-        related_name='rl_usuario_operacao',
+        related_name='rl_dt_usuario_operacao',
         help_text='Usuário responsável pela operação realizada',
     )
 

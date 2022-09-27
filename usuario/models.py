@@ -66,7 +66,7 @@ class Usuario(AbstractUser):
     classificacao = models.ForeignKey(
         'Classificacao',
         verbose_name='Classificação',
-        related_name='rl_classificacao',
+        related_name='rl_sr_classificacao',
         null=True,
         on_delete=models.PROTECT,
         help_text='A qual classificação de usuário o ticket é designado'
@@ -83,7 +83,7 @@ class Usuario(AbstractUser):
     empresa = models.ForeignKey(
         Empresa,
         verbose_name='Empresa',
-        related_name='rl_empresa',
+        related_name='rl_sr_empresa',
         on_delete=models.PROTECT,
         null=True,
         help_text='Empresa a qual o usuário pertence',
@@ -165,7 +165,7 @@ class LogAutenticacao(models.Model):
     usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
-        related_name='rl_usuario',
+        related_name='rl_lg_usuario',
         on_delete=models.PROTECT,
         help_text='Usuário da tentativa de autenticação',
     )

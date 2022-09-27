@@ -65,7 +65,7 @@ class ConsentimentoPoliticaPrivacidade(Base):
     titular = models.ForeignKey(
         Usuario,
         verbose_name='Consentimento da Política de Privacidade',
-        related_name='rl_titular',
+        related_name='rl_cn_titular',
         on_delete=models.PROTECT,
         help_text='Usuário que concentiu ou não com a política de privacidade',
     )
@@ -73,7 +73,7 @@ class ConsentimentoPoliticaPrivacidade(Base):
     politica_privacidade = models.ForeignKey(
         PoliticaPrivacidade,
         verbose_name='Política de Privacidade',
-        related_name='rl_politica_privacidade',
+        related_name='rl_cn_politica_privacidade',
         on_delete=models.PROTECT,
         help_text='Política de privacidade que o usuário consentiu ou não'
     )

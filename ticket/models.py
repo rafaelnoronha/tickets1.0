@@ -44,7 +44,7 @@ class Ticket(Base):
     solicitante = models.ForeignKey(
         Usuario,
         verbose_name='Solicitante',
-        related_name='rl_solicitante',
+        related_name='rl_tc_solicitante',
         on_delete=models.PROTECT,
         help_text='Solicitante/Cliente responsável pelo ticket'
     )
@@ -52,7 +52,7 @@ class Ticket(Base):
     classificacao_atendente = models.ForeignKey(
         Classificacao,
         verbose_name='Classificação do Atendente',
-        related_name='rl_classificacao_atendente',
+        related_name='rl_tc_classificacao_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='A qual classificação de usuário o ticket é designado'
@@ -61,7 +61,7 @@ class Ticket(Base):
     atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
-        related_name='rl_atendente',
+        related_name='rl_tc_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='Atendente/Técnico responsável pelo ticket'
@@ -81,7 +81,7 @@ class Ticket(Base):
     grupo = models.ForeignKey(
         Agrupamento,
         verbose_name='Grupo',
-        related_name='rl_grupo',
+        related_name='rl_tc_grupo',
         null=True,
         on_delete=models.PROTECT,
         help_text='Grupo de classificação do ticket',
@@ -90,7 +90,7 @@ class Ticket(Base):
     subgrupo = models.ForeignKey(
         Agrupamento,
         verbose_name='Subgrupo',
-        related_name='rl_subgrupo',
+        related_name='rl_tc_subgrupo',
         null=True,
         on_delete=models.PROTECT,
         help_text='Subgrupo de classificação do ticket',
@@ -137,7 +137,7 @@ class MensagemTicket(Base):
     usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
-        related_name='rl_usuario',
+        related_name='rl_mn_usuario',
         on_delete=models.PROTECT,
         help_text='Usuário autor(remetente) da mensagem',
     )
@@ -145,7 +145,7 @@ class MensagemTicket(Base):
     ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
-        related_name='rl_ticket',
+        related_name='rl_mn_ticket',
         on_delete=models.CASCADE,
         help_text='Ticket que receberá a mensagem',
     )
@@ -157,7 +157,7 @@ class MensagemTicket(Base):
 
     mensagem_relacionada = models.ForeignKey(
         'self',
-        related_name='rl_mensagem_relacionada',
+        related_name='rl_mn_mensagem_relacionada',
         on_delete=models.CASCADE,
         null=True,
         help_text='Mensagem a qual a mensagem atual estará vinculada como resposta',
@@ -188,7 +188,7 @@ class MovimentoTicket(Base):
     ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
-        related_name='rl_ticket',
+        related_name='rl_mv_ticket',
         on_delete=models.PROTECT,
         help_text='Ticket responsável pela movimentação'
     )
@@ -220,7 +220,7 @@ class MovimentoTicket(Base):
     atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
-        related_name='rl_atendente',
+        related_name='rl_mv_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='Atendente/Técnico responsável pelo ticket'
@@ -229,7 +229,7 @@ class MovimentoTicket(Base):
     classificacao_atendente = models.ForeignKey(
         Classificacao,
         verbose_name='Classificação do Atendente',
-        related_name='rl_classificacao_atendente',
+        related_name='rl_mv_classificacao_atendente',
         null=True,
         on_delete=models.PROTECT,
         help_text='A qual classificação de usuário o ticket é designado'
@@ -239,7 +239,7 @@ class MovimentoTicket(Base):
     solucao = models.ForeignKey(
         'MensagemTicket',
         verbose_name='Solução',
-        related_name='rl_solucao',
+        related_name='rl_mv_solucao',
         null=True,
         on_delete=models.PROTECT,
         help_text='Solução do ticket',
@@ -248,7 +248,7 @@ class MovimentoTicket(Base):
     finalizado = models.ForeignKey(
         Usuario,
         verbose_name='Finalizado',
-        related_name='rl_finalizado',
+        related_name='rl_mv_finalizado',
         null=True,
         on_delete=models.PROTECT,
         help_text='Usuário que finalizou o ticket',
@@ -257,7 +257,7 @@ class MovimentoTicket(Base):
     cancelado = models.ForeignKey(
         Usuario,
         verbose_name='Cancelado',
-        related_name='rl_cancelado',
+        related_name='rl_mv_cancelado',
         null=True,
         on_delete=models.PROTECT,
         help_text='Usuário que finalizou o ticket',
