@@ -8,31 +8,31 @@ TIPO_CHOISES = [
 ]
 
 
-class Agrupamento(Base):
+class TcAgrupamento(Base):
     """
     Modelo de grupo e subgrupo dos tickets.
     """
 
-    codigo = models.CharField(
+    gr_codigo = models.CharField(
         verbose_name='Código',
         max_length=20,
         unique=True,
         help_text='Código do Agrupamento',
     )
 
-    nome = models.CharField(
+    gr_nome = models.CharField(
         verbose_name='Nome',
         max_length=50,
         help_text='Nome do Agrupamento',
     )
 
-    prioridade = models.PositiveSmallIntegerField(
+    gr_prioridade = models.PositiveSmallIntegerField(
         verbose_name='Prioridade',
         default=0,
         help_text='Prioridade do Agrupamento',
     )
 
-    tipo = models.CharField(
+    gr_tipo = models.CharField(
         verbose_name='Tipo',
         choices=TIPO_CHOISES,
         default='G',
@@ -42,12 +42,12 @@ class Agrupamento(Base):
 
     class Meta:
         ordering = ['-id']
-        db_table = 'agrupamento'
+        db_table = 'tc_agrupamento'
         verbose_name = 'Agrupamento'
         verbose_name_plural = 'Agrupamentos'
         indexes = [
-            models.Index(fields=['tipo'], name='idx_gr_tipo'),
-            models.Index(fields=['codigo'], name='idx_gr_codigo'),
+            models.Index(fields=['gr_tipo'], name='idx_gr_tipo'),
+            models.Index(fields=['gr_codigo'], name='idx_gr_codigo'),
         ]
 
     def __str__(self):
