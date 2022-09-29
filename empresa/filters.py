@@ -3,22 +3,22 @@ from .models import Empresa
 
 def lookup_types_empresa(prefixo=''):
     return {
-        f'{prefixo}cpf_cnpj': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}razao_social': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}nome_fantasia': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}logradouro': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}numero': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}complemento': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}bairro': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}municipio': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}uf': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}cep': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}pais': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}telefone': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
-        f'{prefixo}prestadora_servico': ['exact', ],
-        f'{prefixo}ativo': ['iexact', ],
-        f'{prefixo}data_cadastro': [
+        f'{prefixo}mp_cpf_cnpj': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_razao_social': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_nome_fantasia': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_logradouro': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_numero': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_complemento': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_bairro': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_municipio': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_uf': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_cep': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_pais': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_telefone': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mp_media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
+        f'{prefixo}mp_prestadora_servico': ['exact', ],
+        f'{prefixo}mp_ativo': ['iexact', ],
+        f'{prefixo}mp_data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -30,7 +30,7 @@ def lookup_types_empresa(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}hora_cadastro': [
+        f'{prefixo}mp_hora_cadastro': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
