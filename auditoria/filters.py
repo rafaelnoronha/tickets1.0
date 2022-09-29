@@ -5,7 +5,7 @@ from empresa.filters import lookup_types_empresa
 
 def lookup_types_auditoria(prefixo=''):
     return {
-        f'{prefixo}data_operacao': [
+        f'{prefixo}dt_data_operacao': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -17,7 +17,7 @@ def lookup_types_auditoria(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}hora_operacao': [
+        f'{prefixo}dt_hora_operacao': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
@@ -29,20 +29,20 @@ def lookup_types_auditoria(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}tabela_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}tipo_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}usuario_operacao': ['exact', ],
-        f'{prefixo}estado_anterior': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}estado_atual': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}dt_tabela_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}dt_tipo_operacao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}dt_usuario_operacao': ['exact', ],
+        f'{prefixo}dt_estado_anterior': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}dt_estado_atual': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     }
 
 
 class AuditoriaFilter(filter.FilterSet):
     class Meta:
         fields_auditoria = lookup_types_auditoria()
-        fields_auditoria.update(lookup_types_usuario('usuario_operacao__'))
-        fields_auditoria.update(lookup_types_empresa('usuario_operacao__empresa__'))
-        fields_auditoria.update(lookup_types_classificacao('usuario_operacao__classificacao__'))
+        fields_auditoria.update(lookup_types_usuario('dt_usuario_operacao__'))
+        fields_auditoria.update(lookup_types_empresa('dt_usuario_operacao__empresa__'))
+        fields_auditoria.update(lookup_types_classificacao('dt_usuario_operacao__classificacao__'))
 
         model = Auditoria
         fields = fields_auditoria

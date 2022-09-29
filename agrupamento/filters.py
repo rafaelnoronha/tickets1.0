@@ -3,9 +3,9 @@ from .models import Agrupamento
 
 def lookup_types_agrupamento(prefixo=''):
     return {
-        f'{prefixo}codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}prioridade': [
+        f'{prefixo}gr_codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}gr_nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}gr_prioridade': [
             'exact',
             'iexact',
             'icontains',
@@ -18,8 +18,8 @@ def lookup_types_agrupamento(prefixo=''):
             'gt',
             'lt',
         ],
-        f'{prefixo}tipo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}data_cadastro': [
+        f'{prefixo}gr_tipo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}gr_data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -31,7 +31,7 @@ def lookup_types_agrupamento(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}hora_cadastro': [
+        f'{prefixo}gr_hora_cadastro': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',

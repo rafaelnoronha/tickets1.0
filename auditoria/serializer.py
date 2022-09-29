@@ -10,23 +10,23 @@ class AuditoriaSerializer(serializers.ModelSerializer):
         model = Auditoria
         read_only_fields = [
             'id',
-            'data_operacao',
-            'hora_operacao',
-            'tabela_operacao',
-            'tipo_operacao',
-            'usuario_operacao',
-            'estado_anterior',
-            'estado_atual',
+            'dt_data_operacao',
+            'dt_hora_operacao',
+            'dt_tabela_operacao',
+            'dt_tipo_operacao',
+            'dt_usuario_operacao',
+            'dt_estado_anterior',
+            'dt_estado_atual',
         ]
         fields = [
             'id',
-            'data_operacao',
-            'hora_operacao',
-            'tabela_operacao',
-            'tipo_operacao',
-            'usuario_operacao',
-            'estado_anterior',
-            'estado_atual',
+            'dt_data_operacao',
+            'dt_hora_operacao',
+            'dt_tabela_operacao',
+            'dt_tipo_operacao',
+            'dt_usuario_operacao',
+            'dt_estado_anterior',
+            'dt_estado_atual',
         ]
 
 

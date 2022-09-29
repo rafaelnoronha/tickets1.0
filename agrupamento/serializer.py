@@ -15,14 +15,14 @@ class AgrupamentoSerializer(serializers.ModelSerializer):
             'id',
         ]
         extra_kwargs = {
-            'codigo': {'allow_blank': True, },
+            'gr_codigo': {'allow_blank': True, },
         }
         fields = [
             'id',
-            'codigo',
-            'nome',
-            'prioridade',
-            'tipo',
+            'gr_codigo',
+            'gr_nome',
+            'gr_prioridade',
+            'gr_tipo',
             'ativo',
             'data_cadastro',
             'hora_cadastro',

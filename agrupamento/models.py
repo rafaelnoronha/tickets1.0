@@ -8,7 +8,7 @@ TIPO_CHOISES = [
 ]
 
 
-class TcAgrupamento(Base):
+class Agrupamento(Base):
     """
     Modelo de grupo e subgrupo dos tickets.
     """
