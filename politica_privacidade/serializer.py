@@ -21,11 +21,11 @@ class ConsentimentoPliticaPrivacidadeSerializerAuditoria(serializers.ModelSerial
 
 
 class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
-    def validate_data_validade(self, data_validade):
-        if data_validade < date.today():
+    def validate_data_validade(self, pl_data_validade):
+        if pl_data_validade < date.today():
             raise serializers.ValidationError('A data de validade não pode ser maior que a data atual')
 
-        return data_validade
+        return pl_data_validade
 
     class Meta:
         model = PoliticaPrivacidade
@@ -36,11 +36,11 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'id',
-            'codigo',
-            'titulo',
-            'descricao',
-            'tipo_titular',
-            'data_validade',
+            'pl_codigo',
+            'pl_titulo',
+            'pl_descricao',
+            'pl_tipo_titular',
+            'pl_data_validade',
             'ativo',
             'data_cadastro',
             'hora_cadastro',
@@ -51,14 +51,14 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
     titular = serializers.SlugRelatedField(read_only=True, slug_field='username')
     politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='titulo')
 
-    def validate_politica_privacidade(self, politica_privacidade):
-        if politica_privacidade.data_validade < date.today():
+    def validate_politica_privacidade(self, cn_politica_privacidade):
+        if cn_politica_privacidade.data_validade < date.today():
             raise serializers.ValidationError('Não é possível consentir com uma política de privacidade vencida')
 
-        if not politica_privacidade.ativo:
+        if not cn_politica_privacidade.ativo:
             raise serializers.ValidationError("Não é possível consentir com uma política de privacidade inativa")
 
-        return politica_privacidade
+        return cn_politica_privacidade
 
     def validate_titular(self, titular):
         if not titular.is_active:
@@ -76,9 +76,9 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
         ]
         fields = [
             'id',
-            'titular',
-            'politica_privacidade',
-            'consentimento',
+            'cn_titular',
+            'cn_politica_privacidade',
+            'cn_consentimento',
             'data_cadastro',
             'hora_cadastro',
         ]
