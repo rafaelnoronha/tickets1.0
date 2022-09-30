@@ -16,12 +16,6 @@ class UsuarioSerializerAuditoria(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ClassificacaoSerializerAuditoria(serializers.ModelSerializer):
-    class Meta:
-        model = Classificacao
-        fields = '__all__'
-
-
 class PermissaoUsuarioSerializerAuditoria(serializers.ModelSerializer):
     class Meta:
         model = Permission
@@ -132,23 +126,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         ]
 
 
-class ClassificacaoSerializer(serializers.ModelSerializer):
-    class Meta(UsuarioSerializer.Meta):
-        model = Classificacao
-        read_only_fields = [
-            'id',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
-        fields = [
-            'id',
-            'codigo',
-            'nome',
-            'descricao',
-            'ativo',
-        ]
-
-
 class UsuarioSerializerCreate(UsuarioSerializer):
     empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='id')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
@@ -202,26 +179,6 @@ class UsuarioSerializerSimples(UsuarioSerializer):
             'is_superuser',
             'groups',
         ]
-
-
-class LogAutenticacaoSerializer(serializers.ModelSerializer):
-    usuario = serializers.SlugRelatedField(read_only=True, slug_field='username')
-
-    class Meta:
-        model = LogAutenticacao
-        read_only_fields = ['id']
-        fields = [
-            'id',
-            'ip',
-            'autenticado',
-            'data_autenticacao',
-            'hora_autenticacao',
-            'usuario',
-        ]
-
-
-class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
-    usuario = UsuarioSerializerSimples(read_only=True)
 
 
 class PermissaoUsuarioSerializer(serializers.ModelSerializer):

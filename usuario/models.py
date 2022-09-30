@@ -44,7 +44,7 @@ class Usuario(AbstractUser):
     dos usuários que vão soluciuonar os tickets, eles não vão ter nenhuma empresa vinculada a eles.
     """
 
-    telefone = models.CharField(
+    sr_telefone = models.CharField(
         verbose_name='Telefone',
         max_length=10,
         help_text='Telefone fixo ex: 3100000000',
@@ -53,7 +53,7 @@ class Usuario(AbstractUser):
         ]
     )
 
-    celular = models.CharField(
+    sr_celular = models.CharField(
         verbose_name='Celular',
         max_length=11,
         blank=True,
@@ -63,7 +63,7 @@ class Usuario(AbstractUser):
         ]
     )
 
-    classificacao = models.ForeignKey(
+    sr_classificacao = models.ForeignKey(
         'Classificacao',
         verbose_name='Classificação',
         related_name='rl_sr_classificacao',
@@ -72,7 +72,7 @@ class Usuario(AbstractUser):
         help_text='A qual classificação de usuário o ticket é designado'
     )
 
-    media_avaliacoes = models.DecimalField(
+    sr_media_avaliacoes = models.DecimalField(
         verbose_name='Média das avaliações',
         max_digits=2,
         decimal_places=1,
@@ -80,7 +80,7 @@ class Usuario(AbstractUser):
         help_text='Média das avaliações dos chamados avaliados',
     )
 
-    empresa = models.ForeignKey(
+    sr_empresa = models.ForeignKey(
         Empresa,
         verbose_name='Empresa',
         related_name='rl_sr_empresa',
@@ -89,25 +89,25 @@ class Usuario(AbstractUser):
         help_text='Empresa a qual o usuário pertence',
     )
 
-    observacoes = models.TextField(
+    sr_observacoes = models.TextField(
         verbose_name='Observações',
         blank=True,
         help_text='Observações referênte ao usuário',
     )
 
-    numero_tentativas_login = models.PositiveSmallIntegerField(
+    sr_numero_tentativas_login = models.PositiveSmallIntegerField(
         verbose_name='Número de tentativas falhas de login',
         default=0,
         help_text='Número de tentativas falhas ao fazer login',
     )
 
-    verificacao_duas_etapas = models.BooleanField(
+    sr_verificacao_duas_etapas = models.BooleanField(
         verbose_name='Verificação em duas etapas',
         default=False,
         help_text='Se deve exigir ou não a verificação da segunda etapa no login',
     )
 
-    codigo_verificacao_segunda_etapa = models.CharField(
+    sr_codigo_verificacao_segunda_etapa = models.CharField(
         verbose_name='Código de verificação da segunda etapa',
         max_length=4,
         help_text='O código que valida a verificação da segunda etapa, como a senha ao fazer o login',
@@ -117,7 +117,7 @@ class Usuario(AbstractUser):
         ]
     )
 
-    is_manager = models.BooleanField(
+    sr_is_manager = models.BooleanField(
         verbose_name='Is Manager',
         default=False,
         help_text='Este campo informa se o usuáio é gerente ou não',
@@ -139,101 +139,13 @@ class Usuario(AbstractUser):
 
     class Meta:
         ordering = ['-id']
-        db_table = 'usuario'
+        db_table = 'tc_usuario'
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
         indexes = [
-            models.Index(fields=['classificacao'], name='idx_sr_classificacao'),
-            models.Index(fields=['empresa'], name='idx_sr_empresa'),
-            models.Index(fields=['media_avaliacoes'], name='idx_sr_media_avaliacoes'),
-        ]
-
-    def __str__(self):
-        return str(self.id)
-
-
-class LogAutenticacao(models.Model):
-    """
-    Modelo que vai guardar as tentativas de login, tanto as que tiveram sucesso quanto as que falharem.
-    """
-
-    ip = models.GenericIPAddressField(
-        verbose_name='IP',
-        help_text='Endereço IP do cliente/dispositivo',
-    )
-
-    usuario = models.ForeignKey(
-        Usuario,
-        verbose_name='Usuário',
-        related_name='rl_lg_usuario',
-        on_delete=models.PROTECT,
-        help_text='Usuário da tentativa de autenticação',
-    )
-
-    autenticado = models.BooleanField(
-        verbose_name='Autenticado',
-        default=False,
-        help_text='Se a tentativa de autenticação foi bem-sucedida ou não',
-    )
-
-    data_autenticacao = models.DateField(
-        verbose_name='Data da autenticação',
-        auto_now_add=True,
-        help_text='Data da tentativa de autenticação',
-    )
-
-    hora_autenticacao = models.TimeField(
-        verbose_name='Hora da autenticação',
-        auto_now_add=True,
-        help_text='Hora da tentativa de autenticação',
-    )
-
-    class Meta:
-        ordering = ['-id']
-        db_table = 'log_autenticacao'
-        verbose_name = 'Log de autenticação'
-        verbose_name_plural = 'Logs de autenticação'
-        indexes = [
-            models.Index(fields=['ip'], name='idx_lg_ip'),
-            models.Index(fields=['usuario'], name='idx_lg_usuario'),
-        ]
-
-    def __str__(self):
-        return str(self.id)
-
-
-class Classificacao(Base):
-    """
-    Modelo da classificação dos usuários.
-    """
-
-    codigo = models.CharField(
-        verbose_name='Código',
-        max_length=20,
-        unique=True,
-        help_text='Código da Classificação',
-    )
-
-    nome = models.CharField(
-        verbose_name='Nome',
-        max_length=50,
-        help_text='Nome da classificação',
-    )
-
-    descricao = models.TextField(
-        verbose_name='descricao',
-        help_text='Descrição da classificação',
-        blank=True,
-        default='',
-    )
-
-    class Meta:
-        ordering = ['-id']
-        db_table = 'classificacao'
-        verbose_name = 'Classificacao'
-        verbose_name_plural = 'Classificacoes'
-        indexes = [
-            models.Index(fields=['codigo'], name='idx_cl_codigo'),
+            models.Index(fields=['sr_classificacao'], name='idx_sr_classificacao'),
+            models.Index(fields=['sr_empresa'], name='idx_sr_empresa'),
+            models.Index(fields=['sr_media_avaliacoes'], name='idx_sr_media_avaliacoes'),
         ]
 
     def __str__(self):

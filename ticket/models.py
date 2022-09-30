@@ -27,7 +27,7 @@ class Ticket(Base):
     Modelo dos tickets, em específico do cabeçalho dos tickets, sem as mensagens/acompanhamentos.
     """
 
-    status = models.CharField(
+    tc_status = models.CharField(
         verbose_name='Status',
         choices=STATUS_CHOISES,
         max_length=1,
@@ -35,13 +35,13 @@ class Ticket(Base):
         help_text='Status do ticket',
     )
 
-    prioridade = models.PositiveSmallIntegerField(
+    tc_prioridade = models.PositiveSmallIntegerField(
         verbose_name='Prioridade',
         default=0,
         help_text='Prioridade de atendimento do ticket',
     )
 
-    solicitante = models.ForeignKey(
+    tc_solicitante = models.ForeignKey(
         Usuario,
         verbose_name='Solicitante',
         related_name='rl_tc_solicitante',
@@ -49,7 +49,7 @@ class Ticket(Base):
         help_text='Solicitante/Cliente responsável pelo ticket'
     )
 
-    classificacao_atendente = models.ForeignKey(
+    tc_classificacao_atendente = models.ForeignKey(
         Classificacao,
         verbose_name='Classificação do Atendente',
         related_name='rl_tc_classificacao_atendente',
@@ -58,7 +58,7 @@ class Ticket(Base):
         help_text='A qual classificação de usuário o ticket é designado'
     )
 
-    atendente = models.ForeignKey(
+    tc_atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
         related_name='rl_tc_atendente',
@@ -67,18 +67,18 @@ class Ticket(Base):
         help_text='Atendente/Técnico responsável pelo ticket'
     )
 
-    titulo = models.CharField(
+    tc_titulo = models.CharField(
         verbose_name='Título',
         max_length=100,
         help_text='Título do ticket',
     )
 
-    descricao = models.TextField(
+    tc_descricao = models.TextField(
         verbose_name='Descrição',
         help_text='Descrição do ticket',
     )
 
-    grupo = models.ForeignKey(
+    tc_grupo = models.ForeignKey(
         Agrupamento,
         verbose_name='Grupo',
         related_name='rl_tc_grupo',
@@ -87,7 +87,7 @@ class Ticket(Base):
         help_text='Grupo de classificação do ticket',
     )
 
-    subgrupo = models.ForeignKey(
+    tc_subgrupo = models.ForeignKey(
         Agrupamento,
         verbose_name='Subgrupo',
         related_name='rl_tc_subgrupo',
@@ -96,14 +96,14 @@ class Ticket(Base):
         help_text='Subgrupo de classificação do ticket',
     )
 
-    avaliacao_solicitante = models.SmallIntegerField(
+    tc_avaliacao_solicitante = models.SmallIntegerField(
         verbose_name='Avaliação do Solicitante',
         choices=AVALIACAO_CHOISES,
         default=0,
         help_text='Avaliação do solicitante referente ao chamado',
     )
 
-    observacao_avaliacao_solicitante = models.TextField(
+    tc_observacao_avaliacao_solicitante = models.TextField(
         verbose_name='Observação Avaliação do Solicitante',
         help_text='Observações referente à avaliação do solicitante',
         blank=True,
@@ -111,18 +111,18 @@ class Ticket(Base):
 
     class Meta:
         ordering = ['-id']
-        db_table = 'ticket'
+        db_table = 'tc_ticket'
         verbose_name = 'Ticket'
         verbose_name_plural = 'Tickets'
         indexes = [
-            models.Index(fields=['status'], name='idx_tc_status'),
-            models.Index(fields=['prioridade'], name='idx_tc_prioridade'),
-            models.Index(fields=['solicitante'], name='idx_tc_solicitante'),
-            models.Index(fields=['atendente'], name='idx_tc_atendente'),
-            models.Index(fields=['classificacao_atendente'], name='idx_tc_classificacao_atendente'),
-            models.Index(fields=['avaliacao_solicitante'], name='idx_tc_avaliacao_solicitante'),
-            models.Index(fields=['grupo'], name='idx_tc_grupo'),
-            models.Index(fields=['subgrupo'], name='idx_tc_subgrupo'),
+            models.Index(fields=['tc_status'], name='idx_tc_status'),
+            models.Index(fields=['tc_prioridade'], name='idx_tc_prioridade'),
+            models.Index(fields=['tc_solicitante'], name='idx_tc_solicitante'),
+            models.Index(fields=['tc_atendente'], name='idx_tc_atendente'),
+            models.Index(fields=['tc_classificacao_atendente'], name='idx_tc_classificacao_atendente'),
+            models.Index(fields=['tc_avaliacao_solicitante'], name='idx_tc_avaliacao_solicitante'),
+            models.Index(fields=['tc_grupo'], name='idx_tc_grupo'),
+            models.Index(fields=['tc_subgrupo'], name='idx_tc_subgrupo'),
         ]
 
     def __str__(self):
@@ -134,7 +134,7 @@ class MensagemTicket(Base):
     Modelo das mensagens/acompanhemento dos tickets.
     """
 
-    usuario = models.ForeignKey(
+    mn_usuario = models.ForeignKey(
         Usuario,
         verbose_name='Usuário',
         related_name='rl_mn_usuario',
@@ -142,7 +142,7 @@ class MensagemTicket(Base):
         help_text='Usuário autor(remetente) da mensagem',
     )
 
-    ticket = models.ForeignKey(
+    mn_ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
         related_name='rl_mn_ticket',
@@ -150,12 +150,12 @@ class MensagemTicket(Base):
         help_text='Ticket que receberá a mensagem',
     )
 
-    mensagem = models.TextField(
+    mn_mensagem = models.TextField(
         verbose_name='Mensagem',
         help_text='Conteúdo da mensagem',
     )
 
-    mensagem_relacionada = models.ForeignKey(
+    mn_mensagem_relacionada = models.ForeignKey(
         'self',
         related_name='rl_mn_mensagem_relacionada',
         on_delete=models.CASCADE,
@@ -163,7 +163,7 @@ class MensagemTicket(Base):
         help_text='Mensagem a qual a mensagem atual estará vinculada como resposta',
     )
 
-    solucao = models.BooleanField(
+    mn_solucao = models.BooleanField(
         verbose_name='Solução',
         default=False,
         help_text='Informa se a mensagem é uma solução para o ticket aberto',
@@ -171,13 +171,13 @@ class MensagemTicket(Base):
 
     class Meta:
         ordering = ['-id']
-        db_table = 'mensagem_ticket'
+        db_table = 'tc_mensagem_ticket'
         verbose_name = 'Mensagem do Ticket'
         verbose_name_plural = 'Mensagens do Ticket'
         indexes = [
-            models.Index(fields=['ticket'], name='idx_mn_ticket'),
-            models.Index(fields=['usuario'], name='idx_mn_usuario'),
-            models.Index(fields=['mensagem_relacionada'], name='idx_mn_mensagem_relacionada'),
+            models.Index(fields=['mn_ticket'], name='idx_mn_ticket'),
+            models.Index(fields=['mn_usuario'], name='idx_mn_usuario'),
+            models.Index(fields=['mn_mensagem_relacionada'], name='idx_mn_mensagem_relacionada'),
         ]
 
     def __str__(self):
@@ -185,7 +185,7 @@ class MensagemTicket(Base):
 
 
 class MovimentoTicket(Base):
-    ticket = models.ForeignKey(
+    mv_ticket = models.ForeignKey(
         Ticket,
         verbose_name='Ticket',
         related_name='rl_mv_ticket',
@@ -193,31 +193,31 @@ class MovimentoTicket(Base):
         help_text='Ticket responsável pela movimentação'
     )
 
-    data_inicio = models.DateField(
+    mv_data_inicio = models.DateField(
         verbose_name='Data de Início',
         null=True,
         help_text='Data que o ticket foi atribuido pela primeira vez',
     )
 
-    hora_inicio = models.TimeField(
+    mv_hora_inicio = models.TimeField(
         verbose_name='Hora de Início',
         null=True,
         help_text='Hora em que o ticket foi atribuido pela primeira vez'
     )
 
-    data_fim = models.DateField(
+    mv_data_fim = models.DateField(
         verbose_name='Data de Finalizacao',
         null=True,
         help_text='Data que o ticket foi finalizado',
     )
 
-    hora_fim = models.TimeField(
+    mv_hora_fim = models.TimeField(
         verbose_name='Hora do Fim',
         null=True,
         help_text='Hora em que o ticket foi finalizado'
     )
 
-    atendente = models.ForeignKey(
+    mv_atendente = models.ForeignKey(
         Usuario,
         verbose_name='Atendente',
         related_name='rl_mv_atendente',
@@ -226,7 +226,7 @@ class MovimentoTicket(Base):
         help_text='Atendente/Técnico responsável pelo ticket'
     )
 
-    classificacao_atendente = models.ForeignKey(
+    mv_classificacao_atendente = models.ForeignKey(
         Classificacao,
         verbose_name='Classificação do Atendente',
         related_name='rl_mv_classificacao_atendente',
@@ -235,8 +235,7 @@ class MovimentoTicket(Base):
         help_text='A qual classificação de usuário o ticket é designado'
     )
 
-
-    solucao = models.ForeignKey(
+    mv_solucao = models.ForeignKey(
         'MensagemTicket',
         verbose_name='Solução',
         related_name='rl_mv_solucao',
@@ -245,7 +244,7 @@ class MovimentoTicket(Base):
         help_text='Solução do ticket',
     )
 
-    finalizado = models.ForeignKey(
+    mv_finalizado = models.ForeignKey(
         Usuario,
         verbose_name='Finalizado',
         related_name='rl_mv_finalizado',
@@ -254,7 +253,7 @@ class MovimentoTicket(Base):
         help_text='Usuário que finalizou o ticket',
     )
 
-    cancelado = models.ForeignKey(
+    mv_cancelado = models.ForeignKey(
         Usuario,
         verbose_name='Cancelado',
         related_name='rl_mv_cancelado',
@@ -263,7 +262,7 @@ class MovimentoTicket(Base):
         help_text='Usuário que finalizou o ticket',
     )
 
-    motivo_cancelamento = models.TextField(
+    mv_motivo_cancelamento = models.TextField(
         verbose_name='Motivo do Cancelamento',
         help_text='Motivo/Justificativa do cancelamento do ticket',
         blank=True,
@@ -272,16 +271,16 @@ class MovimentoTicket(Base):
 
     class Meta:
         ordering = ['-id']
-        db_table = 'movimento_ticket'
+        db_table = 'tc_movimento_ticket'
         verbose_name = 'Movimento do Ticket'
         verbose_name_plural = 'Movimentos do Ticket'
         indexes = [
-            models.Index(fields=['ticket'], name='idx_mv_ticket'),
-            models.Index(fields=['atendente'], name='idx_mv_atendente'),
-            models.Index(fields=['classificacao_atendente'], name='idx_mv_classificacao_atendente'),
-            models.Index(fields=['finalizado'], name='idx_mv_finalizado'),
-            models.Index(fields=['cancelado'], name='idx_mv_cancelado'),
-            models.Index(fields=['solucao'], name='idx_mv_solucao'),
+            models.Index(fields=['mv_ticket'], name='idx_mv_ticket'),
+            models.Index(fields=['mv_atendente'], name='idx_mv_atendente'),
+            models.Index(fields=['mv_classificacao_atendente'], name='idx_mv_classificacao_atendente'),
+            models.Index(fields=['mv_finalizado'], name='idx_mv_finalizado'),
+            models.Index(fields=['mv_cancelado'], name='idx_mv_cancelado'),
+            models.Index(fields=['mv_solucao'], name='idx_mv_solucao'),
         ]
 
     def __str__(self):

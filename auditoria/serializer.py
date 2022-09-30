@@ -32,3 +32,23 @@ class AuditoriaSerializer(serializers.ModelSerializer):
 
 class AuditoriaSerializerRetrieve(AuditoriaSerializer):
     usuario_operacao = UsuarioSerializerSimples(read_only=True)
+
+
+class LogAutenticacaoSerializer(serializers.ModelSerializer):
+    usuario = serializers.SlugRelatedField(read_only=True, slug_field='username')
+
+    class Meta:
+        model = LogAutenticacao
+        read_only_fields = ['id']
+        fields = [
+            'id',
+            'ip',
+            'autenticado',
+            'data_autenticacao',
+            'hora_autenticacao',
+            'usuario',
+        ]
+
+
+class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):
+    usuario = UsuarioSerializerSimples(read_only=True)

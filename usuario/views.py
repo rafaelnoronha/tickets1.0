@@ -36,33 +36,6 @@ class UsuarioViewSet(ModelViewSetComAuditoria):
         return self.serializer_classes.get(self.action, UsuarioSerializer)
 
 
-class ClassificacaoViewSet(ModelViewSetComAuditoria):
-    queryset = Classificacao.objects.all()
-    serializer_class = ClassificacaoSerializer
-    filterset_class = ClassificacaoFilter
-    permission_classes = (BasePemission, )
-    auditoria = {
-        'modelo': Classificacao,
-        'nome_tabela': 'classificacao',
-        'serializer': ClassificacaoSerializerAuditoria,
-    }
-
-
-class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
-                             viewsets.GenericViewSet):
-    queryset = LogAutenticacao.objects.all() \
-        .prefetch_related('usuario')
-    filterset_class = LogAutenticacaoFilter
-    permission_classes = (BasePemission, )
-
-    serializer_classes = {
-        'retrieve': LogAutenticacaoSerializerRetrieve,
-    }
-
-    def get_serializer_class(self):
-        return self.serializer_classes.get(self.action, LogAutenticacaoSerializer)
-
-
 class GrupoPermissoesUsuarioViewSet(ModelViewSetComAuditoria):
     queryset = Group.objects.all()
     serializer_class = GrupoPermissoesUsuarioSerializer

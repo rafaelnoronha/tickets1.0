@@ -3,7 +3,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from django.db import connection
-from core.views import ModelViewSetComAuditoria, CreateModelMixinAuditoria
 from .models import Ticket, MensagemTicket, MovimentoTicket
 from .filters import TicketFilter, MensagemTicketFilter, MovimentoTicketFilter
 from core.permissions import BasePemission
@@ -15,7 +14,7 @@ from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerial
                         # TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerSolucionar, \
 
 
-class TicketViewSet(ModelViewSetComAuditoria):
+class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all() \
         .prefetch_related('solicitante') \
         .prefetch_related('classificacao_atendente') \
@@ -27,11 +26,6 @@ class TicketViewSet(ModelViewSetComAuditoria):
         .prefetch_related('cancelado')
     filterset_class = TicketFilter
     permission_classes = (BasePemission, )
-    auditoria = {
-        'modelo': Ticket,
-        'nome_tabela': 'ticket',
-        'serializer': TicketSerializerAuditoria,
-    }
 
     serializer_classes = {
         'retrieve': TicketSerializerRetrieve,
@@ -152,7 +146,7 @@ class TicketViewSet(ModelViewSetComAuditoria):
     #     return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
 
-class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin, mixins.ListModelMixin,
+class MensagemTicketViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin,
                             viewsets.GenericViewSet):
     queryset = MensagemTicket.objects.all() \
         .prefetch_related('usuario') \
@@ -160,11 +154,6 @@ class MensagemTicketViewSet(CreateModelMixinAuditoria, mixins.RetrieveModelMixin
         .prefetch_related('mensagem_relacionada')
     filterset_class = MensagemTicketFilter
     permission_classes = (BasePemission, )
-    auditoria = {
-        'modelo': MensagemTicket,
-        'nome_tabela': 'mensagem_ticket_serializer',
-        'serializer': MensagemTicketSerializerAuditoria,
-    }
 
     serializer_classes = {
         'create': MensagemTicketSerializerCreate,

@@ -5,11 +5,11 @@ from empresa.filters import lookup_types_empresa
 
 def lookup_types_politica_privacidade(prefixo=''):
     return {
-        f'{prefixo}codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}tipo_titular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}data_validade': [
+        f'{prefixo}pl_codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}pl_titulo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}pl_descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}pl_tipo_titular': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}pl_data_validade': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -21,8 +21,8 @@ def lookup_types_politica_privacidade(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}ativo': ['exact', ],
-        f'{prefixo}data_cadastro': [
+        f'{prefixo}pl_ativo': ['exact', ],
+        f'{prefixo}pl_data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -34,7 +34,7 @@ def lookup_types_politica_privacidade(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}hora_cadastro': [
+        f'{prefixo}pl_hora_cadastro': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
@@ -50,10 +50,10 @@ def lookup_types_politica_privacidade(prefixo=''):
 
 def lookup_types_consentimento_politica_privacidade(prefixo=''):
     return {
-        f'{prefixo}titular': ['exact', ],
-        f'{prefixo}politica_privacidade': ['exact', ],
-        f'{prefixo}consentimento': ['exact', ],
-        f'{prefixo}data_cadastro': [
+        f'{prefixo}cn_titular': ['exact', ],
+        f'{prefixo}cn_politica_privacidade': ['exact', ],
+        f'{prefixo}cn_consentimento': ['exact', ],
+        f'{prefixo}cn_data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -65,7 +65,7 @@ def lookup_types_consentimento_politica_privacidade(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}hora_cadastro': [
+        f'{prefixo}cn_hora_cadastro': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
@@ -89,10 +89,10 @@ class PoliticaPrivacidadeFilter(filter.FilterSet):
 class ConsentimentoPoliticaPrivacidadeFilter(filter.FilterSet):
     class Meta:
         fields_consentimento_politica_privacidade = lookup_types_consentimento_politica_privacidade()
-        fields_consentimento_politica_privacidade.update(lookup_types_usuario('titular__'))
-        fields_consentimento_politica_privacidade.update(lookup_types_empresa('titular__empresa__'))
-        fields_consentimento_politica_privacidade.update(lookup_types_classificacao('titular__classificacao__'))
-        fields_consentimento_politica_privacidade.update(lookup_types_politica_privacidade('politica_privacidade__'))
+        fields_consentimento_politica_privacidade.update(lookup_types_usuario('cn_titular__'))
+        fields_consentimento_politica_privacidade.update(lookup_types_empresa('cn_titular__empresa__'))
+        fields_consentimento_politica_privacidade.update(lookup_types_classificacao('cn_titular__classificacao__'))
+        fields_consentimento_politica_privacidade.update(lookup_types_politica_privacidade('cn_politica_privacidade__'))
 
         model = ConsentimentoPoliticaPrivacidade
         fields = fields_consentimento_politica_privacidade

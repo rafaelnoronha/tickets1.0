@@ -1,11 +1,11 @@
-from core.views import ModelViewSetComAuditoria
+from rest_framework import viewsets
 from .models import Empresa
 from .serializer import EmpresaSerializer, EmpresaSerializerAuditoria, EmpresaSerializerUpdatePartialUpdate
 from .filters import EmpresaFilter
 from core.permissions import BasePemission
 
 
-class EmpresaViewSet(ModelViewSetComAuditoria):
+class EmpresaViewSet(viewsets.ModelViewSet):
     queryset = Empresa.objects.all()
     filterset_class = EmpresaFilter
     permission_classes = (BasePemission, )

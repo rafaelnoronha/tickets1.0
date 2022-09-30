@@ -17,3 +17,19 @@ class AuditoriaViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewset
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, AuditoriaSerializer)
+
+
+class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
+                             viewsets.GenericViewSet):
+    queryset = LogAutenticacao.objects.all() \
+        .prefetch_related('usuario')
+    filterset_class = LogAutenticacaoFilter
+    permission_classes = (BasePemission, )
+
+    serializer_classes = {
+        'retrieve': LogAutenticacaoSerializerRetrieve,
+    }
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, LogAutenticacaoSerializer)
+

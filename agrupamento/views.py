@@ -1,17 +1,19 @@
-from core.views import ModelViewSetComAuditoria
+from rest_framework import viewsets
 from .models import Agrupamento
 from .serializer import AgrupamentoSerializer, AgrupamentoSerializerAuditoria
 from .filters import AgrupamentoFilter
 from core.permissions import BasePemission
 
 
-class AgrupamentoViewSet(ModelViewSetComAuditoria):
+class AgrupamentoViewSet(viewsets.ModelViewSet):
     queryset = Agrupamento.objects.all()
     filterset_class = AgrupamentoFilter
     serializer_class = AgrupamentoSerializer
     permission_classes = (BasePemission, )
-    auditoria = {
-        'modelo': Agrupamento,
-        'nome_tabela': 'agrupamento',
-        'serializer': AgrupamentoSerializerAuditoria,
-    }
+
+
+class ClassificacaoViewSet(viewsets.ModelViewSet):
+    queryset = Classificacao.objects.all()
+    serializer_class = ClassificacaoSerializer
+    filterset_class = ClassificacaoFilter
+    permission_classes = (BasePemission, )

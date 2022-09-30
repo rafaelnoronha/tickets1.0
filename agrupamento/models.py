@@ -52,3 +52,41 @@ class Agrupamento(Base):
 
     def __str__(self):
         return str(self.id)
+
+
+class Classificacao(Base):
+    """
+    Modelo da classificação dos usuários.
+    """
+
+    cl_codigo = models.CharField(
+        verbose_name='Código',
+        max_length=20,
+        unique=True,
+        help_text='Código da Classificação',
+    )
+
+    cl_nome = models.CharField(
+        verbose_name='Nome',
+        max_length=50,
+        help_text='Nome da classificação',
+    )
+
+    cl_descricao = models.TextField(
+        verbose_name='descricao',
+        help_text='Descrição da classificação',
+        blank=True,
+        default='',
+    )
+
+    class Meta:
+        ordering = ['-id']
+        db_table = 'tc_classificacao'
+        verbose_name = 'Classificacao'
+        verbose_name_plural = 'Classificacoes'
+        indexes = [
+            models.Index(fields=['cl_codigo'], name='idx_cl_codigo'),
+        ]
+
+    def __str__(self):
+        return str(self.id)

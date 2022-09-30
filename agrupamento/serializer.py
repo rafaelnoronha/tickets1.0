@@ -8,6 +8,12 @@ class AgrupamentoSerializerAuditoria(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ClassificacaoSerializerAuditoria(serializers.ModelSerializer):
+    class Meta:
+        model = Classificacao
+        fields = '__all__'
+
+
 class AgrupamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agrupamento
@@ -26,4 +32,21 @@ class AgrupamentoSerializer(serializers.ModelSerializer):
             'ativo',
             'data_cadastro',
             'hora_cadastro',
+        ]
+
+
+class ClassificacaoSerializer(serializers.ModelSerializer):
+    class Meta(UsuarioSerializer.Meta):
+        model = Classificacao
+        read_only_fields = [
+            'id',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+        fields = [
+            'id',
+            'codigo',
+            'nome',
+            'descricao',
+            'ativo',
         ]

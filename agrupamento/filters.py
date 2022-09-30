@@ -45,8 +45,21 @@ def lookup_types_agrupamento(prefixo=''):
         ],
     }
 
+def lookup_types_classificacao(prefixo=''):
+    return {
+        f'{prefixo}codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+    }
+
 
 class AgrupamentoFilter(filter.FilterSet):
     class Meta:
         model = Agrupamento
         fields = lookup_types_agrupamento()
+
+
+class ClassificacaoFilter(filter.FilterSet):
+    class Meta:
+        model = Classificacao
+        fields = lookup_types_classificacao()
