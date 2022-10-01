@@ -16,13 +16,13 @@ Including another URLconf
 
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from usuario.urls import router_usuario, router_classificacao, router_log_autenticacao, \
+from usuario.urls import router_usuario, \
     router_grupo_permissoes_usuario,router_permissao_usuario
 from empresa.urls import router_empresa
 from politica_privacidade.urls import router_politica_privacidade, router_consentimento_politica_privacidade
 from ticket.urls import router_ticket, router_mensagem_ticket, router_movimento_ticket
-from auditoria.urls import router_auditoria
-from agrupamento.urls import router_agrupamento
+from auditoria.urls import router_auditoria, router_log_autenticacao
+from agrupamento.urls import router_agrupamento, router_classificacao
 
 base_url_v1 = 'api/v1/'
 

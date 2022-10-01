@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import Base
-from usuario.models import Usuario, Classificacao
-from agrupamento.models import Agrupamento
+from usuario.models import Usuario
+from agrupamento.models import Agrupamento, Classificacao
 
 
 STATUS_CHOISES = [

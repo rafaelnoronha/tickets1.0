@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from .models import Agrupamento
-from .serializer import AgrupamentoSerializer, AgrupamentoSerializerAuditoria
-from .filters import AgrupamentoFilter
+from .models import Agrupamento, Classificacao
+from .serializer import AgrupamentoSerializer, ClassificacaoSerializer
+from .filters import AgrupamentoFilter, ClassificacaoFilter
 from core.permissions import BasePemission
 
 

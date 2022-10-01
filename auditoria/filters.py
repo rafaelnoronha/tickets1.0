@@ -1,6 +1,7 @@
 from django_filters import rest_framework as filter
-from .models import Auditoria
-from usuario.filters import lookup_types_classificacao, lookup_types_usuario
+from .models import Auditoria, LogAutenticacao
+from usuario.filters import lookup_types_usuario
+from agrupamento.filters import lookup_types_classificacao
 from empresa.filters import lookup_types_empresa
 
 def lookup_types_auditoria(prefixo=''):

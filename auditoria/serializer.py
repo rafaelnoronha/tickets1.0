@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Auditoria
+from .models import Auditoria, LogAutenticacao
 from usuario.serializer import UsuarioSerializerSimples
 
 
@@ -8,16 +8,6 @@ class AuditoriaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Auditoria
-        read_only_fields = [
-            'id',
-            'dt_data_operacao',
-            'dt_hora_operacao',
-            'dt_tabela_operacao',
-            'dt_tipo_operacao',
-            'dt_usuario_operacao',
-            'dt_estado_anterior',
-            'dt_estado_atual',
-        ]
         fields = [
             'id',
             'dt_data_operacao',
@@ -28,6 +18,7 @@ class AuditoriaSerializer(serializers.ModelSerializer):
             'dt_estado_anterior',
             'dt_estado_atual',
         ]
+        read_only_fields = fields.copy()
 
 
 class AuditoriaSerializerRetrieve(AuditoriaSerializer):
@@ -39,7 +30,6 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LogAutenticacao
-        read_only_fields = ['id']
         fields = [
             'id',
             'ip',
@@ -48,6 +38,7 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
             'hora_autenticacao',
             'usuario',
         ]
+        read_only_fields = ['id']
 
 
 class LogAutenticacaoSerializerRetrieve(LogAutenticacaoSerializer):

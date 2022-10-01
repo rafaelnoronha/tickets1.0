@@ -8,7 +8,7 @@ from .filters import TicketFilter, MensagemTicketFilter, MovimentoTicketFilter
 from core.permissions import BasePemission
 from .serializer import TicketSerializer, TicketSerializerRetrieve, TicketSerializerCreate, \
                         TicketSerializerUpdatePartialUpdate, MensagemTicketSerializer, MensagemTicketSerializerCreate, \
-                        MensagemTicketSerializerRetrieve, TicketSerializerAuditoria, MensagemTicketSerializerAuditoria, \
+                        MensagemTicketSerializerRetrieve, \
                         TicketSerializerAvaliar, TicketSerializerAtribuirAtendente, TicketSerializerReclassificar, \
                         MovimentoTicketSerializer, MovimentoTicketSerializerRetrieve
                         # TicketSerializerFinalizar, TicketSerializerCancelar, TicketSerializerSolucionar, \

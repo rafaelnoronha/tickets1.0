@@ -4,7 +4,7 @@ from .filters import PoliticaPrivacidadeFilter, ConsentimentoPoliticaPrivacidade
 from core.permissions import BasePemission
 from .serializer import (
     PoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializer, ConsentimentoPoliticaPrivacidadeSerializerRetrieve,
-    ConsentimentoPoliticaPrivacidadeSerializerCreate, PoliticaPrivacidadeSerializerAuditoria, ConsentimentoPliticaPrivacidadeSerializerAuditoria
+    ConsentimentoPoliticaPrivacidadeSerializerCreate
 )
 
 

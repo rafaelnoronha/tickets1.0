@@ -5,21 +5,6 @@ from usuario.serializer import UsuarioSerializerSimples
 from datetime import date
 
 
-class PoliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
-    class Meta:
-        model = PoliticaPrivacidade
-        fields = '__all__'
-
-
-class ConsentimentoPliticaPrivacidadeSerializerAuditoria(serializers.ModelSerializer):
-    titular = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='id')
-
-    class Meta:
-        model = ConsentimentoPoliticaPrivacidade
-        fields = '__all__'
-
-
 class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
     def validate_data_validade(self, pl_data_validade):
         if pl_data_validade < date.today():
@@ -29,11 +14,6 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PoliticaPrivacidade
-        read_only_fields = [
-            'id',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
         fields = [
             'id',
             'pl_codigo',
@@ -42,6 +22,11 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
             'pl_tipo_titular',
             'pl_data_validade',
             'ativo',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+        read_only_fields = [
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]
@@ -69,16 +54,16 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConsentimentoPoliticaPrivacidade
-        read_only_fields = [
-            'id',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
         fields = [
             'id',
             'cn_titular',
             'cn_politica_privacidade',
             'cn_consentimento',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+        read_only_fields = [
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]

@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filter
-from .models import Agrupamento
+from .models import Agrupamento, Classificacao
 
 def lookup_types_agrupamento(prefixo=''):
     return {

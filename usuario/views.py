@@ -1,16 +1,16 @@
 from rest_framework import viewsets, mixins
-from .models import Usuario, Classificacao, LogAutenticacao
+from .models import Usuario
 from core.views import ModelViewSetComAuditoria
-from .filters import UsuarioFilter, ClassificacaoFilter, LogAutenticacaoFilter
+from .filters import UsuarioFilter
 from core.permissions import BasePemission
 from django.contrib.auth.models import Group, Permission
 from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSerializerRetrieve, \
-                        UsuarioSerializerUpdatePartialUpdate, LogAutenticacaoSerializer, \
-                        LogAutenticacaoSerializerRetrieve, GrupoPermissoesUsuarioSerializer, \
+                        UsuarioSerializerUpdatePartialUpdate, \
+                        GrupoPermissoesUsuarioSerializer, \
                         PermissaoUsuarioSerializer, GrupoPermissoesUsuarioSerializerCreateUpdatePartialUpadate, \
                         UsuarioSerializerAuditoria, GrupoPermissoesUsuarioSerializerAuditoria, \
-                        PermissaoUsuarioSerializerAuditoria, ClassificacaoSerializerAuditoria, \
-                        ClassificacaoSerializer, GrupoPermissoesUsuarioSerializerRetrieve
+                        PermissaoUsuarioSerializerAuditoria, \
+                        GrupoPermissoesUsuarioSerializerRetrieve
 
 
 class UsuarioViewSet(ModelViewSetComAuditoria):

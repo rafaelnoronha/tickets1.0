@@ -1,6 +1,7 @@
 from django_filters import rest_framework as filter
-from .models import Usuario, Classificacao, LogAutenticacao
+from .models import Usuario
 from empresa.filters import lookup_types_empresa
+from agrupamento.filters import lookup_types_classificacao
 
 def lookup_types_usuario(prefixo=''):
     return {

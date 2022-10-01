@@ -1,28 +1,10 @@
 from rest_framework import serializers
-from .models import Agrupamento
-
-
-class AgrupamentoSerializerAuditoria(serializers.ModelSerializer):
-    class Meta:
-        model = Agrupamento
-        fields = '__all__'
-
-
-class ClassificacaoSerializerAuditoria(serializers.ModelSerializer):
-    class Meta:
-        model = Classificacao
-        fields = '__all__'
+from .models import Agrupamento, Classificacao
 
 
 class AgrupamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agrupamento
-        read_only_fields = [
-            'id',
-        ]
-        extra_kwargs = {
-            'gr_codigo': {'allow_blank': True, },
-        }
         fields = [
             'id',
             'gr_codigo',
@@ -33,20 +15,26 @@ class AgrupamentoSerializer(serializers.ModelSerializer):
             'data_cadastro',
             'hora_cadastro',
         ]
+        read_only_fields = [
+            'id',
+        ]
+        extra_kwargs = {
+            'gr_codigo': {'allow_blank': True, },
+        }
 
 
 class ClassificacaoSerializer(serializers.ModelSerializer):
-    class Meta(UsuarioSerializer.Meta):
+    class Meta:
         model = Classificacao
-        read_only_fields = [
-            'id',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
         fields = [
             'id',
             'codigo',
             'nome',
             'descricao',
             'ativo',
+        ]
+        read_only_fields = [
+            'id',
+            'data_cadastro',
+            'hora_cadastro',
         ]

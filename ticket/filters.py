@@ -1,6 +1,7 @@
 from django_filters import rest_framework as filter
 from .models import Ticket, MensagemTicket, MovimentoTicket
-from usuario.filters import lookup_types_usuario, lookup_types_classificacao
+from usuario.filters import lookup_types_usuario
+from agrupamento.filters import lookup_types_classificacao
 from empresa.filters import lookup_types_empresa
 from agrupamento.filters import lookup_types_agrupamento
 
@@ -56,12 +57,12 @@ def lookup_types_ticket(prefixo=''):
 
 def lookup_types_mensagem_ticket(prefixo=''):
     return {
-        'f{prefixo}mn_usuario': ['exact', ],
-        'f{prefixo}mn_ticket': ['exact', ],
-        'f{prefixo}mn_mensagem': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        'f{prefixo}mn_mensagem_relacionada': ['exact', ],
-        'f{prefixo}mn_solucao': ['iexact', ],
-        'f{prefixo}mn_data_cadastro': [
+        f'{prefixo}mn_usuario': ['exact', ],
+        f'{prefixo}mn_ticket': ['exact', ],
+        f'{prefixo}mn_mensagem': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}mn_mensagem_relacionada': ['exact', ],
+        f'{prefixo}mn_solucao': ['iexact', ],
+        f'{prefixo}mn_data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',

@@ -1,31 +1,9 @@
 from rest_framework import serializers
 from .models import Ticket, MensagemTicket, MovimentoTicket
-from usuario.serializer import UsuarioSerializerSimples, ClassificacaoSerializer
-from usuario.models import Usuario, Classificacao
-from agrupamento.models import Agrupamento
-from agrupamento.serializer import AgrupamentoSerializer
-
-
-class TicketSerializerAuditoria(serializers.ModelSerializer):
-    solicitante = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    atendente = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    grupo = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='id')
-
-    class Meta:
-        model = Ticket
-        fields = '__all__'
-
-
-class MensagemTicketSerializerAuditoria(serializers.ModelSerializer):
-    usuario = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='id')
-
-    class Meta:
-        model = MensagemTicket
-        fields = '__all__'
+from usuario.serializer import UsuarioSerializerSimples
+from usuario.models import Usuario
+from agrupamento.models import Agrupamento, Classificacao
+from agrupamento.serializer import AgrupamentoSerializer, ClassificacaoSerializer
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -110,13 +88,6 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        read_only_fields = [
-            'id',
-            'status',
-            'prioridade',
-            'avaliacao_solicitante',
-            'observacao_avaliacao_solicitante',
-        ]
         fields = [
             'id',
             'status',
@@ -132,6 +103,13 @@ class TicketSerializer(serializers.ModelSerializer):
             'observacao_avaliacao_solicitante',
             'data_cadastro',
             'hora_cadastro',
+        ]
+        read_only_fields = [
+            'id',
+            'status',
+            'prioridade',
+            'avaliacao_solicitante',
+            'observacao_avaliacao_solicitante',
         ]
 
 
@@ -318,11 +296,6 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MensagemTicket
-        read_only_fields = [
-            'id',
-            'data_cadastro',
-            'hora_cadastro',
-        ]
         fields = [
             'id',
             'usuario',
@@ -330,6 +303,11 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
             'mensagem',
             'mensagem_relacionada',
             'solucao',
+            'data_cadastro',
+            'hora_cadastro',
+        ]
+        read_only_fields = [
+            'id',
             'data_cadastro',
             'hora_cadastro',
         ]

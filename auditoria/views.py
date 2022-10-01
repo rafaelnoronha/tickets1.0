@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins
-from .models import Auditoria
-from .serializer import AuditoriaSerializer, AuditoriaSerializerRetrieve
-from .filters import AuditoriaFilter
+from .models import Auditoria, LogAutenticacao
+from .serializer import AuditoriaSerializer, AuditoriaSerializerRetrieve, LogAutenticacaoSerializer, LogAutenticacaoSerializerRetrieve
+from .filters import AuditoriaFilter, LogAutenticacaoFilter
 from core.permissions import BasePemission
 
 

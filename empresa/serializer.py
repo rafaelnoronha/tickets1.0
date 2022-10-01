@@ -2,24 +2,9 @@ from rest_framework import serializers
 from .models import Empresa
 
 
-class EmpresaSerializerAuditoria(serializers.ModelSerializer):
-    class Meta:
-        model = Empresa
-        fields = '__all__'
-
-
 class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empresa
-        read_only_fields = [
-            'id',
-            'mp_media_avaliacoes',
-            'mp_data_cadastro',
-            'mp_hora_cadastro',
-        ]
-        extra_kwargs = {
-            'complemento': {'allow_blank': True},
-        }
         fields = [
             'id',
             'mp_cpf_cnpj',
@@ -40,6 +25,15 @@ class EmpresaSerializer(serializers.ModelSerializer):
             'data_cadastro',
             'hora_cadastro',
         ]
+        read_only_fields = [
+            'id',
+            'mp_media_avaliacoes',
+            'mp_data_cadastro',
+            'mp_hora_cadastro',
+        ]
+        extra_kwargs = {
+            'complemento': {'allow_blank': True},
+        }
 
 
 class EmpresaSerializerUpdatePartialUpdate(EmpresaSerializer):

@@ -1,7 +1,9 @@
 from django_filters import rest_framework as filter
 from .models import PoliticaPrivacidade, ConsentimentoPoliticaPrivacidade
-from usuario.filters import lookup_types_usuario, lookup_types_classificacao
+from usuario.filters import lookup_types_usuario
+from agrupamento.filters import lookup_types_classificacao
 from empresa.filters import lookup_types_empresa
+
 
 def lookup_types_politica_privacidade(prefixo=''):
     return {
