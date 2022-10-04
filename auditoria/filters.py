@@ -39,9 +39,9 @@ def lookup_types_auditoria(prefixo=''):
 
 def lookup_types_log_autenticacao(prefixo=''):
     return {
-        f'{prefixo}ip': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}autenticado': ['exact', ],
-        f'{prefixo}data_autenticacao': [
+        f'{prefixo}lg_ip': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}lg_autenticado': ['exact', ],
+        f'{prefixo}lg_data_autenticacao': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -53,7 +53,7 @@ def lookup_types_log_autenticacao(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}hora_autenticacao': [
+        f'{prefixo}lg_hora_autenticacao': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
@@ -65,16 +65,16 @@ def lookup_types_log_autenticacao(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}usuario': ['exact', ],
+        f'{prefixo}lg_usuario': ['exact', ],
     }
 
 
 class AuditoriaFilter(filter.FilterSet):
     class Meta:
         fields_auditoria = lookup_types_auditoria()
-        fields_auditoria.update(lookup_types_usuario('dt_usuario_operacao__'))
-        fields_auditoria.update(lookup_types_empresa('dt_usuario_operacao__empresa__'))
-        fields_auditoria.update(lookup_types_classificacao('dt_usuario_operacao__classificacao__'))
+        # fields_auditoria.update(lookup_types_usuario('dt_usuario_operacao__'))
+        # fields_auditoria.update(lookup_types_empresa('dt_usuario_operacao__empresa__'))
+        # fields_auditoria.update(lookup_types_classificacao('dt_usuario_operacao__classificacao__'))
 
         model = Auditoria
         fields = fields_auditoria
@@ -83,9 +83,9 @@ class AuditoriaFilter(filter.FilterSet):
 class LogAutenticacaoFilter(filter.FilterSet):
     class Meta:
         fields_log_autenticacao = lookup_types_log_autenticacao()
-        fields_log_autenticacao.update(lookup_types_usuario('usuario__'))
-        fields_log_autenticacao.update(lookup_types_empresa('usuario__empresa__'))
-        fields_log_autenticacao.update(lookup_types_classificacao('usuario__classificacao__'))
+        # fields_log_autenticacao.update(lookup_types_usuario('usuario__'))
+        # fields_log_autenticacao.update(lookup_types_empresa('usuario__empresa__'))
+        # fields_log_autenticacao.update(lookup_types_classificacao('usuario__classificacao__'))
 
         model = LogAutenticacao
         fields = fields_log_autenticacao

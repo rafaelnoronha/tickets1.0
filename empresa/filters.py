@@ -17,8 +17,8 @@ def lookup_types_empresa(prefixo=''):
         f'{prefixo}mp_telefone': ['exact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
         f'{prefixo}mp_media_avaliacoes': ['exact', 'contains', 'gt', 'gte', 'lt', 'lte', 'in', 'range'],
         f'{prefixo}mp_prestadora_servico': ['exact', ],
-        f'{prefixo}mp_ativo': ['iexact', ],
-        f'{prefixo}mp_data_cadastro': [
+        f'{prefixo}ativo': ['iexact', ],
+        f'{prefixo}data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -30,7 +30,7 @@ def lookup_types_empresa(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}mp_hora_cadastro': [
+        f'{prefixo}hora_cadastro': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',

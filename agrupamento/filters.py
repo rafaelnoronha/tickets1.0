@@ -19,7 +19,8 @@ def lookup_types_agrupamento(prefixo=''):
             'lt',
         ],
         f'{prefixo}gr_tipo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}gr_data_cadastro': [
+        f'{prefixo}ativo': ['iexact', ],
+        f'{prefixo}data_cadastro': [
             'exact',
             'range',
             'year', 'year__gte', 'year__gt', 'year__lte', 'year__lt', 'year__range', 'year__in',
@@ -31,7 +32,7 @@ def lookup_types_agrupamento(prefixo=''):
             'lt',
             'in',
         ],
-        f'{prefixo}gr_hora_cadastro': [
+        f'{prefixo}hora_cadastro': [
             'exact',
             'range',
             'hour', 'hour__gte', 'hour__gt', 'hour__lte', 'hour__lt', 'hour__range', 'hour__in',
@@ -47,9 +48,9 @@ def lookup_types_agrupamento(prefixo=''):
 
 def lookup_types_classificacao(prefixo=''):
     return {
-        f'{prefixo}codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
-        f'{prefixo}descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}cl_codigo': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}cl_nome': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
+        f'{prefixo}cl_descricao': ['exact', 'iexact', 'icontains', 'istartswith', 'iendswith', 'in', 'iregex', ],
     }
 
 

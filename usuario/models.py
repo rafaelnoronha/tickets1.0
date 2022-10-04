@@ -3,9 +3,9 @@ from django.apps import apps
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.auth.hashers import make_password
-from core.models import Base
 from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
 from empresa.models import Empresa
+from agrupamento.models import Classificacao
 
 
 class GerenciadorUsuario(UserManager):
@@ -64,7 +64,7 @@ class Usuario(AbstractUser):
     )
 
     sr_classificacao = models.ForeignKey(
-        'Classificacao',
+        Classificacao,
         verbose_name='Classificação',
         related_name='rl_sr_classificacao',
         null=True,
