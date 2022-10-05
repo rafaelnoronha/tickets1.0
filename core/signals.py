@@ -9,7 +9,7 @@ def pre_migrate_functions(sender, **kwargs):
         """
             FUNCTIONS
         """
-        cursor.execute(fnc_media_avaliacao_usuario.function())
+        # cursor.execute(fnc_media_avaliacao_usuario.function())
 
 
 def post_migrate_triggers(sender, **kwargs):
@@ -17,9 +17,9 @@ def post_migrate_triggers(sender, **kwargs):
         """
             TRIGGERS
         """
-        cursor.execute(trg_ticket_prioridade.trigger())
-        cursor.execute(trg_ticket_status.trigger())
-        cursor.execute(trg_ticket_avaliacao_solicitante.trigger())
-        cursor.execute(trg_ticket_movimento_base.trigger())
+        # cursor.execute(trg_ticket_prioridade.trigger())
+        # cursor.execute(trg_ticket_status.trigger())
+        # cursor.execute(trg_ticket_avaliacao_solicitante.trigger())
+        # cursor.execute(trg_ticket_movimento_base.trigger())
 
-        cursor.execute(trg_mensagem_ticket_solucao.trigger())
+        # cursor.execute(trg_mensagem_ticket_solucao.trigger())
