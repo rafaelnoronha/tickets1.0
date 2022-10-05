@@ -33,11 +33,11 @@ class PoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
 
 class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
-    titular = serializers.SlugRelatedField(read_only=True, slug_field='username')
-    politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='titulo')
+    cn_titular = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    cn_politica_privacidade = serializers.SlugRelatedField(read_only=True, slug_field='pl_titulo')
 
     def validate_politica_privacidade(self, cn_politica_privacidade):
-        if cn_politica_privacidade.data_validade < date.today():
+        if cn_politica_privacidade.pl_data_validade < date.today():
             raise serializers.ValidationError('Não é possível consentir com uma política de privacidade vencida')
 
         if not cn_politica_privacidade.ativo:
@@ -47,8 +47,7 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
     def validate_titular(self, titular):
         if not titular.is_active:
-            raise serializers.ValidationError("Não é possível consentir com uma política de privacidade com o titular "
-                                              "inativo")
+            raise serializers.ValidationError("Não é possível consentir com uma política de privacidade com o titular inativo")
 
         return titular
 
@@ -70,10 +69,10 @@ class ConsentimentoPoliticaPrivacidadeSerializer(serializers.ModelSerializer):
 
 
 class ConsentimentoPoliticaPrivacidadeSerializerRetrieve(ConsentimentoPoliticaPrivacidadeSerializer):
-    titular = UsuarioSerializerSimples(read_only=True)
-    politica_privacidade = PoliticaPrivacidadeSerializer(read_only=True)
+    cn_titular = UsuarioSerializerSimples(read_only=True)
+    cn_politica_privacidade = PoliticaPrivacidadeSerializer(read_only=True)
 
 
 class ConsentimentoPoliticaPrivacidadeSerializerCreate(ConsentimentoPoliticaPrivacidadeSerializer):
-    titular = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
-    politica_privacidade = serializers.SlugRelatedField(queryset=PoliticaPrivacidade.objects.all(), slug_field='id')
+    cn_titular = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
+    cn_politica_privacidade = serializers.SlugRelatedField(queryset=PoliticaPrivacidade.objects.all(), slug_field='id')

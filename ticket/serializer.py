@@ -14,7 +14,7 @@ class TicketSerializer(serializers.ModelSerializer):
     tc_subgrupo = serializers.SlugRelatedField(read_only=True, slug_field='nome')
 
     def valida_edicao_ticket(self):
-        if self.instance and (self.instance.finalizado or self.instance.cancelado):
+        if self.instance and self.instance.tc_status >= 3:
             raise serializers.ValidationError("Não é possível alterar um ticket finalizado ou cancelado")
 
     def validate(self, attrs):
@@ -22,41 +22,41 @@ class TicketSerializer(serializers.ModelSerializer):
 
         return attrs
 
-    def validate_solicitante(self, solicitante):
-        if not solicitante.is_active:
+    def validate_tc_solicitante(self, tc_solicitante):
+        if not tc_solicitante.is_active:
             raise serializers.ValidationError("Solicitante inativo")
 
-        if solicitante.is_staff:
+        if tc_solicitante.is_staff:
             raise serializers.ValidationError("Solicitante cadastrado como atendente")
 
-        return solicitante
+        return tc_solicitante
 
-    def validate_classificacao_atendente(self, classificacao_atendente):
-        if classificacao_atendente and not classificacao_atendente.ativo:
+    def validate_tc_classificacao_atendente(self, tc_classificacao_atendente):
+        if tc_classificacao_atendente and not tc_classificacao_atendente.ativo:
             raise serializers.ValidationError("Classificacao inativa")
 
-        return classificacao_atendente
+        return tc_classificacao_atendente
 
-    def validate_atendente(self, atendente):
-        if atendente and not atendente.is_active:
+    def validate_tc_atendente(self, tc_atendente):
+        if tc_atendente and not tc_atendente.is_active:
             raise serializers.ValidationError("Atendente inativo")
 
-        if atendente and not atendente.is_staff:
+        if tc_atendente and not tc_atendente.is_staff:
             raise serializers.ValidationError("Atendente cadastrado como solicitante")
 
-        return atendente
+        return tc_atendente
 
-    def validate_grupo(self, grupo):
-        if grupo and not grupo.ativo:
+    def validate_tc_grupo(self, tc_grupo):
+        if tc_grupo and not tc_grupo.ativo:
             raise serializers.ValidationError("Grupo inativo")
 
-        return grupo
+        return tc_grupo
 
-    def validate_subgrupo(self, subgrupo):
-        if subgrupo and not subgrupo.ativo:
+    def validate_tc_subgrupo(self, tc_subgrupo):
+        if tc_subgrupo and not tc_subgrupo.ativo:
             raise serializers.ValidationError("Subgrupo inativo")
 
-        return subgrupo
+        return tc_subgrupo
 
     # def validate_solucionado(self, solucionado):
     #     if solucionado and not solucionado.solucao:
@@ -64,26 +64,26 @@ class TicketSerializer(serializers.ModelSerializer):
 
     #     return solucionado
 
-    def validate_avaliacao_solicitante(self, avaliacao_solicitante):
-        if self.instance.cancelado:
+    def validate_tc_avaliacao_solicitante(self, tc_avaliacao_solicitante):
+        if self.instance.tc_status == 4:
             raise serializers.ValidationError("Não é possível avaliar um ticket cancelado")
 
-        if not self.instance.finalizado:
+        if not self.instance.tc_status == 3:
             raise serializers.ValidationError("Não é possível avaliar um ticket que não esteja finalizado")
 
-        if not self.instance.atendente:
+        if not self.instance.tc_atendente:
             raise serializers.ValidationError("Não é possível avaliar um ticket que não está atribuido a nenhum atendente")
 
-        if self.instance.avaliacao_solicitante > 0:
+        if self.instance.tc_avaliacao_solicitante > 0:
             raise serializers.ValidationError("Não é possível avaliar um ticket que já está avaliado")
 
-        return avaliacao_solicitante
+        return tc_avaliacao_solicitante
 
-    def validate_observacao_avaliacao_solicitante(self, observacao_avaliacao_solicitante):
-        if self.instance.observacao_avaliacao_solicitante:
+    def validate_tc_observacao_avaliacao_solicitante(self, tc_observacao_avaliacao_solicitante):
+        if self.instance.tc_observacao_avaliacao_solicitante:
             raise serializers.ValidationError("Não é possível sobrescrever a observação de uma avaliação")
 
-        return observacao_avaliacao_solicitante
+        return tc_observacao_avaliacao_solicitante
 
 
     class Meta:
@@ -115,14 +115,10 @@ class TicketSerializer(serializers.ModelSerializer):
 
 class TicketSerializerCreate(TicketSerializer):
     tc_solicitante = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
-    tc_classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
-                                                            allow_null=True, required=False)
-    tc_atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=True,
-                                                required=False)
-    tc_grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='G'), slug_field='id', allow_null=True,
-                                            required=False)
-    tc_subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='S'), slug_field='id', allow_null=True,
-                                            required=False)
+    tc_classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id', allow_null=True, required=False)
+    tc_atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', allow_null=True, required=False)
+    tc_grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='G'), slug_field='id', allow_null=True, required=False)
+    tc_subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='S'), slug_field='id', allow_null=True, required=False)
 
     class Meta(TicketSerializer.Meta):
         read_only_fields = [
@@ -137,12 +133,9 @@ class TicketSerializerCreate(TicketSerializer):
 
 
 class TicketSerializerUpdatePartialUpdate(TicketSerializer):
-    tc_classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
-                                                            allow_null=True, required=False)
-    tc_grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='G'), slug_field='id', allow_null=True,
-                                            required=False)
-    tc_subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='S'), slug_field='id', allow_null=True,
-                                            required=False)
+    tc_classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id', allow_null=True, required=False)
+    tc_grupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='G'), slug_field='id', allow_null=True, required=False)
+    tc_subgrupo = serializers.SlugRelatedField(queryset=Agrupamento.objects.filter(gr_tipo='S'), slug_field='id', allow_null=True, required=False)
 
     class Meta(TicketSerializer.Meta):
         _read_only_fields = TicketSerializer.Meta.fields.copy()
@@ -154,8 +147,7 @@ class TicketSerializerUpdatePartialUpdate(TicketSerializer):
 
 
 class TicketSerializerAtribuirAtendente(TicketSerializer):
-    tc_atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', required=True,
-                                                allow_null=False, allow_empty=False)
+    tc_atendente = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id', required=True, allow_null=False, allow_empty=False)
 
     class Meta(TicketSerializer.Meta):
         _read_only_fields = TicketSerializer.Meta.fields.copy()
@@ -165,8 +157,7 @@ class TicketSerializerAtribuirAtendente(TicketSerializer):
 
 
 class TicketSerializerReclassificar(TicketSerializer):
-    tc_classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
-                                                            required=True, allow_null=True)
+    tc_classificacao_atendente = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id', required=True, allow_null=True)
 
     class Meta(TicketSerializer.Meta):
         _read_only_fields = TicketSerializer.Meta.fields.copy()
@@ -265,34 +256,34 @@ class TicketSerializerAvaliar(TicketSerializer):
 class MensagemTicketSerializer(serializers.ModelSerializer):
     mn_usuario = serializers.SlugRelatedField(read_only=True, slug_field='username')
     mn_ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    mn_mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='id', allow_null=True,
-                                                        required=False)
+    mn_mensagem_relacionada = serializers.SlugRelatedField(read_only=True, slug_field='id', allow_null=True, required=False)
 
-    def validate_usuario(self, usuario):
+    def validate_mn_usuario(self, mn_usuario):
         mensagem = self.initial_data
-        ticket = Ticket.objects.get(id=mensagem['ticket'])
+        ticket = Ticket.objects.get(id=mensagem['mn_ticket'])
 
-        if usuario != ticket.solicitante and (ticket.atendente and usuario != ticket.atendente):
-            raise serializers.ValidationError("Não é possível salvar uma mensagem com um usuário que não esteja "
-                                              "vinculado ao ticket como solicitante ou atendente")
+        if mn_usuario != ticket.solicitante and (ticket.tc_atendente and mn_usuario != ticket.tc_atendente):
+            raise serializers.ValidationError("Não é possível salvar uma mensagem com um usuário que não esteja vinculado ao ticket como solicitante ou atendente")
 
-        if not usuario.is_active:
+        if not mn_usuario.is_active:
             raise serializers.ValidationError("Não é possível salvar uma mensagem com um usuário inativo")
 
-    def validate_ticket(self, ticket):
-        if ticket.finalizado or ticket.cancelado:
+        return mn_usuario
+
+    def validate_mn_ticket(self, mn_ticket):
+        if mn_ticket.tc_status >= 3:
             raise serializers.ValidationError("Não é possível salvar uma mensagem para um ticket finalizado ou cancelado")
 
-        return ticket
+        return mn_ticket
 
-    def validate_solucao(self, solucao):
+    def validate_mn_solucao(self, mn_solucao):
         mensagem = self.initial_data
-        usuario = Usuario.objects.get(id=mensagem['usuario'])
+        usuario = Usuario.objects.get(id=mensagem['mn_usuario'])
 
-        if solucao and not usuario.is_staff:
+        if mn_solucao and not usuario.is_staff:
             raise serializers.ValidationError("Não é possível salvar uma mensagem como solução que tenha um usuário como solicitante")
 
-        return solucao
+        return mn_solucao
 
     class Meta:
         model = MensagemTicket
@@ -316,13 +307,12 @@ class MensagemTicketSerializer(serializers.ModelSerializer):
 class MensagemTicketSerializerCreate(MensagemTicketSerializer):
     mn_usuario = serializers.SlugRelatedField(queryset=Usuario.objects.all(), slug_field='id')
     mn_ticket = serializers.SlugRelatedField(queryset=Ticket.objects.all(), slug_field='id')
-    mn_mensagem_relacionada = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='id',
-                                                        allow_null=True, required=False)
+    mn_mensagem_relacionada = serializers.SlugRelatedField(queryset=MensagemTicket.objects.all(), slug_field='id', allow_null=True, required=False)
 
 
 class MovimentoTicketSerializer(serializers.ModelSerializer):
     mv_ticket = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    mv_classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='nome')
+    mv_classificacao_atendente = serializers.SlugRelatedField(read_only=True, slug_field='cl_nome')
     mv_atendente = serializers.SlugRelatedField(read_only=True, slug_field='username')
     mv_solucionado = serializers.SlugRelatedField(read_only=True, slug_field='id')
     mv_finalizado = serializers.SlugRelatedField(read_only=True, slug_field='username')

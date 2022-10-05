@@ -10,59 +10,49 @@ import re
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
-    sr_empresa = serializers.SlugRelatedField(read_only=True, slug_field='nome_fantasia')
+    sr_empresa = serializers.SlugRelatedField(read_only=True, slug_field='mp_nome_fantasia')
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
-    sr_classificacao = serializers.SlugRelatedField(read_only=True, slug_field='nome')
+    sr_classificacao = serializers.SlugRelatedField(read_only=True, slug_field='cl_nome')
 
     def validate_is_staff(self, is_staff):
-        empresa = Empresa.objects.get(id=self.initial_data['empresa'])
+        empresa = Empresa.objects.get(id=self.initial_data['sr_empresa'])
 
         if is_staff:
             if not empresa.prestadora_servico:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa "
-                                      "vinculada não estiver como 'prestadora_servico=false'")
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa vinculada não estiver como 'prestadora_servico=false'")
 
         if not is_staff:
             if empresa.prestadora_servico:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
-                                      "vinculada estiver como 'prestadora_servico=true'")
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa vinculada estiver como 'prestadora_servico=true'")
 
         return is_staff
 
-    def validate_empresa(self, empresa):
+    def validate_sr_empresa(self, sr_empresa):
         usuario = self.initial_data
         is_staff = usuario['is_staff'] if 'is_staff' in usuario else False
 
-        if not empresa.ativo:
-            raise serializers.ValidationError("Não é possível salvar um usuário se a empresa vinculada está como "
-                                              "'ativo=false'")
+        if not sr_empresa.ativo:
+            raise serializers.ValidationError("Não é possível salvar um usuário se a empresa vinculada está como 'ativo=false'")
 
-        if empresa.prestadora_servico:
+        if sr_empresa.mp_prestadora_servico:
             if not is_staff:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa "
-                                                  "vinculada não estiver como 'prestadora_servico=true'")
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa vinculada não estiver como 'prestadora_servico=true'")
 
-        if not empresa.prestadora_servico:
+        if not sr_empresa.mp_prestadora_servico:
             if is_staff:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa "
-                                                  "vinculada estiver como 'prestadora_servico=false'")
+                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa vinculada estiver como 'prestadora_servico=false'")
 
-        return empresa
+        return sr_empresa
 
-    def validate_classificacao(self, classificacao):
-        if not classificacao.ativo:
-            raise serializers.ValidationError("Não é possível salvar um usuário se a classificação vinculada está como "
-                                              "'ativo=false'")
+    def validate_sr_classificacao(self, sr_classificacao):
+        if not sr_classificacao.ativo:
+            raise serializers.ValidationError("Não é possível salvar um usuário se a classificação vinculada está como 'ativo=false'")
 
-        return classificacao
+        return sr_classificacao
 
     def validate_password(self, password):
         if len(password) < 6:
             raise serializers.ValidationError("Sua senha deve ter no mínimo 6 caracteres")
-
-        if not re.findall('[A-Z]', password) or not re.findall('[a-z]', password) or not re.findall('[0-9]', password):
-            raise serializers.ValidationError("A senha deve ser composta por letras, números e ao menos uma letra em "
-                                              "caixa alta")
 
         return make_password(password)
 
@@ -110,8 +100,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class UsuarioSerializerCreate(UsuarioSerializer):
     sr_empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='id')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-    sr_classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
-                                                 required=False)
+    sr_classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id', required=False)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
@@ -128,8 +117,7 @@ class UsuarioSerializerCreate(UsuarioSerializer):
 class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     sr_empresa = serializers.SlugRelatedField(queryset=Empresa.objects.all(), slug_field='id')
     groups = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='id', many=True)
-    sr_classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id',
-                                                 required=False)
+    sr_classificacao = serializers.SlugRelatedField(queryset=Classificacao.objects.all(), slug_field='id', required=False)
 
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [

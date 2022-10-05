@@ -19,10 +19,9 @@ class AuditoriaViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewset
         return self.serializer_classes.get(self.action, AuditoriaSerializer)
 
 
-class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin,
-                             viewsets.GenericViewSet):
+class LogAutenticacaoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = LogAutenticacao.objects.all() \
-        .prefetch_related('usuario')
+        .prefetch_related('lg_usuario')
     filterset_class = LogAutenticacaoFilter
     permission_classes = (BasePemission, )
 

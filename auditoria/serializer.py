@@ -32,11 +32,11 @@ class LogAutenticacaoSerializer(serializers.ModelSerializer):
         model = LogAutenticacao
         fields = [
             'id',
-            'ip',
-            'autenticado',
-            'data_autenticacao',
-            'hora_autenticacao',
-            'usuario',
+            'lg_ip',
+            'lg_autenticado',
+            'lg_data_autenticacao',
+            'lg_hora_autenticacao',
+            'lg_usuario',
         ]
         read_only_fields = ['id']
 

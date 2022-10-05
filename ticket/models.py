@@ -5,11 +5,11 @@ from agrupamento.models import Agrupamento, Classificacao
 
 
 STATUS_CHOISES = [
-    ('0', 'Aberto'),
-    ('1', 'Processando'),
-    ('2', 'Solucionado'),
-    ('3', 'Finalizado'),
-    ('4', 'Cancelado'),
+    (0, 'Aberto'),
+    (1, 'Processando'),
+    (2, 'Solucionado'),
+    (3, 'Finalizado'),
+    (4, 'Cancelado'),
 ]
 
 AVALIACAO_CHOISES = [
@@ -27,11 +27,10 @@ class Ticket(Base):
     Modelo dos tickets, em específico do cabeçalho dos tickets, sem as mensagens/acompanhamentos.
     """
 
-    tc_status = models.CharField(
+    tc_status = models.SmallIntegerField(
         verbose_name='Status',
         choices=STATUS_CHOISES,
-        max_length=1,
-        default='0',
+        default=0,
         help_text='Status do ticket',
     )
 

@@ -9,7 +9,11 @@ from .serializer import (
 
 
 class PoliticaPrivacidadeViewSet(
-    mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
 ):
     queryset = PoliticaPrivacidade.objects.all()
     filterset_class = PoliticaPrivacidadeFilter
@@ -18,11 +22,14 @@ class PoliticaPrivacidadeViewSet(
 
 
 class ConsentimentoPoliticaPrivacidadeViewSet(
-    mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
 ):
     queryset = ConsentimentoPoliticaPrivacidade.objects.all() \
-        .prefetch_related('titular') \
-        .prefetch_related('politica_privacidade')
+        .prefetch_related('cn_titular') \
+        .prefetch_related('cn_politica_privacidade')
     filterset_class = ConsentimentoPoliticaPrivacidadeFilter
     permission_classes = (BasePemission, )
 

@@ -28,11 +28,11 @@ class EmpresaSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'id',
             'mp_media_avaliacoes',
-            'mp_data_cadastro',
-            'mp_hora_cadastro',
+            'data_cadastro',
+            'hora_cadastro',
         ]
         extra_kwargs = {
-            'complemento': {'allow_blank': True},
+            'mp_complemento': {'allow_blank': True},
         }
 
 

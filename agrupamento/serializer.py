@@ -28,9 +28,11 @@ class ClassificacaoSerializer(serializers.ModelSerializer):
         model = Classificacao
         fields = [
             'id',
-            'codigo',
-            'nome',
-            'descricao',
+            'cl_codigo',
+            'cl_nome',
+            'cl_descricao',
+            'data_cadastro',
+            'hora_cadastro',
             'ativo',
         ]
         read_only_fields = [
