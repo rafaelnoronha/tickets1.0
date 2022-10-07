@@ -18,11 +18,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
         empresa = Empresa.objects.get(id=self.initial_data['sr_empresa'])
 
         if is_staff:
-            if not empresa.prestadora_servico:
+            if not empresa.mp_prestadora_servico:
                 raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa vinculada não estiver como 'prestadora_servico=false'")
 
         if not is_staff:
-            if empresa.prestadora_servico:
+            if empresa.mp_prestadora_servico:
                 raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa vinculada estiver como 'prestadora_servico=true'")
 
         return is_staff

@@ -12,8 +12,8 @@ from .serializer import UsuarioSerializer, UsuarioSerializerCreate, UsuarioSeria
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all() \
-        .prefetch_related('classificacao') \
-        .prefetch_related('empresa')
+        .prefetch_related('sr_classificacao') \
+        .prefetch_related('sr_empresa')
     filterset_class = UsuarioFilter
     permission_classes = (BasePemission, )
 
