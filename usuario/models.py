@@ -1,48 +1,55 @@
+import unicodedata
 from django.db import models
-from django.apps import apps
+from django.contrib.auth.hashers import (
+    check_password, is_password_usable, make_password,
+)
+from django.utils.crypto import salted_hmac
+from django.conf import settings
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.hashers import make_password
-from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa
+from core.validators import RegexTelefone, RegexCelular, RegexCodigoVerificacaoSegundaEtapa, UnicodeUsernameValidator
+from core.models import Base
 from empresa.models import Empresa
 from agrupamento.models import Classificacao
 
 
-class GerenciadorUsuario(UserManager):
-    def _create_user(self, username, email, password, **extra_fields):
-        """
-        Create and save a user with the given username, email, and password.
-        """
-        if not username:
-            raise ValueError('The given username must be set')
-        email = self.normalize_email(email)
-        # Lookup the real model class from the global app registry so this
-        # manager method can be used in migrations. This is fine because
-        # managers are by definition working on the real model.
-        GlobalUserModel = apps.get_model(self.model._meta.app_label, self.model._meta.object_name)
-        username = GlobalUserModel.normalize_username(username)
-        user = self.model(username=username, email=email, **extra_fields)
-        user.password = make_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, username, email=None, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self._create_user(username, email, password, **extra_fields)
-
-
-class Usuario(AbstractUser):
+class Usuario(AbstractBaseUser, Base):
     """
     Modelo de usuários do sistema, tanto dos usuários que vão abrir, quanto aos que vão solucionar os tickets. No caso
     dos usuários que vão soluciuonar os tickets, eles não vão ter nenhuma empresa vinculada a eles.
     """
+
+    validador_nome_usuario = UnicodeUsernameValidator()
+
+    sr_usuario = models.CharField(
+        verbose_name='Usuário',
+        max_length=150,
+        unique=True,
+        help_text='Nome único do usuário pelo qual efeturá login',
+        validators=[validador_nome_usuario],
+        error_messages={
+            'unique': "Um usuário com esse nome já existe.",
+        },
+    )
+
+    sr_senha = models.CharField(
+        verbose_name='Senha',
+        max_length=128
+    )
+
+    sr_nome = models.CharField(
+        verbose_name='Nome',
+        max_length=150,
+        blank=True,
+        help_text='Nome completo do usuário'
+    )
+
+    sr_email = models.EmailField(
+        verbose_name='Email',
+        blank=True,
+        help_text='Email ex: email@exemplo.com.br'
+    )
 
     sr_telefone = models.CharField(
         verbose_name='Telefone',
@@ -95,6 +102,12 @@ class Usuario(AbstractUser):
         help_text='Observações referênte ao usuário',
     )
 
+    sr_ultimo_login = models.DateTimeField(
+        verbose_name='Último Login',
+        blank=True,
+        null=True
+    )
+
     sr_numero_tentativas_login = models.PositiveSmallIntegerField(
         verbose_name='Número de tentativas falhas de login',
         default=0,
@@ -117,25 +130,81 @@ class Usuario(AbstractUser):
         ]
     )
 
-    sr_is_manager = models.BooleanField(
-        verbose_name='Is Manager',
+    sr_atendente = models.BooleanField(
+        verbose_name='Atendente',
+        default=False,
+        help_text='Se é gerente, caso seja, existem privilégios padrões para um usuário do tipo gerente',
+    )
+
+    sr_gerente = models.BooleanField(
+        verbose_name='Gerente',
         default=False,
         help_text='Este campo informa se o usuáio é gerente ou não',
     )
 
-    data_cadastro = models.DateField(
-        verbose_name='Data do cadastro',
-        auto_now_add=True,
-        help_text='Data do cadastro do usuário',
+    sr_administrador = models.BooleanField(
+        verbose_name='Administrador',
+        default=False,
+        help_text='Este campo informa se o usuáio é administrador ou não',
     )
 
-    hora_cadastro = models.TimeField(
-        verbose_name='Hora do cadastro',
-        auto_now_add=True,
-        help_text='Hora do cadastro do usuário',
-    )
+    USERNAME_FIELD = 'sr_usuario'
 
-    objects = GerenciadorUsuario()
+    def set_password(self, raw_password):
+        self.sr_senha = make_password(raw_password)
+        self._password = raw_password
+
+    def check_password(self, raw_password):
+        """
+        Return a boolean of whether the raw_password was correct. Handles
+        hashing formats behind the scenes.
+        """
+        def setter(raw_password):
+            self.set_password(raw_password)
+            # Password hash upgrades shouldn't be considered password changes.
+            self._password = None
+            self.save(update_fields=["password"])
+        return check_password(raw_password, self.sr_password, setter)
+
+    def set_unusable_password(self):
+        # Set a value that will never be a valid hash
+        self.sr_password = make_password(None)
+
+    def has_usable_password(self):
+        """
+        Return False if set_unusable_password() has been called for this user.
+        """
+        return is_password_usable(self.sr_password)
+
+    def _legacy_get_session_auth_hash(self):
+        # RemovedInDjango40Warning: pre-Django 3.1 hashes will be invalid.
+        key_salt = 'django.contrib.auth.models.AbstractBaseUser.get_session_auth_hash'
+        return salted_hmac(key_salt, self.sr_password, algorithm='sha1').hexdigest()
+
+    def get_session_auth_hash(self):
+        """
+        Return an HMAC of the password field.
+        """
+        key_salt = "django.contrib.auth.models.AbstractBaseUser.get_session_auth_hash"
+        return salted_hmac(
+            key_salt,
+            self.sr_password,
+            # RemovedInDjango40Warning: when the deprecation ends, replace
+            # with:
+            # algorithm='sha256',
+            algorithm=settings.DEFAULT_HASHING_ALGORITHM,
+        ).hexdigest()
+
+    @classmethod
+    def get_email_field_name(cls):
+        try:
+            return cls.EMAIL_FIELD
+        except AttributeError:
+            return 'sr_email'
+
+    @classmethod
+    def normalize_username(cls, username):
+        return unicodedata.normalize('NFKC', username) if isinstance(username, str) else username
 
     class Meta:
         ordering = ['-id']

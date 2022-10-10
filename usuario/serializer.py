@@ -14,33 +14,33 @@ class UsuarioSerializer(serializers.ModelSerializer):
     groups = serializers.SlugRelatedField(read_only=True, slug_field='name', many=True)
     sr_classificacao = serializers.SlugRelatedField(read_only=True, slug_field='cl_nome')
 
-    def validate_is_staff(self, is_staff):
+    def validate_sr_atendente(self, sr_atendente):
         empresa = Empresa.objects.get(id=self.initial_data['sr_empresa'])
 
-        if is_staff:
+        if sr_atendente:
             if not empresa.mp_prestadora_servico:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa vinculada não estiver como 'prestadora_servico=false'")
+                raise serializers.ValidationError("Não é possível salvar um usuário 'sr_atendente=true' se a empresa vinculada não estiver como 'prestadora_servico=false'")
 
-        if not is_staff:
+        if not sr_atendente:
             if empresa.mp_prestadora_servico:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa vinculada estiver como 'prestadora_servico=true'")
+                raise serializers.ValidationError("Não é possível salvar um usuário 'sr_atendente=false' se a empresa vinculada estiver como 'prestadora_servico=true'")
 
-        return is_staff
+        return sr_atendente
 
     def validate_sr_empresa(self, sr_empresa):
         usuario = self.initial_data
-        is_staff = usuario['is_staff'] if 'is_staff' in usuario else False
+        sr_atendente = usuario['sr_atendente'] if 'sr_atendente' in usuario else False
 
         if not sr_empresa.ativo:
             raise serializers.ValidationError("Não é possível salvar um usuário se a empresa vinculada está como 'ativo=false'")
 
         if sr_empresa.mp_prestadora_servico:
-            if not is_staff:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=false' se a empresa vinculada não estiver como 'prestadora_servico=true'")
+            if not sr_atendente:
+                raise serializers.ValidationError("Não é possível salvar um usuário 'sr_atendente=false' se a empresa vinculada não estiver como 'prestadora_servico=true'")
 
         if not sr_empresa.mp_prestadora_servico:
-            if is_staff:
-                raise serializers.ValidationError("Não é possível salvar um usuário 'is_staff=true' se a empresa vinculada estiver como 'prestadora_servico=false'")
+            if sr_atendente:
+                raise serializers.ValidationError("Não é possível salvar um usuário 'sr_atendente=true' se a empresa vinculada estiver como 'prestadora_servico=false'")
 
         return sr_empresa
 
@@ -50,49 +50,46 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
         return sr_classificacao
 
-    def validate_password(self, password):
-        if len(password) < 6:
+    def validate_sr_senha(self, sr_senha):
+        if len(sr_senha) < 6:
             raise serializers.ValidationError("Sua senha deve ter no mínimo 6 caracteres")
 
-        return make_password(password)
+        return make_password(sr_senha)
 
     class Meta:
         model = Usuario
         read_only_fields = [
             'id',
-            'last_login',
+            'sr_ultimo_login',
             'sr_media_avaliacoes',
-            'is_superuser',
-            'is_staff',
-            'sr_is_manager',
+            'sr_administrador',
+            'sr_atendente',
+            'sr_gerente',
             'sr_empresa',
         ]
         extra_kwargs = {
-            'password': {'write_only': True},
+            'sr_senha': {'write_only': True},
             'sr_codigo_verificacao_segunda_etapa': {'write_only': True},
-            'first_name': {'allow_null': False, 'allow_blank': False},
-            'last_name': {'allow_null': False, 'allow_blank': False},
-            'email': {'allow_null': False, 'allow_blank': False},
+            'sr_nome': {'allow_null': False, 'allow_blank': False},
+            'sr_email': {'allow_null': False, 'allow_blank': False},
         }
         fields = [
             'id',
-            'username',
-            'password',
+            'sr_usuario',
+            'sr_senha',
             'sr_codigo_verificacao_segunda_etapa',
-            'first_name',
-            'last_name',
-            'email',
+            'sr_nome',
+            'sr_email',
             'sr_telefone',
             'sr_celular',
             'sr_observacoes',
             'sr_media_avaliacoes',
             'sr_empresa',
-            'last_login',
+            'sr_ultimo_login',
             'sr_classificacao',
-            'is_staff',
-            'sr_is_manager',
-            'is_superuser',
-            'is_active',
+            'sr_atendente',
+            'sr_gerente',
+            'sr_administrador',
             'groups',
         ]
 
@@ -105,12 +102,12 @@ class UsuarioSerializerCreate(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'id',
-            'last_login',
+            'sr_ultimo_login',
             'sr_media_avaliacoes',
         ]
         extra_kwargs = {
             'sr_codigo_verificacao_segunda_etapa': {'write_only': True},
-            'is_staff': {'allow_null': False},
+            'sr_atendente': {'allow_null': False},
         }
 
 
@@ -122,11 +119,11 @@ class UsuarioSerializerUpdatePartialUpdate(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         read_only_fields = [
             'id',
-            'last_login',
+            'sr_ultimo_login',
             'sr_media_avaliacoes',
-            'username',
-            'is_staff',
-            'is_superuser',
+            'sr_usuario',
+            'sr_atendente',
+            'sr_administrador',
             'sr_empresa',
         ]
 
@@ -139,13 +136,13 @@ class UsuarioSerializerSimples(UsuarioSerializer):
     class Meta(UsuarioSerializer.Meta):
         fields = [
             'id',
-            'username',
-            'email',
+            'sr_usuario',
+            'sr_email',
             'sr_empresa',
             'sr_classificacao',
-            'is_staff',
-            'sr_is_manager',
-            'is_superuser',
+            'sr_atendente',
+            'sr_gerente',
+            'sr_administrador',
             'groups',
         ]
 

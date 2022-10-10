@@ -1,6 +1,16 @@
 from django.core.exceptions import ValidationError
+from django.core import validators
 import functools
 import re
+
+
+class UnicodeUsernameValidator(validators.RegexValidator):
+    regex = r'^[\w.@+-]+\Z'
+    message = (
+        'Digite um nome de usuário válido. Este valor pode conter apenas letras, '
+        'números e caracteres @/./+/-/_.'
+    )
+    flags = 0
 
 
 class RegexTelefone:
